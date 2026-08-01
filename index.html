@@ -40,6 +40,11 @@
     <!-- Navigation -->
     <nav class="navbar glass">
         <a href="/" class="logo"><div class="logo-icon"></div> RootNode Rebels</a>
+        <div class="nav-search">
+            <input type="text" id="globalSearch" class="search-input" placeholder="Search projects, team, services..." autocomplete="off">
+            <div class="search-icon">⌕</div>
+            <div id="searchResults" class="search-results glass"></div>
+        </div>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#projects">Engineering</a>
@@ -294,5 +299,14 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    <script>
+    // Search overlay close on outside click
+    document.addEventListener('click', (e) => {
+        const results = document.getElementById('searchResults');
+        if (!e.target.closest('.nav-search')) {
+            results.classList.remove('active');
+        }
+    });
+    </script>
 </body>
 </html>
