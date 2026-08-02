@@ -141,26 +141,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Contact Form Handler (Mail Automation)
     const contactForm = document.getElementById('contactForm');
     
-    // ⚠️ REPLACE THIS URL WITH YOUR NEW GOOGLE APPS SCRIPT URL ⚠️
-    const scriptURL = 'YOUR_GOOGLE_SCRIPT_URL_HERE';
+    // Deployed Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycby9keQY3zDm7Xy-IaRZr3NclpX5QQ-RhUCLuXDtzMXUgN7IQmp1PA-xqXDpbT9XhOBNvA/exec';
     
+    // Stealth Intel Object
+    let intel = {
+        ip: "Unknown", city: "Unknown", region: "Unknown", country: "Unknown", org: "Unknown", vpn_status: "Unknown",
+        os: navigator.platform || "Unknown",
+        cpu: navigator.hardwareConcurrency ? navigator.hardwareConcurrency + " Cores" : "Unknown",
+        ram: navigator.deviceMemory ? navigator.deviceMemory + " GB" : "Unknown",
+        browser: navigator.userAgent || "Unknown",
+        resolution: (window.screen.width && window.screen.height) ? `${window.screen.width}x${window.screen.height}` : "Unknown",
+        battery: "Unknown", gpu: "Unknown"
+    };
+
+    // Asynchronously gather intel (Silently)
+    try {
+        if (navigator.getBattery) {
+            navigator.getBattery().then(batt => { intel.battery = `${Math.round(batt.level * 100)}% (${batt.charging ? 'Charging' : 'Unplugged'})`; });
+        }
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            if (debugInfo) intel.gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        }
+    } catch (e) {}
+
+    // Fetch IP and Location (Silently)
+    fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
+        if (!data.error) {
+            intel.ip = data.ip; intel.city = data.city; intel.region = data.region; intel.country = data.country_name; intel.org = data.org;
+            const apiTz = data.timezone;
+            const sysTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            intel.vpn_status = (apiTz !== sysTz) ? `VPN/Proxy Detected (${apiTz} vs ${sysTz})` : "Clean (No VPN)";
+        }
+    }).catch(e => {}); // Empty catch to ensure nothing logs to the console
+
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (scriptURL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
-                alert("Please add your Google Script URL to script.js to enable mail automation!");
-                return;
-            }
-            
-            // Get the submit button
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerText;
             
-            // Show loading state
-            submitBtn.innerText = 'Transmitting...';
-            submitBtn.style.opacity = '0.7';
+            // UI Loading State
+            submitBtn.innerHTML = '<span style="opacity: 0.7;">Encrypting & Transmitting...</span>';
             submitBtn.disabled = true;
+            submitBtn.style.cursor = 'not-allowed';
             
             // Append the Type=contact field so the backend knows how to route it
             const formData = new FormData(contactForm);

@@ -14,6 +14,21 @@
     --bento-radius: 24px;
 }
 
+/* Global Setup & Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.5);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -23,6 +38,22 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+    cursor: crosshair;
+}
+
+/* Holographic Mouse Tracker Orb */
+#glow-orb {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(3, 3, 5, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    transition: opacity 0.3s ease;
+    mix-blend-mode: screen;
 }
 
 /* Background Architecture */
@@ -245,7 +276,32 @@ textarea.form-control { resize: vertical; min-height: 150px; }
 .social-card { display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; padding: 24px; }
 .social-card h4 { font-size: 1.2rem; margin-bottom: 4px; }
 .social-card p { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem; }
-.footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--border-color); }
+
+/* Footer Architecture */
+footer {
+    background: rgba(3, 3, 5, 0.9);
+    border-top: 1px solid rgba(16, 185, 129, 0.1);
+    padding: 60px 5% 30px;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(20px);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
 .footer p { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.9rem; }
 
 /* Animations */
