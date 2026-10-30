@@ -3,41 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found | RootNode Rebels</title>
+    <title>404 Node Disconnected | RootNode Rebels</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Dynamic Background Elements -->
+    <!-- 3D Perspective Cyber Grid Floor -->
+    <div class="cyber-grid-floor"></div>
     <div class="noise-overlay"></div>
-    <div class="gradient-bg"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar glass">
-        <div class="logo">⚡ RootNode<span>Rebels</span></div>
-        <div class="nav-links">
-            <a href="/">Return Home</a>
-        </div>
-    </nav>
+    <!-- Ambient Glowing Orbs -->
+    <div class="ambient-glows">
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+    </div>
 
-    <!-- 404 Hero Section -->
-    <header class="hero" style="text-align: center;">
-        <div class="hero-content fade-in-up">
-            <h1 class="hero-title" style="font-size: clamp(5rem, 10vw, 8rem); margin-bottom: 0;">404</h1>
-            <h2 style="font-size: 2rem; margin-bottom: 20px;">Node Not Found</h2>
-            <p class="hero-desc" style="max-width: 500px;">The server architecture you are trying to access does not exist or has been relocated.</p>
-            <div class="hero-buttons">
-                <a href="/" class="btn btn-primary">Return to Root Node</a>
+    <!-- Navigation Bar -->
+    <header class="nav-container">
+        <nav class="navbar" style="max-width: 600px;">
+            <a href="/" class="logo">
+                <div class="logo-cube"></div>
+                <div class="logo-text">RootNode <span>Rebels</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="/">Return to Root Node</a>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <!-- Scripts -->
+    <!-- 404 Hero Section -->
+    <main class="hero" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+        <div class="bento-card-3d fade-in-up" style="max-width: 580px; padding: 60px 40px; margin: 0 auto;">
+            <div class="card-glare"></div>
+            <div class="layer-high">
+                <div class="badge-pill" style="margin-bottom: 20px;">
+                    <span class="pulse-beacon" style="background: #ef4444;"></span>
+                    <span style="color: #ef4444;">404 // NETWORK EXCEPTION</span>
+                </div>
+                <h1 class="gradient-text" style="font-size: clamp(5rem, 12vw, 8rem); font-weight: 800; line-height: 1; margin-bottom: 10px;">
+                    404
+                </h1>
+                <h2 style="font-size: 1.8rem; margin-bottom: 16px; color: var(--text-primary);">Node Not Found</h2>
+                <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 36px; line-height: 1.6;">
+                    The digital pathway you requested does not exist on our server cluster or has been rerouted to an encrypted node.
+                </p>
+                <a href="/" class="btn btn-primary" style="padding: 14px 32px;">
+                    <span>Return to Root Node</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const fadeElements = document.querySelectorAll('.fade-in-up');
