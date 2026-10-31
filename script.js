@@ -571,54 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
-       06. LUMINOUS NODE HUD NAVIGATION & TELEMETRY
-       ========================================================================== */
-    const hudNodes = document.querySelectorAll('.hud-node');
-    const hudCoords = document.getElementById('hudCoords');
-    const sectionBlocks = document.querySelectorAll('.section-block');
-
-    hudNodes.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const nodeIdx = parseInt(btn.dataset.node, 10);
-            const targetId = btn.dataset.target;
-            if (threeApp) {
-                threeApp.navigateToSection(targetId, nodeIdx);
-            } else {
-                const targetSec = document.getElementById(targetId);
-                if (targetSec) targetSec.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
-
-    // Sync HUD active node on scroll
-    window.addEventListener('scroll', () => {
-        let currentSectionId = 'hero';
-        let currentSectionIdx = 0;
-
-        sectionBlocks.forEach((sec) => {
-            const rect = sec.getBoundingClientRect();
-            if (rect.top <= window.innerHeight * 0.45 && rect.bottom >= window.innerHeight * 0.15) {
-                currentSectionId = sec.id;
-                currentSectionIdx = parseInt(sec.dataset.sectionIndex, 10);
-            }
-        });
-
-        hudNodes.forEach((nodeBtn) => {
-            const idx = parseInt(nodeBtn.dataset.node, 10);
-            if (idx === currentSectionIdx) {
-                nodeBtn.classList.add('active');
-            } else {
-                nodeBtn.classList.remove('active');
-            }
-        });
-
-        if (hudCoords) {
-            const depthMeters = (-(12.4 - (currentSectionIdx * 3.8))).toFixed(1);
-            hudCoords.textContent = `FILAMENT: Y ${depthMeters}m // FOCUS: [${currentSectionId.toUpperCase()}]`;
-        }
-    }, { passive: true });
-
-    /* ==========================================================================
        07. MOBILE DRAWER NAVIGATION
        ========================================================================== */
     const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
