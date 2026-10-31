@@ -3,326 +3,588 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RootNode Rebels | Neighborhood Bakery & Café Diorama</title>
+    <title>RootNode Rebels | Soil Cross-Section & Root Dependency Tree</title>
     
-    <!-- Meta & SEO Optimization -->
-    <meta name="description" content="A warm 3D tilt-shift neighborhood bakery and café. Watch bread delivery bikes, pedestrians, and cozy evening lights turn on as you explore today's fresh bake menu and catering.">
-    <meta name="keywords" content="RootNode Rebels, Bakery, Cafe, 3D Tilt Shift, Sourdough, Artisanal Bread, Coffee, Three.js, Neighborhood Street">
+    <!-- Meta & Anti-Hype SEO -->
+    <meta name="description" content="We grow from the root, not the trend. RootNode Rebels is an elite software engineering collective building high-concurrency architectures, ERPs, and hardened infrastructure from the bare soil up.">
+    <meta name="keywords" content="RootNode Rebels, Software Engineering, Hardened Architecture, ERP Systems, High Concurrency, Adarsh B A, Systems Programming">
     <meta name="author" content="RootNode Rebels">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rootnode-rebels.github.io/">
-    <meta name="theme-color" content="#991b1b">
+    <meta name="theme-color" content="#140e0a">
 
     <!-- Cache-Control Meta Tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <!-- Hand-Painted Sign & Friendly Rounded Google Fonts -->
+    <!-- Rough Stencil Display & Clean Engineer Mono Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&family=Shrikhand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <!-- Stylesheet with Cache Buster -->
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=7.0">
 
     <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <!-- WebGL Three.js Tilt-Shift Street Canvas -->
+    <!-- WebGL Three.js Soil Cross-Section Canvas -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- Tilt-Shift Macro Lens Optical Blurs (Top & Bottom) -->
-    <div class="tilt-shift-blur-top"></div>
-    <div class="tilt-shift-blur-bottom"></div>
+    <!-- Geological Soil Texture & Organic Grain Overlay -->
+    <div class="soil-noise-overlay"></div>
 
-    <!-- Evening Dusk Vignette (Deepens as user scrolls) -->
-    <div class="evening-vignette" id="eveningVignette"></div>
+    <!-- Custom Mechanical Bore Cursor -->
+    <div class="cursor-reticle" id="cursorReticle"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
 
-    <!-- Top Artisan Hand-Painted Signboard Bar -->
-    <header class="top-bar-container">
-        <nav class="signboard-navbar">
-            <a href="/" class="brand-sign">
-                <div class="croissant-badge">🥐</div>
-                <div class="brand-text">
-                    <h1>RootNode Rebels</h1>
-                    <p>Neighborhood Bakery & Hearth Kitchen</p>
-                </div>
-            </a>
+    <!-- Geological Depth Strata Ruler (Left Edge) -->
+    <aside class="depth-ruler" aria-label="Geological Strata Depth Scale">
+        <span>[0.0m]</span>
+        <span>[-1.2m]</span>
+        <span>[-3.8m]</span>
+        <span>[-6.4m]</span>
+        <span>[-9.0m]</span>
+        <span>[-11.5m]</span>
+    </aside>
 
-            <!-- Nav Actions -->
-            <div class="nav-actions">
-                <button class="sign-btn btn-open-door trigger-open-menu" title="Click café door to view menu">
-                    <span>🚪</span> Push Café Door
-                </button>
-                <button class="sign-btn trigger-open-menu" data-target-tab="catering">
-                    <span>🥖</span> Catering Box
-                </button>
-                <button id="soundToggle" class="audio-toggle-btn" title="Toggle Shop Doorbell Sound">
-                    <span>🔔</span> Bell: ON
-                </button>
-            </div>
+    <!-- Live Depth Indicator Pill -->
+    <div class="depth-indicator-pill">
+        <span>DEPTH:</span>
+        <span class="live-val" id="depthVal">-0.0m</span>
+        <span>//</span>
+        <span id="depthStratum" style="color:var(--moss-green-bright);">TOPSOIL // SURFACE</span>
+    </div>
+
+    <!-- Top Schematic Header & Branch Links -->
+    <header class="schematic-header">
+        <a href="/" class="header-brand">
+            <div class="brand-icon-root">R</div>
+            <div class="brand-text-root">ROOTNODE // REBELS</div>
+        </a>
+
+        <nav class="header-nav-links">
+            <a href="#services" class="nav-node-link" data-root-node="services">Services</a>
+            <a href="#projects" class="nav-node-link" data-root-node="projects">Case Studies</a>
+            <a href="#process" class="nav-node-link" data-root-node="process">Process</a>
+            <a href="#team" class="nav-node-link" data-root-node="team">Team</a>
+            <a href="#careers" class="nav-node-link" data-root-node="contact">Careers</a>
+            
+            <button id="soundToggle" class="audio-toggle-btn" title="Toggle Subterranean Geophone Audio">
+                [GEOPHONE: OFF]
+            </button>
         </nav>
     </header>
 
-    <!-- Hover Tooltip pinned to Café Door in 3D -->
-    <div class="door-hover-tooltip" id="doorTooltip">
-        <div class="tooltip-chalkboard">
-            <span>🚪 Push Door to Step Inside & View Menu ☕</span>
-        </div>
-    </div>
+    <!-- Main Soil Strata Cross-Section Journey -->
+    <div class="soil-strata-container">
 
-    <!-- Floating Sidewalk Chalkboard Prompt -->
-    <aside class="street-click-prompt">
-        <span>🥖 <em>"Ovens fired at 4:30 AM"</em></span>
-        <span>•</span>
-        <span class="chalk-highlight trigger-open-menu" style="cursor:pointer; text-decoration:underline;">Click Café Door to Open Menu</span>
-        <span>•</span>
-        <span>🚲 Bread Bike En Route</span>
-    </aside>
-
-    <!-- Time-of-Day Scroll / Slider Control Widget -->
-    <div class="time-slider-widget">
-        <div id="timeLabel" style="font-weight:700;">☀️ 2:30 PM (Sunlit Afternoon)</div>
-        <input type="range" id="timeSlider" min="0" max="1" step="0.01" value="0" title="Scroll or slide to shift street into cozy evening">
-        <span style="font-size:0.75rem; color:var(--warm-brown);">Scroll page to turn on lights</span>
-    </div>
-
-    <!-- ==========================================================================
-         Slide-in / Pop-up Café Board (Menu, Opening Hours, Catering)
-         ========================================================================== -->
-    <div class="cafe-modal-backdrop" id="cafeModalBackdrop"></div>
-
-    <main class="cafe-modal-board" id="cafeModalBoard" aria-label="Café Menu and Information Board">
-        <!-- Wooden Chalkboard Header with Tabs -->
-        <div class="board-header">
-            <div class="board-tabs">
-                <button class="board-tab-btn active" data-tab="menu">☕ Today's Hearth Menu</button>
-                <button class="board-tab-btn" data-tab="hours">🕒 Opening Hours & Visit</button>
-                <button class="board-tab-btn" data-tab="catering">🥖 Catering & Gatherings</button>
-            </div>
-            <button class="board-close-btn" id="boardCloseBtn" title="Step Back to Neighborhood Street">✕</button>
-        </div>
-
-        <!-- Scrollable Chalkboard Body -->
-        <div class="board-scroll-content">
+        <!-- ========================================================
+             STRATUM 0.0m: SURFACE HERO
+             ======================================================== -->
+        <section class="strata-section hero-surface" id="surface">
+            <div class="masking-tape">STRATUM 0.0 // BARE EARTH BOUNDARY</div>
             
-            <!-- Friendly Owner Greeting -->
-            <h2 class="chalk-sign-title">Welcome inside, neighbor!</h2>
-            <p class="chalk-greeting-text">
-                "Grab a wooden stool by the front window. The afternoon sun hits the cobblestones just right, the espresso grinder is buzzing, and the sourdough loaves just came out of the back oven—careful, they’re still singing with steam."
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">ROOTNODE PROTOCOL // SUBTERRANEAN DRILL CORE</div>
+                <div class="rebel-stamp">[VERIFIED IN PROD]</div>
+            </div>
+
+            <h1 class="strata-headline">
+                WE GROW FROM THE ROOT, <br>
+                <span style="color:var(--rebel-red);">NOT THE TREND.</span>
+            </h1>
+
+            <!-- Raw Engineer Manifesto Box -->
+            <div class="manifesto-box">
+                <div class="defiant-quote">
+                    "MOST SOFTWARE TODAY IS THREE LAYERS OF JAVASCRIPT WRAPPED AROUND SOMEONE ELSE’S UNMAINTAINED API."
+                </div>
+                <p class="manifesto-text">
+                    Deployed on an obscure cloud cluster you don't understand, billed to a venture fund that doesn’t care, and destined to collapse the moment real traffic hits the wire. We don’t do that. We build software from the root node up—hardened, deterministic, and built to survive production reality.
+                </p>
+                <div style="display:flex; gap:14px; flex-wrap:wrap; font-size:0.75rem; color:var(--moss-green-bright);">
+                    <span>[+] DETERMINISTIC SCHEMAS</span>
+                    <span>[+] ZERO-TRUST INTEGRITY</span>
+                    <span>[+] REAL CONCURRENCY</span>
+                    <span>[+] NO SLOP</span>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <a href="#services" class="btn-rebel">
+                    <span>DESCEND INTO THE ROOTS</span>
+                    <span>↓</span>
+                </a>
+                <a href="#contact" class="btn-moss-outline">
+                    <span>TRANSMIT SPECIFICATION</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             STRATUM -1.2m: HUMUS STRATA // SERVICES (ASYMMETRIC GRID)
+             ======================================================== -->
+        <section class="strata-section" id="services" data-root-node="services">
+            <div class="masking-tape">STRATUM A // HUMUS LAYER [-1.2m]</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">CORE CAPABILITIES // WHAT WE ACTUALLY BUILD</div>
+                <div class="rebel-stamp stamp-moss">[NO VAPORWARE]</div>
+            </div>
+
+            <h2 class="strata-headline">WHAT WE BUILD. <br><span style="color:var(--moss-green-bright);">NO CORPORATE JARGON.</span></h2>
+            <p class="strata-subtext">
+                We don't "elevate paradigms" or "unlock digital synergy." We write high-concurrency backend plumbing, engineer uncrackable zero-trust systems, and design custom 3D shaders from bare mathematics.
             </p>
 
-            <!-- Window Sticker: Opening Hours (Taped on the glass) -->
-            <div class="window-sticker-card">
-                <div class="sticker-tape"></div>
-                <h3 class="sticker-header">★ ROOTNODE HEARTH BAKERY — HOURS ★</h3>
-                <div class="sticker-hours-grid">
-                    <div class="hours-row">
-                        <span>Tuesday – Friday</span>
-                        <span>7:00 AM – 6:00 PM</span>
+            <!-- Asymmetric Broken Grid Layout -->
+            <div class="services-asymmetric-grid">
+                <!-- Service 1: Span 7 -->
+                <div class="service-strata-card card-span-7">
+                    <div class="masking-tape tape-right">NODE // 0x01</div>
+                    <div class="service-code">[01]</div>
+                    <h3 class="service-name">High-Concurrency Backend Plumbing</h3>
+                    <p class="service-detail">
+                        Distributed architectures and microservices engineered in Go, Rust, and Node that don’t crack under load. Microsecond event buses, fault-tolerant message queues, and zero-data-loss database pipelines.
+                    </p>
+                    <div class="service-spec-chips">
+                        <span class="spec-chip">PostgreSQL</span>
+                        <span class="spec-chip">Redis Streams</span>
+                        <span class="spec-chip">Go / Rust</span>
+                        <span class="spec-chip">WebSockets</span>
                     </div>
-                    <div class="hours-row weekend">
-                        <span>Saturday & Sunday</span>
-                        <span>8:00 AM – 7:00 PM</span>
+                </div>
+
+                <!-- Service 2: Span 5 -->
+                <div class="service-strata-card card-span-5" style="transform: rotate(0.8deg);">
+                    <div class="masking-tape">NODE // 0x02</div>
+                    <div class="service-code">[02]</div>
+                    <h3 class="service-name">Offensive Security & Hardening</h3>
+                    <p class="service-detail">
+                        Zero-trust infrastructure audits, automated cryptographic validation, penetration tests, and vulnerability exploitation before malicious actors find them.
+                    </p>
+                    <div class="service-spec-chips">
+                        <span class="spec-chip">Zero-Trust</span>
+                        <span class="spec-chip">Pen-Testing</span>
+                        <span class="spec-chip">Audit Logs</span>
                     </div>
-                    <div class="hours-row">
-                        <span>Morning Bake Drop</span>
-                        <span>7:30 AM Fresh Crust</span>
+                </div>
+
+                <!-- Service 3: Span 5 -->
+                <div class="service-strata-card card-span-5" style="transform: rotate(-0.7deg);">
+                    <div class="masking-tape">NODE // 0x03</div>
+                    <div class="service-code">[03]</div>
+                    <h3 class="service-name">Full-Stack & Mobile Runtimes</h3>
+                    <p class="service-detail">
+                        Reactive client applications built without bloat. Native 120Hz gesture handling on mobile, local-first offline syncing, and lightweight web frontends.
+                    </p>
+                    <div class="service-spec-chips">
+                        <span class="spec-chip">React / Next</span>
+                        <span class="spec-chip">Flutter</span>
+                        <span class="spec-chip">Offline Sync</span>
                     </div>
-                    <div class="hours-row weekend">
-                        <span>Monday</span>
-                        <span>Rest & Dough Proofing</span>
+                </div>
+
+                <!-- Service 4: Span 7 -->
+                <div class="service-strata-card card-span-7">
+                    <div class="masking-tape tape-right">NODE // 0x04</div>
+                    <div class="service-code">[04]</div>
+                    <h3 class="service-name">Spatial 3D & WebGL Shaders</h3>
+                    <p class="service-detail">
+                        Hardware-accelerated 3D graphics, diorama engines, and procedural geometry in Three.js and raw GLSL. No stock templates or heavy canvas wrappers.
+                    </p>
+                    <div class="service-spec-chips">
+                        <span class="spec-chip">Three.js</span>
+                        <span class="spec-chip">WebGL / GLSL</span>
+                        <span class="spec-chip">Spatial UI</span>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- ======================================================
-                 TAB 1: TODAY'S ARTISAN MENU
-                 ====================================================== -->
-            <section class="tab-panel" id="tab-menu">
-                <!-- Hearth Breads -->
-                <div class="menu-category-block">
-                    <h4 class="category-chalk-heading">🥖 Crusty Sourdough & Hearth Breads</h4>
-                    <div class="menu-items-grid">
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Country Wild Yeast Loaf</span>
-                                <span class="menu-item-price">$9.50</span>
-                            </div>
-                            <p class="menu-item-desc">36-hour cold fermented stone-milled wheat, deeply blistered caramelized crust, open airy crumb with a mild buttery tang.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Rosemary & Kalamata Focaccia</span>
-                                <span class="menu-item-price">$8.00</span>
-                            </div>
-                            <p class="menu-item-desc">Extra virgin olive oil dough dimpled with garden rosemary, flaky sea salt, and cured Greek olives. Golden and pillowy.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Golden Sesame Brioche</span>
-                                <span class="menu-item-price">$10.00</span>
-                            </div>
-                            <p class="menu-item-desc">Enriched with grass-fed local butter and farm egg yolks, braided by hand and crowned with toasted golden sesame seeds.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Traditional Parisienne Baguette</span>
-                                <span class="menu-item-price">$4.75</span>
-                            </div>
-                            <p class="menu-item-desc">Baked hot on the stone deck twice daily. Crisp paper-thin crust that crackles when torn, soft custard-like interior.</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- ========================================================
+             STRATUM -3.8m: SUBSOIL FORK // CASE STUDIES
+             ======================================================== -->
+        <section class="strata-section" id="projects" data-root-node="projects">
+            <div class="masking-tape">STRATUM B // SUBSOIL FORK [-3.8m]</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">ARTIFACT RUNS // BATTLE-TESTED REPOSITORIES</div>
+                <div class="rebel-stamp">[ROOT CERTIFIED]</div>
+            </div>
 
-                <!-- Morning Pastries & Buns -->
-                <div class="menu-category-block">
-                    <h4 class="category-chalk-heading">🥐 Morning Pastries & Oven Buns</h4>
-                    <div class="menu-items-grid">
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Cardamom Morning Knot</span>
-                                <span class="menu-item-price">$5.25</span>
-                            </div>
-                            <p class="menu-item-desc">Swedish-style twisted enriched bun rolled with freshly crushed green cardamom, brown sugar, and pearl sugar crystals.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Double Dark Pain au Chocolat</span>
-                                <span class="menu-item-price">$5.75</span>
-                            </div>
-                            <p class="menu-item-desc">72% Valrhona single-origin chocolate batons folded inside twenty-seven paper-thin layers of European butter pastry.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Roasted Almond Frangipane</span>
-                                <span class="menu-item-price">$6.00</span>
-                            </div>
-                            <p class="menu-item-desc">Twice-baked croissant soaked in vanilla bean syrup, stuffed with rich almond cream and toasted slivers.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Brown Butter Cinnamon Swirl</span>
-                                <span class="menu-item-price">$5.00</span>
-                            </div>
-                            <p class="menu-item-desc">Nutty browned butter, Vietnamese Saigon cinnamon, and raw demerara sugar swirled into flaky morning pastry.</p>
-                        </div>
-                    </div>
-                </div>
+            <h2 class="strata-headline">PRODUCTION RUNS. <br><span style="color:var(--rebel-red);">TESTED UNDER PRESSURE.</span></h2>
+            <p class="strata-subtext">
+                We don't showcase Figma mockups. These are working software systems, complete with open-source repositories and production stress records.
+            </p>
 
-                <!-- Espresso & Brews -->
-                <div class="menu-category-block">
-                    <h4 class="category-chalk-heading">☕ Espresso Bar & Warm Brews</h4>
-                    <div class="menu-items-grid">
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Velvet Cortado</span>
-                                <span class="menu-item-price">$4.75</span>
-                            </div>
-                            <p class="menu-item-desc">Equal parts rich double espresso and velvety steamed whole milk, served in a heavy Gibraltar glass.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Honey Lavender Oat Flat White</span>
-                                <span class="menu-item-price">$5.50</span>
-                            </div>
-                            <p class="menu-item-desc">Locally foraged wildflower honey, gentle culinary lavender infusion, micro-foamed organic oat milk, espresso.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Slow Drip Single-Origin</span>
-                                <span class="menu-item-price">$4.25</span>
-                            </div>
-                            <p class="menu-item-desc">Rotating washed heirloom beans from Ethiopia & Colombia. Notes of stone fruit, bergamot, and sweet milk chocolate.</p>
-                        </div>
-                        <div class="menu-item-box">
-                            <div class="menu-item-top">
-                                <span class="menu-item-name">Spiced Whole-Milk Chai</span>
-                                <span class="menu-item-price">$5.00</span>
-                            </div>
-                            <p class="menu-item-desc">Simmered in-house with cracked star anise, cinnamon bark, fresh ginger root, and Assam black tea leaves.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ======================================================
-                 TAB 2: OPENING HOURS & VISIT
-                 ====================================================== -->
-            <section class="tab-panel" id="tab-hours" style="display:none;">
-                <div style="max-width: 680px; margin: 0 auto; text-align:center;">
-                    <div style="font-size: 3rem; margin-bottom: 12px;">📍 ☕ 🚲</div>
-                    <h3 class="chalk-sign-title" style="font-size:2rem; margin-bottom:12px;">At the Corner of Root & Node</h3>
-                    <p class="chalk-greeting-text" style="font-size:1.15rem; margin-bottom: 24px;">
-                        "You’ll smell the cardamom and roasted espresso beans from two blocks down the cobblestones. There's plenty of outdoor wooden tables, a bicycle rack out front, and always a bowl of fresh water for neighborhood pups."
-                    </p>
-                    
-                    <div style="background: rgba(255,255,255,0.05); border: 2px solid var(--butter-yellow); border-radius: 18px; padding: 24px; text-align: left; margin-bottom: 24px;">
-                        <h4 style="font-family:var(--font-sign); color:var(--butter-yellow); font-size:1.3rem; margin-bottom:12px;">★ Neighborhood Delivery Routine</h4>
-                        <p style="font-size:1rem; line-height:1.6; color:#e2e8f0; margin-bottom:14px;">
-                            🚲 <strong>The Bread Bike:</strong> Our delivery rider pedals freshly baked baguettes and country sourdough boxes directly to our neighboring street doors twice daily: at <strong>8:00 AM</strong> for morning breakfast and <strong>4:30 PM</strong> for dinner hearth tables.
+            <div class="artifacts-tree-list">
+                <!-- Case 1 -->
+                <article class="artifact-run-entry">
+                    <div class="masking-tape">ENTRY // #01-ERP</div>
+                    <div class="artifact-left">
+                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// EDUCATION DATA PIPELINE</div>
+                        <h3>Sri Basaveswara School ERP</h3>
+                        <p>
+                            A comprehensive School Resource Planning system automating student data pipelines, academic grade ledgers, automated attendance verification, and real-time administrative analytics. Zero data-loss across 1,400+ active records.
                         </p>
-                        <p style="font-size:1rem; line-height:1.6; color:#e2e8f0;">
-                            🥐 <strong>Walk-in Bread Table:</strong> Loaves come off the stone hearth every morning at 7:30 AM. When the chalkboard says "SOLD OUT," that means we’re already proofing tomorrow's wild yeast dough!
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <a href="https://github.com/RootNode-Rebels/sribasaveswaraschool" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
+                                <span>INSPECT REPO</span>
+                                <span>↗</span>
+                            </a>
+                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[IN PRODUCTION]</span>
+                        </div>
+                    </div>
+                    <div class="artifact-metrics-sidebar">
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">RECORD VOLUME</div>
+                            <div class="metric-data-mono">1,420 Active Students</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">QUERY LATENCY</div>
+                            <div class="metric-data-mono">&lt; 14ms Median</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">UPTIME RECORD</div>
+                            <div class="metric-data-mono" style="color:var(--moss-green-bright);">99.98% SLA</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case 2 -->
+                <article class="artifact-run-entry" style="transform: rotate(-0.5deg);">
+                    <div class="masking-tape tape-right">ENTRY // #02-IOT</div>
+                    <div class="artifact-left">
+                        <div style="color:var(--moss-green-bright); font-size:0.8rem; margin-bottom:6px;">// RETAIL LOGISTICS HARDWARE</div>
+                        <h3>Smart Trolley Commerce App</h3>
+                        <p>
+                            Hardware-integrated logistics application modernizing physical retail checkout with automated RFID sensor cart synchronization, weight matrix validation, and sub-second instant payment.
                         </p>
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <a href="https://github.com/RootNode-Rebels/smarttrolleyapp" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
+                                <span>INSPECT REPO</span>
+                                <span>↗</span>
+                            </a>
+                            <span class="rebel-stamp" style="font-size:0.7rem;">[ACTIVE HARDWARE DEV]</span>
+                        </div>
                     </div>
-                </div>
-            </section>
+                    <div class="artifact-metrics-sidebar">
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">SCAN RESPONSE</div>
+                            <div class="metric-data-mono">&lt; 0.3s RFID Sync</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">CHECKOUT FRICTION</div>
+                            <div class="metric-data-mono">-85% Queue Time</div>
+                        </div>
+                    </div>
+                </article>
 
-            <!-- ======================================================
-                 TAB 3: CATERING & CUSTOM BAKING
-                 ====================================================== -->
-            <section class="tab-panel" id="tab-catering" style="display:none;">
-                <div class="catering-form-container">
-                    <div class="catering-intro-note">
-                        🥖 <strong>Chat with the bakers:</strong> "Planning a breakfast gathering, office celebration, or Sunday family brunch? Tell us a couple days ahead and we'll pack a big warm wooden crate with fresh sourdough, warm cardamom knots, and jugs of slow-drip coffee."
+                <!-- Case 3 -->
+                <article class="artifact-run-entry">
+                    <div class="masking-tape">ENTRY // #03-CRYPTO</div>
+                    <div class="artifact-left">
+                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// DISTRIBUTED CONSENSUS</div>
+                        <h3>Cryptographic Online Voting System</h3>
+                        <p>
+                            Cryptographically verified, tamper-proof ballot network designed for democratic governance with end-to-end mathematical transparency, zero-knowledge voter privacy, and append-only cryptographic hashes.
+                        </p>
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <a href="https://github.com/RootNode-Rebels/onlinevotingsystem" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
+                                <span>INSPECT REPO</span>
+                                <span>↗</span>
+                            </a>
+                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[AUDITED ALGORITHMS]</span>
+                        </div>
+                    </div>
+                    <div class="artifact-metrics-sidebar">
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">INTEGRITY PROOF</div>
+                            <div class="metric-data-mono">SHA-256 Validated</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">THROUGHPUT PEAK</div>
+                            <div class="metric-data-mono">50,000 req/s</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case 4 -->
+                <article class="artifact-run-entry" style="transform: rotate(0.6deg);">
+                    <div class="masking-tape tape-right">ENTRY // #04-HEALTH</div>
+                    <div class="artifact-left">
+                        <div style="color:var(--moss-green-bright); font-size:0.8rem; margin-bottom:6px;">// CLINICAL TELEMETRY STREAM</div>
+                        <h3>Aegis Health Telemetry Hub</h3>
+                        <p>
+                            Real-time healthcare streaming platform for patient vitals, automated cardiac anomaly detection, low-latency WebSocket broadcasting, and automated clinical triage escalation.
+                        </p>
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <a href="https://github.com/RootNode-Rebels/Aegis-Health-Monitor" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
+                                <span>INSPECT REPO</span>
+                                <span>↗</span>
+                            </a>
+                            <span class="rebel-stamp" style="font-size:0.7rem;">[STREAM LIVE]</span>
+                        </div>
+                    </div>
+                    <div class="artifact-metrics-sidebar">
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">STREAM LATENCY</div>
+                            <div class="metric-data-mono">9ms Real-Time</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">ALERT SLA</div>
+                            <div class="metric-data-mono">&lt; 1.2s Dispatch</div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case 5 -->
+                <article class="artifact-run-entry">
+                    <div class="masking-tape">ENTRY // #05-SUPPLY</div>
+                    <div class="artifact-left">
+                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// B2B PHARMACEUTICAL SUPPLY CHAIN</div>
+                        <h3>Medicart Wholesale Dashboard</h3>
+                        <p>
+                            High-throughput enterprise B2B pharmaceutical marketplace connecting wholesale medical distributors, automating warehouse batch tracking, regulatory barcodes, and pharmacy order fulfillment.
+                        </p>
+                        <div style="display:flex; gap:14px; align-items:center;">
+                            <a href="https://github.com/RootNode-Rebels/medicart-dashboard" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
+                                <span>INSPECT REPO</span>
+                                <span>↗</span>
+                            </a>
+                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[DEPLOYED]</span>
+                        </div>
+                    </div>
+                    <div class="artifact-metrics-sidebar">
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">PHARMACY NETWORK</div>
+                            <div class="metric-data-mono">340+ Commercial Nodes</div>
+                        </div>
+                        <div class="artifact-metric-item">
+                            <div class="metric-label-mono">BATCH COMPLIANCE</div>
+                            <div class="metric-data-mono">100% Automated</div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             STRATUM -6.4m: CLAY MATRIX // PROCESS
+             ======================================================== -->
+        <section class="strata-section" id="process" data-root-node="process">
+            <div class="masking-tape">STRATUM C // CLAY & ROOT MATRIX [-6.4m]</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">ENGINEERING PROTOCOL // ANTI-SLOP METHODOLOGY</div>
+                <div class="rebel-stamp">[REJECTED BUZZWORDS]</div>
+            </div>
+
+            <h2 class="strata-headline">HOW WE DON'T <br><span style="color:var(--moss-green-bright);">SHIP SLOP.</span></h2>
+            <p class="strata-subtext">
+                Every software catastrophe traces back to premature optimization, unvetted abstractions, or engineers who forgot how operating systems work. Here is how we guarantee our code endures.
+            </p>
+
+            <div class="process-steps-grid">
+                <div class="process-card">
+                    <div class="step-num">01</div>
+                    <h4>DIG TO FIRST PRINCIPLES</h4>
+                    <p>We strip away all corporate theater. No 80-page discovery decks. We inspect the raw physics of your problem: throughput, schema dependencies, security threats, and hardware constraints.</p>
+                </div>
+                <div class="process-card" style="transform: rotate(0.8deg);">
+                    <div class="step-num">02</div>
+                    <h4>UNSHAKEABLE SCHEMAS FIRST</h4>
+                    <p>Database models, network contracts, and thread safety are designed and stress-tested before a single button is drawn. If your data foundation is rotten, a pretty UI won't save it.</p>
+                </div>
+                <div class="process-card" style="transform: rotate(-0.8deg);">
+                    <div class="step-num">03</div>
+                    <h4>HARDENING UNDER SIMULATED FIRE</h4>
+                    <p>We inject intentional packet drops, corrupted payloads, and concurrent race conditions. If the node fails, it fails gracefully without cascading corruptions.</p>
+                </div>
+                <div class="process-card">
+                    <div class="step-num">04</div>
+                    <h4>DETERMINISTIC GITOPS DELIVERY</h4>
+                    <p>Hermetic builds. Containerized reproducibility. Everything is code, audited, tagged, and delivered with deterministic rollbacks. No magical manual clicks in cloud dashboards.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             STRATUM -9.0m: TAPROOT BED // THE SYNDICATE (TEAM)
+             ======================================================== -->
+        <section class="strata-section" id="team" data-root-node="team">
+            <div class="masking-tape">STRATUM D // TAPROOT BED [-9.0m]</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">THE REBEL SYNDICATE // ROOT OPERATORS</div>
+                <div class="rebel-stamp stamp-moss">[ROOT ENGINEERS]</div>
+            </div>
+
+            <h2 class="strata-headline">THE ENGINEERS <br><span style="color:var(--rebel-red);">HOLDING THE SHOVEL.</span></h2>
+            <p class="strata-subtext">
+                No middle management. No disconnected account executives. When you work with RootNode Rebels, you deal directly with the engineers designing the schemas and writing the migrations.
+            </p>
+
+            <div class="team-strata-grid">
+                <!-- Adarsh -->
+                <a href="https://www.linkedin.com/in/developeradhi/" target="_blank" class="syndicate-member-card">
+                    <div class="masking-tape">ENGINEER #01</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Adarsh B A</h3>
+                    </div>
+                    <div class="member-role">Founder & Chief Systems Architect</div>
+                    <p class="member-bio">Architects distributed foundations, designs high-concurrency protocols, and makes sure zero unhandled exceptions escape into production.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+
+                <!-- Akash R -->
+                <a href="https://www.linkedin.com/in/akashr24012007/" target="_blank" class="syndicate-member-card" style="transform: rotate(0.6deg);">
+                    <div class="masking-tape tape-right">ENGINEER #02</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Akash R</h3>
+                    </div>
+                    <div class="member-role">Co-Founder & CTO</div>
+                    <p class="member-bio">Low-level infrastructure plumbing, database indexing, kernel tuning, and automated deployment pipelines.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+
+                <!-- Akash P -->
+                <a href="https://www.linkedin.com/in/akash-p-46b66a386/" target="_blank" class="syndicate-member-card">
+                    <div class="masking-tape">ENGINEER #03</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Akash P</h3>
+                    </div>
+                    <div class="member-role">Marketing Lead & CFO</div>
+                    <p class="member-bio">Fierce commercial architecture, fiscal discipline, and keeping our balance sheet as hardened as our cryptographic keys.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+
+                <!-- Jeevan H S -->
+                <a href="https://www.linkedin.com/in/jeevan-h-s-30b756386/" target="_blank" class="syndicate-member-card" style="transform: rotate(-0.6deg);">
+                    <div class="masking-tape tape-right">ENGINEER #04</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Jeevan H S</h3>
+                    </div>
+                    <div class="member-role">Marketing Manager & COO</div>
+                    <p class="member-bio">Operational velocity, project delivery cadence, and ensuring client communication stays transparent and fluff-free.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+
+                <!-- Akshath C H -->
+                <a href="https://www.linkedin.com/in/akshath-ch-8a0b19384/" target="_blank" class="syndicate-member-card">
+                    <div class="masking-tape">ENGINEER #05</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Akshath C H</h3>
+                    </div>
+                    <div class="member-role">Co-Founder & CKO</div>
+                    <p class="member-bio">Deep knowledge engineering, cryptographic ballot mathematics, zero-knowledge proofs, and algorithmic verification.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+
+                <!-- Prajval R Shunty -->
+                <a href="https://www.linkedin.com/in/prajval-r-shunty-139a47385/" target="_blank" class="syndicate-member-card" style="transform: rotate(0.5deg);">
+                    <div class="masking-tape tape-right">ENGINEER #06</div>
+                    <div class="member-header">
+                        <h3 class="member-name">Prajval R Shunty</h3>
+                    </div>
+                    <div class="member-role">CIO & Technical Scribe</div>
+                    <p class="member-bio">System audit logs, technical specifications, information integrity, and maintaining documentation precision.</p>
+                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             STRATUM -11.5m: BEDROCK CORE // CAREERS & TRANSMISSION
+             ======================================================== -->
+        <section class="strata-section" id="careers" data-root-node="contact" style="border-bottom:none;">
+            <div class="masking-tape">STRATUM E // BEDROCK CORE [-11.5m]</div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div class="strata-tag">DIRECT TRANSMISSION // CAREERS & INQUIRY</div>
+                <div class="rebel-stamp">[ENCRYPTED TO CORE]</div>
+            </div>
+
+            <div style="text-align:center; max-width:760px; margin:0 auto 30px;">
+                <h2 class="strata-headline">WANT TO DIG <br><span style="color:var(--rebel-red);">WITH US?</span></h2>
+                <p class="strata-subtext" style="margin:0 auto;">
+                    We are always scouting engineers who care about raw performance, clean systems, and despise corporate theater. If you’ve built something that survived production, send us your proof-of-work.
+                </p>
+            </div>
+
+            <!-- Direct Transmission Field Form -->
+            <div class="transmission-form-container" id="contact">
+                <div class="masking-tape">BORE SPECIFICATION // TRANSMIT DIRECT</div>
+                <h3 style="font-family:var(--font-stencil); font-size:1.6rem; margin-bottom:24px; color:var(--bone-white);">
+                    TRANSMIT SPECIFICATION TO THE SYNDICATE
+                </h3>
+
+                <form id="contactForm">
+                    <div class="form-group-soil">
+                        <label>// YOUR NAME OR CALLSIGN</label>
+                        <input type="text" name="Name" class="input-soil" placeholder="e.g. Satoshi Nakamoto" required>
                     </div>
 
-                    <form id="cateringForm">
-                        <div class="catering-grid">
-                            <div class="form-group-chalk">
-                                <label>Your Name (or what to write on the crate)</label>
-                                <input type="text" name="Name" class="input-chalk" placeholder="e.g. Adarsh or Sarah" required>
-                            </div>
-                            <div class="form-group-chalk">
-                                <label>Email or Phone Number</label>
-                                <input type="text" name="Contact" class="input-chalk" placeholder="e.g. sarah@neighborhood.com" required>
-                            </div>
-                        </div>
+                    <div class="form-group-soil">
+                        <label>// WIRE PROTOCOL / EMAIL ADDRESS</label>
+                        <input type="email" name="Email" class="input-soil" placeholder="satoshi@domain.com" required>
+                    </div>
 
-                        <div class="catering-grid">
-                            <div class="form-group-chalk">
-                                <label>Event Date & Pickup Time</label>
-                                <input type="text" name="Date" class="input-chalk" placeholder="e.g. This Saturday, 9:00 AM" required>
-                            </div>
-                            <div class="form-group-chalk">
-                                <label>Estimated Number of Guests</label>
-                                <input type="text" name="Guests" class="input-chalk" placeholder="e.g. 12 neighbors" required>
-                            </div>
-                        </div>
+                    <div class="form-group-soil">
+                        <label>// PROBLEM STATEMENT / PROOF OF WORK / INQUIRY</label>
+                        <textarea name="Message" class="input-soil" placeholder="Describe the technical challenge, concurrency requirements, or project scope..." required></textarea>
+                    </div>
 
-                        <div class="form-group-chalk" style="margin-bottom: 20px;">
-                            <label>What can we bake up for you?</label>
-                            <textarea name="OrderDetails" class="input-chalk" placeholder="e.g. 2 Country Sourdoughs, 12 Cardamom Knots, 6 Pain au Chocolat, and a box of Cortados..." required></textarea>
-                        </div>
+                    <button type="submit" class="btn-rebel" style="width:100%; padding:16px; font-size:1.05rem;">
+                        <span>TRANSMIT PACKET TO BEDROCK</span>
+                        <span>⚡</span>
+                    </button>
+                </form>
+            </div>
+        </section>
 
-                        <button type="submit" class="btn-submit-catering">
-                            <span>Bake This For Us, Neighbors! 🥖</span>
-                        </button>
-                    </form>
-                </div>
-            </section>
+    </div>
 
+    <!-- Subterranean Bedrock Strata Footer with Personality -->
+    <footer class="strata-footer">
+        <div class="footer-manifesto-row">
+            <div>
+                <h4 style="font-family:var(--font-stencil); font-size:1.6rem; color:var(--bone-white); margin-bottom:10px;">
+                    ROOTNODE REBELS
+                </h4>
+                <p class="footer-colophon">
+                    We grow from the root, not the trend. Built by an opinionated engineering syndicate without templates, buzzwords, or vaporware.
+                </p>
+            </div>
+
+            <div class="footer-social-mesh">
+                <a href="https://github.com/RootNode-Rebels/" target="_blank" class="social-bore-link">
+                    [GITHUB REPOSITORY]
+                </a>
+                <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" class="social-bore-link">
+                    [LINKEDIN SYNDICATE]
+                </a>
+                <a href="https://x.com/RootNode_Rebels/" target="_blank" class="social-bore-link">
+                    [X / TWITTER]
+                </a>
+                <a href="https://instagram.com/rootnode_rebels/" target="_blank" class="social-bore-link">
+                    [INSTAGRAM]
+                </a>
+            </div>
         </div>
-    </main>
 
-    <!-- Invisible Scroll Distance Spacer to enable Page Scrolling into Evening -->
-    <div style="height: 180vh; pointer-events: none;"></div>
+        <div class="footer-bottom-line">
+            <span>&copy; 2026 ROOTNODE REBELS // DRILL CORE ALL SYSTEMS OPERATIONAL.</span>
+            <span>STRATUM: BEDROCK [-11.5m] • SECURED BY ROOTNODE INTELLIGENCE</span>
+        </div>
+    </footer>
 
     <!-- Core Interactive Script -->
-    <script src="script.js?v=6.0"></script>
+    <script src="script.js?v=7.0"></script>
 </body>
 </html>
