@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Node Disconnected | RootNode Rebels</title>
+    <title>404 City Sector Not Found | RootNode Rebels</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,48 +11,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=5.0">
 </head>
-<body>
+<body style="display:flex; align-items:center; justify-content:center; min-height:100vh;">
 
-    <!-- Ambient Cyan & Amber Refractive Accent Lights -->
-    <div class="ambient-lights">
-        <div class="ambient-light-cyan"></div>
-        <div class="ambient-light-amber"></div>
-    </div>
+    <!-- Warm Sunset Horizon & Atmosphere Overlays -->
+    <div class="sunset-glow-overlay"></div>
     <div class="noise-overlay"></div>
 
-    <!-- Top Navigation Bar -->
+    <!-- Navigation Bar -->
     <header class="nav-container">
-        <nav class="navbar" style="max-width: 600px;">
+        <nav class="navbar" style="max-width: 500px;">
             <a href="/" class="logo">
-                <div class="logo-prism"></div>
-                <div class="logo-text">RootNode <span>Rebels</span></div>
+                <div class="logo-icon-island"></div>
+                <div class="logo-title">RootNode <span>Rebels</span></div>
             </a>
-            <div class="nav-links">
-                <a href="/" class="nav-item">Return to Root Node</a>
-            </div>
+            <a href="/" class="btn-project-link" style="text-decoration:none;">
+                <span>Return to Island</span>
+                <span>↗</span>
+            </a>
         </nav>
     </header>
 
-    <!-- 404 Frosted Glass Stage -->
-    <main class="glass-viewport">
-        <div class="glass-pane is-active" style="max-width: 620px; text-align: center; padding: 60px 40px;">
-            <div class="pane-category amber" style="margin-bottom: 20px;">
-                <span>⚠️</span> 404 // NETWORK EXCEPTION
-            </div>
-            <h1 class="accent-gradient" style="font-size: clamp(5rem, 12vw, 8rem); font-weight: 800; line-height: 1; margin-bottom: 12px;">
-                404
-            </h1>
-            <h2 style="font-size: 1.8rem; margin-bottom: 16px; color: var(--text-primary);">Node Dimension Disconnected</h2>
-            <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 36px; line-height: 1.6;">
-                The spatial coordinates you requested do not exist on our server cluster or have been rerouted to an encrypted node.
-            </p>
-            <a href="/" class="glass-btn btn-cyan" style="padding: 14px 34px;">
-                <span>Return to Root Node</span>
-                <span>↗</span>
-            </a>
+    <!-- 404 Floating Island Card -->
+    <main style="z-index:10; max-width:540px; padding:48px 36px; background:rgba(28, 18, 36, 0.75); backdrop-filter:blur(24px); border:1px solid var(--ui-border); border-radius:var(--radius-lg); text-align:center; box-shadow:0 25px 60px rgba(0,0,0,0.6);">
+        <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--accent-amber); margin-bottom:12px;">
+            ⚠️ SECTOR 404 // UNCHARTED AIRSPACE
         </div>
+        <h1 style="font-size:clamp(5rem, 12vw, 7.5rem); font-weight:800; line-height:1; margin-bottom:12px; background:linear-gradient(135deg, #fef08a, #fb923c); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+            404
+        </h1>
+        <h2 style="font-size:1.6rem; margin-bottom:14px;">Floating Island Lost in Sunset</h2>
+        <p style="color:var(--text-muted); font-size:1rem; line-height:1.6; margin-bottom:28px;">
+            The coordinates you were navigating to do not exist on our city grid or have drifted beyond the sunset horizon.
+        </p>
+        <a href="/" class="btn-project-link" style="padding:12px 28px; font-size:0.9rem;">
+            <span>Fly Back to Main Island</span>
+            <span>🏝️</span>
+        </a>
     </main>
 
 </body>
