@@ -224,12 +224,13 @@ body {
     transition: width var(--transition-fast);
 }
 
-.nav-link:hover {
+.nav-link:hover, .nav-link.active {
     color: var(--color-warm-white);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after, .nav-link.active::after {
     width: 100%;
+    background-color: var(--color-amber-bright);
 }
 
 .nav-cta-btn {
@@ -248,11 +249,11 @@ body {
     transition: all var(--transition-medium);
 }
 
-.nav-cta-btn:hover {
+.nav-cta-btn:hover, .nav-cta-btn.active {
     border-color: var(--color-amber-glow);
     color: var(--color-amber-bright);
-    background: rgba(224, 153, 67, 0.05);
-    box-shadow: 0 0 20px rgba(224, 153, 67, 0.15);
+    background: rgba(224, 153, 67, 0.08);
+    box-shadow: 0 0 20px rgba(224, 153, 67, 0.2);
 }
 
 .mobile-menu-trigger {

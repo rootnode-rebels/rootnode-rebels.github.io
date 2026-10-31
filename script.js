@@ -375,8 +375,28 @@ document.addEventListener('DOMContentLoaded', () => {
             mouseVector.y = -(e.clientY / window.innerHeight) * 2 + 1;
         }, { passive: true });
 
-        // Smooth Section Navigator
+        // Page Route Mapping for Separate Webpages
+        const pageRoutes = {
+            hero: 'index.html',
+            about: 'about.html',
+            services: 'services.html',
+            projects: 'engineering.html',
+            'tech-stack': 'stack.html',
+            team: 'team.html',
+            contact: 'contact.html'
+        };
+
+        // Smooth Section Navigator & Page Router
         function navigateToSection(sectionId, nodeIndex) {
+            const destination = pageRoutes[sectionId];
+            const currentPath = window.location.pathname;
+            
+            // If clicking a node for another page, navigate to that separate webpage
+            if (destination && !currentPath.endsWith(destination) && !(currentPath === '/' && destination === 'index.html')) {
+                window.location.href = destination;
+                return;
+            }
+
             const targetSection = document.getElementById(sectionId);
             if (!targetSection) return;
 
@@ -639,6 +659,17 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPills(timelinePills, inputTimeline);
     setupPills(budgetPills, inputBudget);
     updateScopeEstimator();
+
+    // Check URL parameters for pre-selected service (e.g. contact.html?service=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+    if (serviceParam && domainPills.length > 0) {
+        domainPills.forEach((p) => {
+            if (p.textContent.toLowerCase().includes(serviceParam.toLowerCase().split(' ')[0])) {
+                p.click();
+            }
+        });
+    }
 
     // Inquire links inside service cards populate the form directly
     document.querySelectorAll('.inline-inquire-link').forEach((link) => {

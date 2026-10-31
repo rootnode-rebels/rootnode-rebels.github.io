@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Primitives & Stack | RootNode Rebels</title>
+    
+    <!-- Meta & Authentic SEO -->
+    <meta name="description" content="Explore RootNode Rebels' battle-tested technology stack: React, Next.js, Node.js, Python, TypeScript, PostgreSQL, Docker, and Cloudflare.">
+    <meta name="keywords" content="RootNode Rebels Tech Stack, TypeScript, React, Next.js, Node.js, PostgreSQL, Docker, Python">
+    <meta name="author" content="RootNode Rebels">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rootnode-rebels.cc.cd/stack.html">
+    <meta name="theme-color" content="#07080b">
+
+    <!-- Anti-Cache Directives -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=14.0">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="theme-midnight">
+
+    <!-- Ambient 3D Three.js Canvas -->
+    <canvas id="filament-canvas" aria-hidden="true"></canvas>
+    <canvas id="filament-fallback-canvas" aria-hidden="true"></canvas>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+
+    <!-- Master Header Navigation -->
+    <header class="master-header" id="masterHeader">
+        <div class="header-inner">
+            <a href="index.html" class="brand-monogram" aria-label="RootNode Rebels Home">
+                <span class="brand-mark">ROOTNODE</span>
+                <span class="brand-sub">REBELS</span>
+            </a>
+
+            <nav class="header-nav" aria-label="Primary Navigation">
+                <a href="about.html" class="nav-link">ABOUT</a>
+                <a href="services.html" class="nav-link">SERVICES</a>
+                <a href="engineering.html" class="nav-link">ENGINEERING</a>
+                <a href="stack.html" class="nav-link active">STACK</a>
+                <a href="team.html" class="nav-link">TEAM</a>
+                <a href="contact.html" class="nav-cta-btn">
+                    <span>START A PROJECT</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" stroke-width="1.2"/></svg>
+                </a>
+            </nav>
+
+            <button class="mobile-menu-trigger" id="mobileMenuTrigger" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-links">
+            <a href="index.html" class="drawer-link">00 // HOME (GENESIS)</a>
+            <a href="about.html" class="drawer-link">01 // ABOUT US</a>
+            <a href="services.html" class="drawer-link">02 // CORE SERVICES</a>
+            <a href="engineering.html" class="drawer-link">03 // FEATURED ENGINEERING</a>
+            <a href="stack.html" class="drawer-link drawer-highlight">04 // TECH STACK</a>
+            <a href="team.html" class="drawer-link">05 // MEET THE REBELS</a>
+            <a href="contact.html" class="drawer-link">06 // START A PROJECT</a>
+        </div>
+        <div class="drawer-footer">
+            <p class="drawer-meta">ROOTNODE REBELS // LATENCY: 14MS</p>
+            <p class="drawer-contact">inquiries@rootnoderebels.cc</p>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="editorial-container">
+
+        <!-- Page Intro Hero -->
+        <section class="section-block" style="padding-top: 13rem; padding-bottom: 4rem;">
+            <div class="editorial-tagline reveal-elem">
+                <span class="mono-prefix">[ 04 // TECHNICAL RUNTIMES & ARCHITECTURES ]</span>
+                <span class="tagline-rule"></span>
+                <span class="mono-suffix">PRIMITIVES</span>
+            </div>
+
+            <h1 class="hero-headline reveal-elem" style="margin-top: 1.5rem; margin-bottom: 2rem;">
+                <span class="headline-row">OUR TECH</span>
+                <span class="headline-row italic-accent">STACK.</span>
+            </h1>
+
+            <p class="hero-manifesto reveal-elem">
+                Battle-tested runtimes and modern architectures. We select tools based on operational throughput, developer ergonomics, and predictable failure modes.
+            </p>
+        </section>
+
+        <!-- Tech Stack Grid -->
+        <section class="section-block" style="padding-top: 1rem; padding-bottom: 6rem;">
+            <div class="stack-grid">
+                <!-- Category 1: Languages & Frameworks -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.1</span>
+                        <h2 class="stack-card-title">LANGUAGES & RUNTIMES</h2>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">TypeScript & JavaScript:</strong>
+                            <span class="stack-desc">Core language for scalable full-stack applications, Node.js backends, and reactive client interfaces.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Python:</strong>
+                            <span class="stack-desc">AI integrations, automated data pipelines, computer vision, and backend scripting.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Go & Rust:</strong>
+                            <span class="stack-desc">High-concurrency microservices, network tools, and low-latency system components.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 2: Frontend & Mobile -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.2</span>
+                        <h2 class="stack-card-title">FRONTEND & MOBILE</h2>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">React & Next.js:</strong>
+                            <span class="stack-desc">Server-rendered components, SEO-optimized routing, and lightning-fast client experiences.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">React Native & Expo:</strong>
+                            <span class="stack-desc">Cross-platform mobile applications with native device performance and shared codebases.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Three.js & Tailwind CSS:</strong>
+                            <span class="stack-desc">Interactive 3D graphics, fluid visual shaders, and atomic utility-first design systems.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 3: Backend & Databases -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.3</span>
+                        <h2 class="stack-card-title">BACKEND & PERSISTENCE</h2>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">Node.js & Express:</strong>
+                            <span class="stack-desc">Robust REST APIs, WebSocket engines, and microservice orchestration layers.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">PostgreSQL & MongoDB:</strong>
+                            <span class="stack-desc">Relational ACID transaction data models and flexible document persistence.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Redis:</strong>
+                            <span class="stack-desc">In-memory caching, distributed session state, and sub-millisecond pub/sub.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 4: Cloud & Security -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.4</span>
+                        <h2 class="stack-card-title">CLOUD & SECURITY</h2>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">Docker & Cloudflare:</strong>
+                            <span class="stack-desc">Containerized deployments, edge routing, DDoS shielding, and global caching.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">GitHub Actions CI/CD:</strong>
+                            <span class="stack-desc">Automated build verification, linting, test suites, and continuous deployment.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">System Hardening:</strong>
+                            <span class="stack-desc">Zero-trust network architecture, penetration testing, and encrypted data channels.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Anti-Buzzword Stance Banner -->
+            <div class="anti-buzzword-callout reveal-elem">
+                <div class="callout-symbol">[ OUR PLEDGE ]</div>
+                <div class="callout-text">
+                    <p><strong>WE BUILD TECHNOLOGY THAT LASTS.</strong></p>
+                    <p class="callout-sub">Root by node, we deliver clean architecture, comprehensive documentation, and zero technical debt. When we finish a project, your team possesses full sovereign control over every line of source code.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="editorial-footer">
+        <div class="footer-top-rule"></div>
+        <div class="footer-inner">
+            <div class="footer-brand-col">
+                <span class="footer-logo">ROOTNODE REBELS</span>
+                <p class="footer-statement">
+                    Engineering the future of digital infrastructure, root by node. We build scalable, secure, and uncompromising software systems.
+                </p>
+                <div class="footer-status-pill">
+                    <span class="status-dot"></span>
+                    <span class="status-msg">ALL SYSTEMS OPERATIONAL</span>
+                </div>
+            </div>
+
+            <div class="footer-links-col">
+                <span class="footer-col-title">NAVIGATION</span>
+                <ul class="footer-list">
+                    <li><a href="index.html">00 // Home</a></li>
+                    <li><a href="about.html">01 // About</a></li>
+                    <li><a href="services.html">02 // Core Services</a></li>
+                    <li><a href="engineering.html">03 // Engineering</a></li>
+                    <li><a href="stack.html">04 // Tech Stack</a></li>
+                    <li><a href="team.html">05 // Meet the Team</a></li>
+                    <li><a href="contact.html">06 // Start a Project</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-col">
+                <span class="footer-col-title">SOCIAL MATRIX</span>
+                <ul class="footer-list">
+                    <li><a href="https://github.com/RootNode-Rebels" target="_blank" rel="noopener">GitHub Repository ↗</a></li>
+                    <li><a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" rel="noopener">LinkedIn Network ↗</a></li>
+                    <li><a href="https://instagram.com/rootnode_rebels/" target="_blank" rel="noopener">Instagram Intel ↗</a></li>
+                    <li><a href="https://x.com/RootNode_Rebels/" target="_blank" rel="noopener">X (Twitter) Feed ↗</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-elevator-col">
+                <a href="index.html" class="btn-elevator" style="text-decoration:none;">
+                    <span class="elevator-symbol">&larr;</span>
+                    <span class="elevator-text">RETURN TO GENESIS</span>
+                </a>
+                <span class="footer-copyright">&copy; 2026 RootNode Rebels. All systems operational.<br>Encrypted & Secured by RootNode Intelligence.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script -->
+    <script src="script.js?v=14.0"></script>
+</body>
+</html>
