@@ -211,34 +211,6 @@ body {
     letter-spacing: 0.15em;
 }
 
-.header-center-pill {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.35rem 0.85rem;
-    background: rgba(244, 240, 232, 0.03);
-    border: 1px solid var(--line-subtle);
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    color: var(--color-warm-dim);
-}
-
-.pill-indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--color-amber-bright);
-    box-shadow: 0 0 8px var(--color-amber-glow);
-    animation: amberBreathing 3s infinite ease-in-out;
-}
-
-@keyframes amberBreathing {
-    0%, 100% { opacity: 0.4; transform: scale(0.9); }
-    50% { opacity: 1; transform: scale(1.15); }
-}
-
 .header-nav {
     display: flex;
     align-items: center;
