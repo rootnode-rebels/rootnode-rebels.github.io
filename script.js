@@ -1,42 +1,9 @@
-// script.js - RootNode Rebels Ultra-Modern 3D Cybernetic Engine (2026)
+// script.js - RootNode Rebels 3D Frosted-Glass Layered Dimension Engine
 
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ==========================================================================
-       1. Custom Holographic 3D Cursor
-       ========================================================================== */
-    const cursor = document.getElementById('customCursor');
-    const follower = document.getElementById('cursorFollower');
-
-    let mouseX = -100, mouseY = -100;
-    let followerX = -100, followerY = -100;
-
-    if (cursor && follower && window.innerWidth > 768) {
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-        });
-
-        // Smooth trailing loop for follower
-        function renderCursor() {
-            followerX += (mouseX - followerX) * 0.18;
-            followerY += (mouseY - followerY) * 0.18;
-            follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
-            requestAnimationFrame(renderCursor);
-        }
-        renderCursor();
-
-        // Add hover effect on interactive elements
-        const interactables = document.querySelectorAll('a, button, input, textarea, .bento-card-3d, .term-chip');
-        interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-        });
-    }
-
-    /* ==========================================================================
-       2. Web Audio API - Sci-Fi Synthesizer (Zero External Dependencies)
+       1. Audio Synthesizer (Zero-Asset Web Audio API)
        ========================================================================== */
     let audioCtx = null;
     let soundEnabled = localStorage.getItem('rnr_sound') === 'true';
@@ -76,27 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (type === 'click') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.04);
+                osc.frequency.setValueAtTime(650, now);
+                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.04);
                 gain.gain.setValueAtTime(0.04, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
                 osc.start(now);
                 osc.stop(now + 0.04);
-            } else if (type === 'terminal') {
+            } else if (type === 'drift') {
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.exponentialRampToValueAtTime(880, now + 0.06);
-                gain.gain.setValueAtTime(0.05, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                osc.frequency.setValueAtTime(280, now);
+                osc.frequency.exponentialRampToValueAtTime(420, now + 0.08);
+                gain.gain.setValueAtTime(0.025, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 osc.start(now);
-                osc.stop(now + 0.06);
-            } else if (type === 'hover') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(320, now);
-                gain.gain.setValueAtTime(0.02, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-                osc.start(now);
-                osc.stop(now + 0.03);
+                osc.stop(now + 0.08);
             }
         } catch (e) {}
     }
@@ -110,143 +70,166 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Attach subtle click feedback to interactive items
-    document.querySelectorAll('.btn, .term-chip, .search-result-item, .nav-links a').forEach(el => {
-        el.addEventListener('click', () => playSound('click'));
-    });
-
     /* ==========================================================================
-       3. Three.js 3D Neural Constellation & Geodesic Cyber Core
+       2. Three.js Scene: 3D Glass Panes, Refraction & Cyan/Amber Lighting
        ========================================================================== */
     const canvas = document.getElementById('webgl-canvas');
+    let scene, camera, renderer;
+    let cyanLight, amberLight;
+    const glassSlabs = [];
+    const TOTAL_PANES = 8;
+    const PANE_Z_DISTANCE = 110; // 3D units between glass slabs in WebGL
+
+    let currentProgress = 0;
+    let targetProgress = 0;
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+
     if (canvas && typeof THREE !== 'undefined') {
-        const scene = new THREE.Scene();
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x07090d, 0.005);
 
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 45;
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1500);
+        camera.position.set(0, 0, 35);
 
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Group containing all 3D structures
-        const coreGroup = new THREE.Group();
-        scene.add(coreGroup);
+        // Ambient Light
+        const ambientLight = new THREE.AmbientLight(0x181e28, 1.2);
+        scene.add(ambientLight);
 
-        // 1. Geodesic Polyhedron (Neural Node Cluster)
-        const icoGeometry = new THREE.IcosahedronGeometry(18, 1);
-        const wireframeGeo = new THREE.WireframeGeometry(icoGeometry);
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0x00f5a0,
+        // Soft Cyan Point Light
+        cyanLight = new THREE.PointLight(0x00e5ff, 3.5, 350);
+        cyanLight.position.set(-40, 25, 20);
+        scene.add(cyanLight);
+
+        // Soft Amber Point Light
+        amberLight = new THREE.PointLight(0xf59e0b, 3.2, 350);
+        amberLight.position.set(40, -25, 10);
+        scene.add(amberLight);
+
+        // Directional Light for Specular Glass Reflections
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        dirLight.position.set(0, 30, 40);
+        scene.add(dirLight);
+
+        // Glass Slab Geometry & Material
+        const slabGeo = new THREE.BoxGeometry(50, 32, 0.6);
+        
+        // Physical Glass Material with transmission & refraction
+        const glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0x111622,
+            transmission: 0.94,
+            opacity: 1,
             transparent: true,
-            opacity: 0.35,
-            linewidth: 1
+            roughness: 0.18,
+            ior: 1.5,
+            thickness: 1.2,
+            specularIntensity: 1.0,
+            clearcoat: 0.8,
+            clearcoatRoughness: 0.15
         });
-        const wireframeMesh = new THREE.LineSegments(wireframeGeo, lineMaterial);
-        coreGroup.add(wireframeMesh);
 
-        // 2. Vertex Node Glowing Points
-        const pointsMat = new THREE.PointsMaterial({
-            color: 0x00e5ff,
-            size: 0.8,
-            transparent: true,
-            opacity: 0.85
-        });
-        const pointsMesh = new THREE.Points(icoGeometry, pointsMat);
-        coreGroup.add(pointsMesh);
+        // Edge wireframe for cyan/amber refraction glow
+        const edgeGeo = new THREE.EdgesGeometry(slabGeo);
 
-        // 3. Inner Pulsing Core
-        const innerGeo = new THREE.OctahedronGeometry(9, 1);
-        const innerWireframe = new THREE.WireframeGeometry(innerGeo);
-        const innerMat = new THREE.LineBasicMaterial({
-            color: 0x8b5cf6,
-            transparent: true,
-            opacity: 0.4
-        });
-        const innerMesh = new THREE.LineSegments(innerWireframe, innerMat);
-        coreGroup.add(innerMesh);
+        for (let i = 0; i < TOTAL_PANES; i++) {
+            const slabGroup = new THREE.Group();
+            slabGroup.position.z = -i * PANE_Z_DISTANCE;
 
-        // 4. Ambient 3D Particle Field (Cyber Dust / Star Nodes)
-        const particleCount = 650;
+            // Physical glass mesh
+            const mesh = new THREE.Mesh(slabGeo, glassMat);
+            slabGroup.add(mesh);
+
+            // Refractive edge wireframes
+            const edgeMat = new THREE.LineBasicMaterial({
+                color: (i % 2 === 0) ? 0x00e5ff : 0xf59e0b,
+                transparent: true,
+                opacity: 0.35
+            });
+            const wireframe = new THREE.LineSegments(edgeGeo, edgeMat);
+            slabGroup.add(wireframe);
+
+            scene.add(slabGroup);
+            glassSlabs.push(slabGroup);
+        }
+
+        // Ambient Refractive Floating Dust Motes
+        const particleCount = 450;
         const particleGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
-        const scales = new Float32Array(particleCount);
+        const colors = new Float32Array(particleCount * 3);
+
+        const cyanColor = new THREE.Color(0x00e5ff);
+        const amberColor = new THREE.Color(0xf59e0b);
 
         for (let i = 0; i < particleCount * 3; i += 3) {
-            positions[i] = (Math.random() - 0.5) * 160;
-            positions[i + 1] = (Math.random() - 0.5) * 160;
-            positions[i + 2] = (Math.random() - 0.5) * 140;
-            scales[i / 3] = Math.random() * 0.9 + 0.3;
+            positions[i] = (Math.random() - 0.5) * 140;
+            positions[i + 1] = (Math.random() - 0.5) * 100;
+            positions[i + 2] = -Math.random() * (TOTAL_PANES * PANE_Z_DISTANCE + 50) + 40;
+
+            const chosenColor = (Math.random() > 0.5) ? cyanColor : amberColor;
+            colors[i] = chosenColor.r;
+            colors[i + 1] = chosenColor.g;
+            colors[i + 2] = chosenColor.b;
         }
 
         particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
         const particleMat = new THREE.PointsMaterial({
-            color: 0x00f5a0,
-            size: 0.6,
+            size: 0.7,
+            vertexColors: true,
             transparent: true,
-            opacity: 0.45
+            opacity: 0.6
         });
         const particleCloud = new THREE.Points(particleGeo, particleMat);
         scene.add(particleCloud);
 
-        // Mouse Parallax & Dynamic Rotation
-        let targetRotX = 0, targetRotY = 0;
-        let windowHalfX = window.innerWidth / 2;
-        let windowHalfY = window.innerHeight / 2;
-
-        document.addEventListener('mousemove', (e) => {
-            const mouseNormX = (e.clientX - windowHalfX) / windowHalfX;
-            const mouseNormY = (e.clientY - windowHalfY) / windowHalfY;
-            targetRotY = mouseNormX * 0.65;
-            targetRotX = mouseNormY * 0.45;
-        });
-
         // Window resize
         window.addEventListener('resize', () => {
-            windowHalfX = window.innerWidth / 2;
-            windowHalfY = window.innerHeight / 2;
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Scroll Parallax
-        let scrollY = 0;
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-        }, { passive: true });
+        // Mouse Parallax
+        document.addEventListener('mousemove', (e) => {
+            targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
 
         // Animation Loop
         let clock = new THREE.Clock();
-        let isTabActive = true;
-        document.addEventListener('visibilitychange', () => {
-            isTabActive = !document.hidden;
-        });
-
         function animate() {
             requestAnimationFrame(animate);
-            if (!isTabActive) return;
 
             const elapsedTime = clock.getElapsedTime();
 
-            // Continuous rotation
-            coreGroup.rotation.y += 0.0035;
-            coreGroup.rotation.x += 0.002;
-            innerMesh.rotation.y -= 0.006;
-            innerMesh.rotation.z += 0.004;
-            particleCloud.rotation.y += 0.0006;
+            // Smooth mouse interpolation
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
 
-            // Smooth interpolation to target mouse rotation
-            coreGroup.rotation.y += (targetRotY - coreGroup.rotation.y) * 0.05;
-            coreGroup.rotation.x += (targetRotX - coreGroup.rotation.x) * 0.05;
+            // Camera Z follows scroll progress
+            const targetCamZ = 35 - currentProgress * PANE_Z_DISTANCE;
+            camera.position.z += (targetCamZ - camera.position.z) * 0.08;
 
-            // Camera Z depth travel with page scroll
-            camera.position.y = -(scrollY * 0.015);
-            camera.position.z = 45 + (scrollY * 0.01);
+            // Subtle camera parallax drift
+            camera.position.x = mouseX * 3.5;
+            camera.position.y = -mouseY * 2.5;
+            camera.rotation.y = -mouseX * 0.04;
+            camera.rotation.x = -mouseY * 0.03;
 
-            // Subtle inner pulse
-            const scalePulse = 1 + Math.sin(elapsedTime * 2.5) * 0.08;
-            innerMesh.scale.set(scalePulse, scalePulse, scalePulse);
+            // Accent light motion: orbiting along with camera
+            cyanLight.position.x = -35 + Math.sin(elapsedTime * 0.8) * 8;
+            cyanLight.position.y = 20 + Math.cos(elapsedTime * 0.8) * 6;
+            cyanLight.position.z = camera.position.z - 15;
+
+            amberLight.position.x = 35 + Math.cos(elapsedTime * 0.7) * 8;
+            amberLight.position.y = -20 + Math.sin(elapsedTime * 0.7) * 6;
+            amberLight.position.z = camera.position.z - 20;
 
             renderer.render(scene, camera);
         }
@@ -254,328 +237,220 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       4. Real-Time 3D Bento Card Tilt Engine (Perspective & Specular Sheen)
+       3. 3D Frosted Glass Panes Smooth Drift Engine
        ========================================================================== */
-    const tiltCards = document.querySelectorAll('.bento-card-3d, .hud-card');
+    const panes = document.querySelectorAll('.glass-pane');
+    const dots = document.querySelectorAll('.nav-dot');
+    const stepperCurrent = document.getElementById('stepperCurrent');
+    const stepperTitle = document.getElementById('stepperTitle');
+    const navStatusBadge = document.getElementById('navStatusBadge');
 
-    if (window.innerWidth > 900) {
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const cardWidth = rect.width;
-                const cardHeight = rect.height;
+    const paneTitles = [
+        "Intro Dimension",
+        "School ERP Blueprint",
+        "Smart Trolley App",
+        "Online Voting System",
+        "Aegis Health Monitor",
+        "Medicart Dashboard",
+        "About the Syndicate",
+        "Transmit Connection"
+    ];
 
-                // Mouse coordinates relative to card center (-0.5 to 0.5)
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-                const centerX = mouseX / cardWidth - 0.5;
-                const centerY = mouseY / cardHeight - 0.5;
+    let lastActiveIndex = 0;
 
-                // Rotation angles
-                const rotateX = -centerY * 14; // degrees
-                const rotateY = centerX * 14;
+    function updatePanes3D() {
+        // Smooth lerp progress towards target
+        currentProgress += (targetProgress - currentProgress) * 0.08;
 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+        const activeIndex = Math.min(Math.max(Math.round(currentProgress), 0), TOTAL_PANES - 1);
 
-                // Update glare coordinates
-                const glarePercentX = (mouseX / cardWidth) * 100;
-                const glarePercentY = (mouseY / cardHeight) * 100;
-                card.style.setProperty('--mouse-x', `${glarePercentX}%`);
-                card.style.setProperty('--mouse-y', `${glarePercentY}%`);
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            });
-        });
-    }
-
-    /* ==========================================================================
-       5. Interactive 3D Terminal ("Node Runner CLI")
-       ========================================================================== */
-    const termInput = document.getElementById('terminalInput');
-    const termBody = document.getElementById('terminalBody');
-    const termChips = document.querySelectorAll('.term-chip');
-
-    const terminalCommands = {
-        'help': `
-Available Commands:
-  • <span style="color:var(--accent-emerald);">help</span>       : Display this diagnostic guide
-  • <span style="color:var(--accent-cyan);">status</span>     : Display system & telemetry health
-  • <span style="color:var(--accent-emerald);">projects</span>   : Output flagship production blueprints
-  • <span style="color:var(--accent-cyan);">services</span>   : Enumerate enterprise engineering capabilities
-  • <span style="color:var(--accent-emerald);">team</span>       : Display executive collective profiles
-  • <span style="color:var(--accent-cyan);">ping</span>       : Test latency to RootNode backbone
-  • <span style="color:var(--accent-emerald);">contact</span>    : Open transmission conduit
-  • <span style="color:var(--accent-cyan);">clear</span>      : Purge terminal buffer
-        `,
-        'status': `
-[NODE STATUS]: <span style="color:var(--accent-emerald);">ALL SYSTEMS OPERATIONAL</span>
-• Core Cluster  : US-East / AP-South Edge Nodes
-• Uptime Record : 99.999% SLA
-• Encryption    : AES-256-GCM + Quantum-Safe Key Exchange
-• Active Pods   : 48 Autonomous Workers
-• Health Score  : 100/100
-        `,
-        'projects': `
-[FLAGSHIP PRODUCTION PROJECTS]:
-  1. <strong>Sri Basaveswara School ERP</strong>  [Status: <span style="color:var(--accent-emerald);">Production</span>] - Full-scale educational data pipeline.
-  2. <strong>Smart Trolley App</strong>          [Status: <span style="color:var(--accent-cyan);">Dev Mode</span>]    - Retail inventory & auto-checkout.
-  3. <strong>Online Voting System</strong>       [Status: <span style="color:var(--accent-emerald);">Verified</span>]    - Tamper-proof cryptographic ballot network.
-  4. <strong>Aegis Health Monitor</strong>       [Status: <span style="color:var(--accent-cyan);">Active</span>]      - Real-time clinical telemetry platform.
-  5. <strong>Hostel Management</strong>          [Status: <span style="color:var(--accent-emerald);">Deployed</span>]    - Digital gatepass & room allocation.
-  6. <strong>Medicart Dashboard</strong>          [Status: <span style="color:var(--accent-cyan);">Staging</span>]     - B2B supply chain & pharmacy warehouse.
-Type <span style="color:var(--accent-emerald);">#projects</span> or scroll to view full source code.
-        `,
-        'services': `
-[ENTERPRISE CAPABILITIES]:
-  ✓ Custom Software Architecture
-  ✓ Full-Stack Web Applications (React, Next.js, Node, Rust)
-  ✓ Native & Cross-Platform Mobile Engineering
-  ✓ UI/UX Engineering & 3D Interactive Design
-  ✓ Cloud Infrastructure, Kubernetes & CI/CD DevOps
-  ✓ Offensive & Defensive Cybersecurity Auditing
-        `,
-        'team': `
-[EXECUTIVE COLLECTIVE]:
-  • <strong>Adarsh B A</strong>       - Founder & CEO
-  • <strong>Akash R</strong>          - Co-Founder & CTO
-  • <strong>Akash P</strong>          - Marketing Lead & CFO
-  • <strong>Jeevan H S</strong>       - Marketing Manager & COO
-  • <strong>Akshath C H</strong>      - Co-Founder & CKO
-  • <strong>Prajval R Shunty</strong> - CIO and Editor
-        `,
-        'ping': `
-PING rootnode-rebels.cc.cd (104.21.56.12): 56 data bytes
-64 bytes from rootnode: icmp_seq=1 ttl=58 time=7.84 ms
-64 bytes from rootnode: icmp_seq=2 ttl=58 time=8.12 ms
-64 bytes from rootnode: icmp_seq=3 ttl=58 time=7.95 ms
---- rootnode-rebels ping statistics ---
-3 packets transmitted, 3 packets received, <span style="color:var(--accent-emerald);">0.0% packet loss</span>, avg round-trip = 7.97ms
-        `,
-        'contact': `
-Opening secure connection... Scroll to <a href="#contact" style="color:var(--accent-cyan);">#contact</a> section to transmit directly.
-        `
-    };
-
-    function executeCommand(cmd) {
-        if (!termBody) return;
-        const cleanCmd = cmd.trim().toLowerCase();
-        playSound('terminal');
-
-        if (cleanCmd === 'clear') {
-            termBody.innerHTML = `
-                <p style="color:var(--text-muted);">RootNode Rebels OS [Version 2.6.0] // WebGL & Core Neural Mesh Initialized</p>
-                <p style="color:var(--text-secondary); margin-bottom: 12px;">Type <span style="color:var(--accent-emerald); font-weight:700;">help</span> to inspect available telemetry commands.</p>
-            `;
-            return;
+        if (activeIndex !== lastActiveIndex) {
+            playSound('drift');
+            lastActiveIndex = activeIndex;
         }
 
-        const commandOutput = terminalCommands[cleanCmd] || `Command not recognized: "${cleanCmd}". Type <span style="color:var(--accent-emerald);">help</span> for command matrix.`;
+        panes.forEach((pane, i) => {
+            const delta = i - currentProgress;
+            // Delta:
+            // delta == 0: Active pane centered
+            // delta > 0: Pane is ahead in distance (waiting to be arrived at)
+            // delta < 0: Pane has drifted behind camera (passed through)
 
-        const logEntry = document.createElement('div');
-        logEntry.style.marginBottom = '14px';
-        logEntry.innerHTML = `
-            <div style="color:var(--accent-emerald); font-weight:600;">$ ${cmd}</div>
-            <div style="color:var(--text-secondary); margin-top: 4px; white-space: pre-wrap;">${commandOutput}</div>
-        `;
-        termBody.appendChild(logEntry);
-        termBody.scrollTop = termBody.scrollHeight;
+            if (delta > 0) {
+                // Ahead in distance
+                const zDist = -delta * 750;
+                const scale = Math.max(0.7, 1 - delta * 0.1);
+                const blur = Math.min(18, delta * 9);
+                const opacity = Math.max(0, 1 - delta * 0.55);
+
+                pane.style.transform = `translate3d(0, 0, ${zDist}px) scale(${scale})`;
+                pane.style.filter = `blur(${blur}px)`;
+                pane.style.opacity = opacity.toFixed(3);
+                pane.classList.remove('is-active');
+            } else if (delta < 0) {
+                // Passed through / behind camera
+                const absDelta = Math.abs(delta);
+                const zDist = absDelta * 400;
+                const scale = 1 + absDelta * 0.35;
+                const blur = Math.min(22, absDelta * 18);
+                const opacity = Math.max(0, 1 - absDelta * 1.25);
+
+                pane.style.transform = `translate3d(0, 0, ${zDist}px) scale(${scale})`;
+                pane.style.filter = `blur(${blur}px)`;
+                pane.style.opacity = opacity.toFixed(3);
+                pane.classList.remove('is-active');
+            } else {
+                // Active pane (in crisp focus)
+                pane.style.transform = `translate3d(0, 0, 0px) scale(1)`;
+                pane.style.filter = `blur(0px)`;
+                pane.style.opacity = '1';
+                pane.classList.add('is-active');
+            }
+
+            // Subtle mouse tilt for active pane
+            if (Math.abs(delta) < 0.3) {
+                pane.classList.add('is-active');
+            } else {
+                pane.classList.remove('is-active');
+            }
+        });
+
+        // Update Nav Dots
+        dots.forEach((dot, idx) => {
+            if (idx === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+
+        // Update Bottom Stepper Indicator
+        if (stepperCurrent) {
+            stepperCurrent.textContent = `0${activeIndex + 1}`;
+        }
+        if (stepperTitle) {
+            stepperTitle.textContent = paneTitles[activeIndex] || "System Node";
+        }
+        if (navStatusBadge) {
+            navStatusBadge.innerHTML = `<span class="pulse-dot"></span> PANE 0${activeIndex + 1} // ${paneTitles[activeIndex].toUpperCase()}`;
+        }
+
+        requestAnimationFrame(updatePanes3D);
+    }
+    updatePanes3D();
+
+    function navigateToPane(index) {
+        targetProgress = Math.max(0, Math.min(index, TOTAL_PANES - 1));
+        playSound('click');
     }
 
-    if (termInput) {
-        termInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const val = termInput.value;
-                if (val.trim()) {
-                    executeCommand(val);
-                    termInput.value = '';
+    // Scroll Wheel Handler with Smooth Inertia
+    let wheelTimeout = null;
+    window.addEventListener('wheel', (e) => {
+        // Prevent scrolling within active pane scrollbar if not at edges
+        const activePane = document.querySelector('.glass-pane.is-active');
+        if (activePane) {
+            const isScrollable = activePane.scrollHeight > activePane.clientHeight;
+            if (isScrollable) {
+                const atTop = activePane.scrollTop <= 2 && e.deltaY < 0;
+                const atBottom = (activePane.scrollTop + activePane.clientHeight >= activePane.scrollHeight - 2) && e.deltaY > 0;
+                if (!atTop && !atBottom) {
+                    return; // Allow natural scrolling inside long pane text
                 }
             }
+        }
+
+        e.preventDefault();
+        const delta = Math.sign(e.deltaY) * 0.45;
+        targetProgress = Math.max(0, Math.min(targetProgress + delta, TOTAL_PANES - 1));
+    }, { passive: false });
+
+    // Touch Swipe Handler for Mobile
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        const touchY = e.touches[0].clientY;
+        const diff = touchStartY - touchY;
+
+        if (Math.abs(diff) > 40) {
+            const step = (diff > 0) ? 1 : -1;
+            targetProgress = Math.max(0, Math.min(targetProgress + step, TOTAL_PANES - 1));
+            touchStartY = touchY;
+        }
+    }, { passive: true });
+
+    // Keyboard Arrow Navigation
+    window.addEventListener('keydown', (e) => {
+        if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+            e.preventDefault();
+            navigateToPane(Math.round(targetProgress) + 1);
+        } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+            e.preventDefault();
+            navigateToPane(Math.round(targetProgress) - 1);
+        }
+    });
+
+    // Side Navigation Dots
+    dots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+            const idx = parseInt(dot.getAttribute('data-pane'));
+            if (!isNaN(idx)) navigateToPane(idx);
+        });
+    });
+
+    // Bottom Stepper Buttons
+    const prevBtn = document.getElementById('stepperPrev');
+    const nextBtn = document.getElementById('stepperNext');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            navigateToPane(Math.round(targetProgress) - 1);
         });
     }
 
-    termChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const cmd = chip.getAttribute('data-cmd');
-            if (cmd) executeCommand(cmd);
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            navigateToPane(Math.round(targetProgress) + 1);
+        });
+    }
+
+    // Top Navigation Links
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetIdx = parseInt(link.getAttribute('data-target-pane'));
+            if (!isNaN(targetIdx)) navigateToPane(targetIdx);
+        });
+    });
+
+    // In-Pane Jump Buttons
+    document.querySelectorAll('[data-jump-pane]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const idx = parseInt(btn.getAttribute('data-jump-pane'));
+            if (!isNaN(idx)) navigateToPane(idx);
         });
     });
 
     /* ==========================================================================
-       6. Dynamic Animated Number Counters
-       ========================================================================== */
-    const counterElements = document.querySelectorAll('.animate-counter');
-
-    function animateCount(el) {
-        const target = parseFloat(el.getAttribute('data-target'));
-        const suffix = el.getAttribute('data-suffix') || '';
-        const prefix = el.getAttribute('data-prefix') || '';
-        const duration = 1800; // ms
-        const startTime = performance.now();
-
-        function update(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease out quad
-            const easeProgress = 1 - (1 - progress) * (1 - progress);
-            const currentVal = Math.floor(easeProgress * target);
-
-            el.textContent = `${prefix}${currentVal}${suffix}`;
-
-            if (progress < 1) {
-                requestAnimationFrame(update);
-            } else {
-                el.textContent = `${prefix}${target}${suffix}`;
-            }
-        }
-        requestAnimationFrame(update);
-    }
-
-    const countObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCount(entry.target);
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.2 });
-
-    counterElements.forEach(el => countObserver.observe(el));
-
-    /* ==========================================================================
-       7. Scroll Fade-In Observer
-       ========================================================================== */
-    const fadeObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.fade-in-up').forEach(el => fadeObserver.observe(el));
-
-    /* ==========================================================================
-       8. Global Search Engine with Instant Lookup
-       ========================================================================== */
-    const searchIndex = [
-        // Projects
-        { icon: '🎓', title: 'Sri Basaveswara School ERP', desc: 'Enterprise School Resource Planning System', tag: 'Project', href: '#projects' },
-        { icon: '🛒', title: 'Smart Trolley App', desc: 'Retail Inventory & Autonomous Checkout App', tag: 'Project', href: '#projects' },
-        { icon: '🗳️', title: 'Online Voting System', desc: 'Cryptographic Tamper-Proof Voting Platform', tag: 'Project', href: '#projects' },
-        { icon: '🏥', title: 'Aegis Health Monitor', desc: 'Real-Time Healthcare Telemetry & Alerts', tag: 'Project', href: '#projects' },
-        { icon: '🏢', title: 'Hostel Management', desc: 'Residential Administration & Digital Gatepass', tag: 'Project', href: '#projects' },
-        { icon: '💊', title: 'Medicart Dashboard', desc: 'B2B Healthcare E-Commerce Supply Chain', tag: 'Project', href: '#projects' },
-        // Team
-        { icon: '👤', title: 'Adarsh B A', desc: 'Founder & CEO', tag: 'Team', href: '#team' },
-        { icon: '👤', title: 'Akash R', desc: 'Co-Founder & CTO', tag: 'Team', href: '#team' },
-        { icon: '👤', title: 'Akash P', desc: 'Marketing Lead & CFO', tag: 'Team', href: '#team' },
-        { icon: '👤', title: 'Jeevan H S', desc: 'Marketing Manager & COO', tag: 'Team', href: '#team' },
-        { icon: '👤', title: 'Akshath C H', desc: 'Co-Founder & CKO', tag: 'Team', href: '#team' },
-        { icon: '👤', title: 'Prajval R Shunty', desc: 'CIO and Editor', tag: 'Team', href: '#team' },
-        // Services
-        { icon: '⚙️', title: 'Custom Software Architecture', desc: 'High-concurrency bespoke application engineering', tag: 'Service', href: '#services' },
-        { icon: '🌐', title: 'Full-Stack Web Engineering', desc: 'Modern reactive JS/TS & Cloud web apps', tag: 'Service', href: '#services' },
-        { icon: '📱', title: 'Cross-Platform Mobile Apps', desc: 'Native performance iOS & Android applications', tag: 'Service', href: '#services' },
-        { icon: '🎨', title: 'UI/UX & 3D Interactive Design', desc: 'Futuristic design systems with stereoscopic depth', tag: 'Service', href: '#services' },
-        { icon: '☁️', title: 'Cloud Infrastructure & DevOps', desc: 'Automated CI/CD pipelines, Docker & Kubernetes', tag: 'Service', href: '#services' },
-        { icon: '🔐', title: 'Cybersecurity & Hardening', desc: 'Penetration testing and zero-trust security audits', tag: 'Service', href: '#services' },
-        // Socials & Navigation
-        { icon: '🐙', title: 'GitHub Repository', desc: 'Explore open-source engineering codebases', tag: 'Social', href: 'https://github.com/RootNode-Rebels/' },
-        { icon: '💼', title: 'LinkedIn Network', desc: 'Connect with our corporate syndicate', tag: 'Social', href: 'https://linkedin.com/company/RootNode-Rebels/' },
-        { icon: '📸', title: 'Instagram Feed', desc: 'Culture, internal hackathons & events', tag: 'Social', href: 'https://instagram.com/rootnode_rebels/' },
-        { icon: '🐦', title: 'X (Twitter) Feed', desc: 'Real-time protocol updates and releases', tag: 'Social', href: 'https://x.com/RootNode_Rebels/' },
-        { icon: '✉️', title: 'Transmit Connection', desc: 'Initiate client inquiries and project proposals', tag: 'Action', href: '#contact' },
-        { icon: '⚡', title: 'Interactive CLI Terminal', desc: 'Run live diagnostic commands in browser', tag: 'Tool', href: '#terminal' }
-    ];
-
-    const searchInput = document.getElementById('globalSearch');
-    const searchResults = document.getElementById('searchResults');
-
-    if (searchInput && searchResults) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            searchResults.innerHTML = '';
-
-            if (!query) {
-                searchResults.classList.remove('active');
-                return;
-            }
-
-            const matches = searchIndex.filter(item =>
-                item.title.toLowerCase().includes(query) ||
-                item.desc.toLowerCase().includes(query) ||
-                item.tag.toLowerCase().includes(query)
-            ).slice(0, 6);
-
-            if (matches.length === 0) {
-                searchResults.innerHTML = `<p class="search-no-result">No matching nodes located for "${query}"</p>`;
-            } else {
-                matches.forEach(item => {
-                    const isExternal = item.href.startsWith('http');
-                    const el = document.createElement('a');
-                    el.className = 'search-result-item';
-                    el.href = item.href;
-                    if (isExternal) el.target = '_blank';
-                    el.innerHTML = `
-                        <span class="result-icon">${item.icon}</span>
-                        <div class="result-info">
-                            <h5>${item.title}</h5>
-                            <p>${item.desc}</p>
-                        </div>
-                        <span class="result-tag">${item.tag}</span>
-                    `;
-                    el.addEventListener('click', () => {
-                        searchResults.classList.remove('active');
-                        searchInput.value = '';
-                        if (!isExternal) {
-                            const target = document.querySelector(item.href);
-                            if (target) target.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    });
-                    searchResults.appendChild(el);
-                });
-            }
-            searchResults.classList.add('active');
-        });
-
-        // Close search when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-search')) {
-                searchResults.classList.remove('active');
-            }
-        });
-
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                searchResults.classList.remove('active');
-                searchInput.value = '';
-            }
-        });
-    }
-
-    /* ==========================================================================
-       9. Contact Transmission Handler (Google Apps Script Integration)
+       4. Contact Form Handler (Encrypted Submission via Google Apps Script)
        ========================================================================== */
     const contactForm = document.getElementById('contactForm');
     const scriptURL = 'https://script.google.com/macros/s/AKfycby9keQY3zDm7Xy-IaRZr3NclpX5QQ-RhUCLuXDtzMXUgN7IQmp1PA-xqXDpbT9XhOBNvA/exec';
 
     if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
+        contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalHTML = submitBtn.innerHTML;
 
-            // UI 3D Loading Pulse
-            submitBtn.innerHTML = `
-                <span class="pulse-beacon" style="display:inline-block; margin-right:8px;"></span>
-                <span>Encrypting & Transmitting Payload...</span>
-            `;
+            submitBtn.innerHTML = `<span>⚡</span> <span>Encrypting & Transmitting...</span>`;
             submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.75';
+            submitBtn.style.opacity = '0.7';
 
             const formData = new FormData(contactForm);
             formData.append('Type', 'contact');
@@ -583,20 +458,20 @@ Opening secure connection... Scroll to <a href="#contact" style="color:var(--acc
             fetch(scriptURL, { method: 'POST', body: formData })
                 .then(() => {
                     this.innerHTML = `
-                        <div style="text-align: center; padding: 40px 20px; transform-style: preserve-3d;">
-                            <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(0, 245, 160, 0.15); border: 2px solid var(--accent-emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; box-shadow: 0 0 30px rgba(0,245,160,0.3);">
+                        <div style="text-align: center; padding: 36px 20px;">
+                            <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(0, 229, 255, 0.15); border: 2px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.8rem; box-shadow: 0 0 25px rgba(0,229,255,0.3);">
                                 ⚡
                             </div>
-                            <h3 style="color: var(--accent-emerald); font-size: 1.8rem; margin-bottom: 12px;">Transmission Synchronized!</h3>
-                            <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto; font-size: 1.05rem;">
-                                Your payload has been cryptographically sealed and routed to RootNode Rebels. Our engineering syndicate will respond promptly.
+                            <h3 style="color: var(--accent-cyan); font-size: 1.6rem; margin-bottom: 10px;">Transmission Synchronized</h3>
+                            <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto; font-size: 0.95rem; line-height: 1.6;">
+                                Your message has been encrypted and securely routed to RootNode Rebels. Our engineering syndicate will respond promptly.
                             </p>
                         </div>
                     `;
                 })
-                .catch(error => {
-                    console.error('Transmission error:', error);
-                    submitBtn.innerText = 'Transmission Disrupted';
+                .catch(err => {
+                    console.error('Error:', err);
+                    submitBtn.innerHTML = `<span>Transmission Disrupted</span>`;
                     submitBtn.style.background = '#ef4444';
                     setTimeout(() => {
                         submitBtn.innerHTML = originalHTML;
@@ -609,7 +484,7 @@ Opening secure connection... Scroll to <a href="#contact" style="color:var(--acc
     }
 
     /* ==========================================================================
-       10. Anonymous Telemetry Tracker
+       5. Anonymous Telemetry Tracker
        ========================================================================== */
     function collectTelemetry() {
         if (!scriptURL) return;

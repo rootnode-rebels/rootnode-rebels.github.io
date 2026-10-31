@@ -3,86 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RootNode Rebels | Ultra-Modern 3D Engineering Syndicate</title>
+    <title>RootNode Rebels | Frosted Glass 3D Dimensions</title>
     
     <!-- Meta & SEO Optimization -->
-    <meta name="description" content="RootNode Rebels is an elite software engineering syndicate building high-performance architectures, scalable ERP systems, cloud infrastructures, and modern 3D web applications.">
-    <meta name="keywords" content="RootNode Rebels, Software Engineering, 3D Web UI, Full-Stack Development, Cloud Architecture, Cybersecurity, ERP Systems, Adarsh B A">
+    <meta name="description" content="RootNode Rebels is an elite software engineering collective building scalable systems, high-concurrency ERPs, and resilient cloud architectures through layered 3D dimensions.">
+    <meta name="keywords" content="RootNode Rebels, Software Engineering, 3D Web UI, Frosted Glass, Three.js, ERP Systems, Adarsh B A, Cloud Architecture">
     <meta name="author" content="RootNode Rebels">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rootnode-rebels.github.io/">
-    <meta name="theme-color" content="#04060a">
+    <meta name="theme-color" content="#07090d">
 
     <!-- Open Graph / Social Cards -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rootnode-rebels.github.io/">
-    <meta property="og:title" content="RootNode Rebels | Engineering the Future, Root by Node">
-    <meta property="og:description" content="We build scalable, secure, and high-performance digital products, delivering end-to-end software solutions.">
+    <meta property="og:title" content="RootNode Rebels | Engineering Scalable Systems">
+    <meta property="og:description" content="We build scalable, secure, and high-performance digital products inside layered 3D dimensions.">
     <meta property="og:image" content="https://rootnode-rebels.github.io/og-image.png">
-
-    <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://rootnode-rebels.github.io/">
-    <meta property="twitter:title" content="RootNode Rebels | Engineering the Future">
-    <meta property="twitter:description" content="Elite collective building high-performance architectures, scalable systems, and 3D web applications.">
-    <meta property="twitter:image" content="https://rootnode-rebels.github.io/og-image.png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=3.1">
+    <!-- Stylesheet with Cache Buster -->
+    <link rel="stylesheet" href="style.css?v=4.0">
 
-    <!-- Three.js Library for 3D Neural Constellation -->
+    <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <!-- WebGL Interactive 3D Background Canvas -->
+    <!-- WebGL Three.js Background Canvas -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- 3D Perspective Cyber Grid Floor -->
-    <div class="cyber-grid-floor"></div>
-
-    <!-- Grain Noise Texture Overlay -->
-    <div class="noise-overlay"></div>
-
-    <!-- Ambient Holographic Glow Orbs -->
-    <div class="ambient-glows">
-        <div class="ambient-orb ambient-orb-1"></div>
-        <div class="ambient-orb ambient-orb-2"></div>
-        <div class="ambient-orb ambient-orb-3"></div>
+    <!-- Ambient Cyan & Amber Refractive Accent Lights -->
+    <div class="ambient-lights">
+        <div class="ambient-light-cyan"></div>
+        <div class="ambient-light-amber"></div>
     </div>
 
-    <!-- Custom Holographic 3D Cursor -->
-    <div class="custom-cursor" id="customCursor"></div>
-    <div class="cursor-follower" id="cursorFollower"></div>
+    <!-- Film Grain Overlay -->
+    <div class="noise-overlay"></div>
 
-    <!-- Navigation Bar -->
+    <!-- Top Frosted-Glass Navigation Bar -->
     <header class="nav-container">
         <nav class="navbar">
             <a href="/" class="logo">
-                <div class="logo-cube"></div>
+                <div class="logo-prism"></div>
                 <div class="logo-text">RootNode <span>Rebels</span></div>
             </a>
 
-            <!-- Global Quick Search -->
-            <div class="nav-search">
-                <input type="text" id="globalSearch" class="search-input" placeholder="Search systems, repos, team..." autocomplete="off">
-                <div class="search-icon">⌕</div>
-                <div id="searchResults" class="search-results"></div>
-            </div>
-
-            <!-- Navigation Links -->
+            <!-- Navigation Links (Direct Pane Jumpers) -->
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#services">Capabilities</a>
-                <a href="#terminal">Terminal</a>
-                <a href="#projects">Blueprints</a>
-                <a href="#team">Collective</a>
-                <a href="#contact" class="btn btn-outline" style="padding: 7px 18px; border-radius: 9999px;">Connect</a>
+                <button class="nav-item" data-target-pane="0">Intro</button>
+                <button class="nav-item" data-target-pane="1">Blueprints</button>
+                <button class="nav-item" data-target-pane="6">About</button>
+                <button class="nav-item" data-target-pane="7">Contact</button>
+                
+                <div class="nav-status-badge" id="navStatusBadge">
+                    <span class="pulse-dot"></span> PANE 01 // INTRO DIMENSION
+                </div>
+
                 <button id="soundToggle" class="audio-toggle-btn" title="Toggle Synthesized Audio FX">
                     <span>🔇</span> Sound: OFF
                 </button>
@@ -90,678 +71,562 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <main>
-        <section class="hero">
-            <div class="hero-grid">
-                <!-- Left: Headline & CTA -->
-                <div class="hero-content fade-in-up">
-                    <div class="badge-pill">
-                        <span class="pulse-beacon"></span>
-                        SYSTEM PROTOCOL v2.6 // AUTONOMOUS ONLINE
+    <!-- Side Navigation Dots (Right Float) -->
+    <aside class="pane-navigation-dots" aria-label="Dimension Navigation">
+        <button class="nav-dot active" data-pane="0" data-label="00. Intro"></button>
+        <button class="nav-dot" data-pane="1" data-label="01. School ERP"></button>
+        <button class="nav-dot" data-pane="2" data-label="02. Smart Trolley"></button>
+        <button class="nav-dot" data-pane="3" data-label="03. Online Voting"></button>
+        <button class="nav-dot" data-pane="4" data-label="04. Aegis Health"></button>
+        <button class="nav-dot" data-pane="5" data-label="05. Medicart"></button>
+        <button class="nav-dot" data-pane="6" data-label="06. About"></button>
+        <button class="nav-dot" data-pane="7" data-label="07. Contact"></button>
+    </aside>
+
+    <!-- 3D Glass Viewport: Layered Frosted-Glass Panes Stage -->
+    <main class="glass-viewport" id="glassViewport">
+        <div class="glass-world" id="glassWorld">
+
+            <!-- ========================================================
+                 PANE 0: INTRO DIMENSION
+                 ======================================================== -->
+            <section class="glass-pane is-active" id="pane-0">
+                <div class="intro-content">
+                    <div class="pane-category">
+                        <span>⚡</span> ROOTNODE PROTOCOL // LAYERED SPATIAL UI
                     </div>
 
-                    <h1 class="hero-title">
+                    <h1 class="pane-title">
                         Engineering Scalable Systems, <br>
-                        <span class="gradient-text">Root by Node.</span>
+                        <span class="accent-gradient">Root by Node.</span>
                     </h1>
 
-                    <p class="hero-desc">
-                        An elite software engineering collective building hyper-performant architectures, resilient enterprise ERPs, and modern 3D digital experiences that transform visionary ideas into production reality.
+                    <p class="pane-desc">
+                        An elite software engineering collective crafting resilient enterprise ERPs, high-throughput microservices, and modern 3D digital experiences. Drift through our architecture blueprints below.
                     </p>
 
-                    <div class="hero-buttons">
-                        <a href="#projects" class="btn btn-primary">
-                            <span>Explore Blueprints</span>
-                            <span>↗</span>
-                        </a>
-                        <a href="#contact" class="btn btn-outline">
-                            <span>Transmit Proposal</span>
-                        </a>
-                    </div>
-
-                    <!-- Hero Live Metrics -->
-                    <div class="hero-stats-row">
-                        <div class="hero-stat-item">
-                            <span class="hero-stat-value animate-counter" data-target="2025" data-prefix="">2025</span>
-                            <span class="hero-stat-label">Syndicate Origin</span>
-                        </div>
-                        <div class="hero-stat-item">
-                            <span class="hero-stat-value animate-counter" data-target="10" data-suffix="+">10+</span>
-                            <span class="hero-stat-label">Core Capabilities</span>
-                        </div>
-                        <div class="hero-stat-item">
-                            <span class="hero-stat-value animate-counter" data-target="99" data-suffix=".99%">99.99%</span>
-                            <span class="hero-stat-label">Architecture SLA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: Floating 3D Holographic HUD Stage -->
-                <div class="hero-3d-scene fade-in-up">
-                    <div class="holo-stage">
-                        <!-- Orbiting Badges -->
-                        <div class="hud-satellite-badge badge-top-right">
-                            <span style="color:var(--accent-emerald);">●</span> Quantum Encrypted
-                        </div>
-                        <div class="hud-satellite-badge badge-bottom-left">
-                            <span style="color:var(--accent-cyan);">⚡</span> Latency: 7.9ms
-                        </div>
-
-                        <!-- 3D HUD Telemetry Card -->
-                        <div class="hud-card bento-card-3d">
-                            <div class="card-glare"></div>
-                            
-                            <div class="hud-header layer-high">
-                                <div class="hud-title">
-                                    <span style="font-size:1.1rem;">◈</span>
-                                    <span>ROOTNODE CORE ENGINE v2.6</span>
-                                </div>
-                                <span class="project-status-pill">ACTIVE</span>
-                            </div>
-
-                            <div class="hud-telemetry-grid layer-mid">
-                                <div class="telemetry-item">
-                                    <div class="telemetry-label">ACTIVE PODS</div>
-                                    <div class="telemetry-value" style="color:var(--accent-emerald);">24 / 24 HEALTHY</div>
-                                </div>
-                                <div class="telemetry-item">
-                                    <div class="telemetry-label">SECURITY PROTOCOL</div>
-                                    <div class="telemetry-value" style="color:var(--accent-cyan);">ZERO-TRUST</div>
-                                </div>
-                                <div class="telemetry-item">
-                                    <div class="telemetry-label">MEMORY LOAD</div>
-                                    <div class="telemetry-value">18.4% NOMINAL</div>
-                                </div>
-                                <div class="telemetry-item">
-                                    <div class="telemetry-label">EDGE SYNCHRONY</div>
-                                    <div class="telemetry-value" style="color:var(--accent-violet);">100% VERIFIED</div>
-                                </div>
-                            </div>
-
-                            <div class="hud-mini-graph layer-base">
-                                <div class="graph-bar" style="height: 40%;"></div>
-                                <div class="graph-bar" style="height: 70%;"></div>
-                                <div class="graph-bar" style="height: 55%;"></div>
-                                <div class="graph-bar" style="height: 90%;"></div>
-                                <div class="graph-bar" style="height: 65%;"></div>
-                                <div class="graph-bar" style="height: 80%;"></div>
-                                <div class="graph-bar" style="height: 100%;"></div>
-                                <div class="graph-bar" style="height: 85%;"></div>
-                                <div class="graph-bar" style="height: 95%;"></div>
-                                <div class="graph-bar" style="height: 75%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Section (3D Bento Architecture) -->
-        <section id="about" class="section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> THE SYNDICATE
-                </div>
-                <h2>Build. Solve. <span class="gradient-text">Innovate.</span></h2>
-                <p>We are a high-concurrency technology company engineering software built for unmatched resilience, modern velocity, and tomorrow's scale.</p>
-            </div>
-
-            <div class="about-bento-grid fade-in-up">
-                <!-- Main Bento Narrative -->
-                <div class="bento-card-3d about-main-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <span class="project-status-pill" style="margin-bottom:16px;">MISSION DIRECTIVE</span>
-                        <h3>Uncompromising Engineering Excellence</h3>
-                        <p><strong>RootNode Rebels</strong> is a technology collective specializing in delivering end-to-end digital architectures. We help enterprises, venture-backed startups, and organizations turn ambitious blueprints into robust production systems.</p>
-                        <p>From product architecture and 3D UI/UX design to full-stack microservices, cloud infrastructure, AI model integration, and proactive cybersecurity, we build systems that don't crack under load.</p>
-                        <div style="display:flex; gap:16px; margin-top:20px; flex-wrap:wrap;">
-                            <div class="tech-chip">✦ Clean Architecture</div>
-                            <div class="tech-chip">✦ Microservices</div>
-                            <div class="tech-chip">✦ Quantum-Safe Crypto</div>
-                            <div class="tech-chip">✦ Autonomous Pipelines</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stats Bento Column -->
-                <div class="about-stats-column">
-                    <div class="bento-card-3d stat-bento-card">
-                        <div class="card-glare"></div>
-                        <div class="layer-high">
-                            <div class="stat-number-3d animate-counter" data-target="2025">2025</div>
-                            <div class="stat-label-3d">FOUNDATION YEAR</div>
-                        </div>
-                    </div>
-                    <div class="bento-card-3d stat-bento-card">
-                        <div class="card-glare"></div>
-                        <div class="layer-high">
-                            <div class="stat-number-3d animate-counter" data-target="10" data-suffix="+">10+</div>
-                            <div class="stat-label-3d">ENTERPRISE DISCIPLINES</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive 3D Terminal Section ("Node Runner") -->
-        <section id="terminal" class="section terminal-section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> BROWSER TELEMETRY
-                </div>
-                <h2>Interactive <span class="gradient-text">Node Runner CLI</span></h2>
-                <p>Access our real-time interactive terminal directly within the browser. Run diagnostics, inspect repositories, or query system status.</p>
-            </div>
-
-            <div class="terminal-window fade-in-up">
-                <div class="terminal-header">
-                    <div class="terminal-buttons">
-                        <div class="term-btn term-close"></div>
-                        <div class="term-btn term-min"></div>
-                        <div class="term-btn term-max"></div>
-                    </div>
-                    <div class="terminal-title">bash - rootnode-rebels@main ~ [webgl-active]</div>
-                    <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-emerald);">● ONLINE</div>
-                </div>
-
-                <!-- Quick Action Chips -->
-                <div class="terminal-chips">
-                    <button class="term-chip" data-cmd="help">$ help</button>
-                    <button class="term-chip" data-cmd="status">$ status</button>
-                    <button class="term-chip" data-cmd="projects">$ projects</button>
-                    <button class="term-chip" data-cmd="services">$ services</button>
-                    <button class="term-chip" data-cmd="team">$ team</button>
-                    <button class="term-chip" data-cmd="ping">$ ping</button>
-                    <button class="term-chip" data-cmd="clear">$ clear</button>
-                </div>
-
-                <div class="terminal-body" id="terminalBody">
-                    <p style="color:var(--text-muted);">RootNode Rebels OS [Version 2.6.0] // WebGL & Core Neural Mesh Initialized</p>
-                    <p style="color:var(--text-secondary); margin-bottom: 12px;">Type <span style="color:var(--accent-emerald); font-weight:700;">help</span> to inspect available telemetry commands, or click any chip above.</p>
-                </div>
-
-                <div class="terminal-header" style="border-top:1px solid rgba(255,255,255,0.06); border-bottom:none;">
-                    <div class="term-prompt-line" style="width:100%;">
-                        <span class="term-prompt-symbol">visitor@rootnode:~$</span>
-                        <input type="text" id="terminalInput" class="term-input" placeholder="Type a command (e.g. status, projects, ping) and press Enter..." autocomplete="off">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Core Capabilities / Services (3D Bento Grid) -->
-        <section id="services" class="section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> SPECIALIZED DOMAINS
-                </div>
-                <h2>Core <span class="gradient-text">Capabilities</span></h2>
-                <p>End-to-end technological capabilities engineered for next-generation platforms.</p>
-            </div>
-
-            <div class="services-bento-grid fade-in-up">
-                <!-- Service 1 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">⚙️</div>
-                        <h3>Custom Software Architecture</h3>
-                        <p>Bespoke distributed applications engineered to execute complex business logic with microsecond latency and high fault tolerance.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Microservices</span>
-                            <span class="service-tag">Distributed Systems</span>
-                            <span class="service-tag">APIs</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 2 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">🌐</div>
-                        <h3>Full-Stack Web Engineering</h3>
-                        <p>Blazing-fast modern web applications crafted with reactive JavaScript/TypeScript frameworks, real-time WebSockets, and serverless edge delivery.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">React / Next.js</span>
-                            <span class="service-tag">Node.js</span>
-                            <span class="service-tag">Edge Computing</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 3 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">📱</div>
-                        <h3>Cross-Platform Mobile Apps</h3>
-                        <p>High-fidelity native and hybrid mobile applications delivering fluid 120Hz gesture physics, local offline caches, and hardware-accelerated animations.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Flutter</span>
-                            <span class="service-tag">React Native</span>
-                            <span class="service-tag">Native Android/iOS</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 4 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">🎨</div>
-                        <h3>UI/UX & 3D WebGL Design</h3>
-                        <p>Visually arresting interfaces featuring stereoscopic 3D WebGL shaders, perspective tilt physics, and friction-free user journeys.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Three.js</span>
-                            <span class="service-tag">WebGL</span>
-                            <span class="service-tag">3D Motion</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 5 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">☁️</div>
-                        <h3>Cloud Infrastructure & DevOps</h3>
-                        <p>Fully automated GitOps pipelines, container orchestration with Kubernetes, multi-cloud redundancy, and infrastructure-as-code.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Docker / K8s</span>
-                            <span class="service-tag">AWS / GCP</span>
-                            <span class="service-tag">CI/CD Automation</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 6 -->
-                <div class="bento-card-3d service-card">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="service-icon-3d">🔐</div>
-                        <h3>Cybersecurity & Hardening</h3>
-                        <p>Rigorous vulnerability assessments, zero-trust architecture blueprints, automated cryptographic validation, and penetration testing.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Penetration Testing</span>
-                            <span class="service-tag">Zero-Trust</span>
-                            <span class="service-tag">Audits</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Engineering Blueprints (Projects) -->
-        <section id="projects" class="section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> PRODUCTION CODEBASES
-                </div>
-                <h2>Featured <span class="gradient-text">Engineering</span></h2>
-                <p>Flagship production systems and battle-tested architectural blueprints built by RootNode Rebels.</p>
-            </div>
-
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🎓</div>
-                            <span class="project-status-pill">● PRODUCTION</span>
-                        </div>
-                        <h3>Sri Basaveswara School ERP</h3>
-                        <p>Comprehensive School Resource Planning ecosystem automating massive student data pipelines, academic reporting, and real-time administrative analytics.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">Full-Stack ERP</span>
-                            <span class="tech-chip">Data Pipelines</span>
-                            <span class="tech-chip">Analytics</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/sribasaveswaraschool" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🛒</div>
-                            <span class="project-status-pill">● IN ACTIVE DEV</span>
-                        </div>
-                        <h3>Smart Trolley App</h3>
-                        <p>Next-generation retail logistics platform designed to streamline real-time inventory tracking, smart cart RFID synchronization, and frictionless instant checkout.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">Mobile Architecture</span>
-                            <span class="tech-chip">IoT Sync</span>
-                            <span class="tech-chip">Smart Retail</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/smarttrolleyapp" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🗳️</div>
-                            <span class="project-status-pill">● VERIFIED</span>
-                        </div>
-                        <h3>Online Voting System</h3>
-                        <p>Cryptographically verified, tamper-proof ballot network engineered for high-concurrency democratic elections with end-to-end mathematical transparency.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">Cryptography</span>
-                            <span class="tech-chip">Zero-Knowledge</span>
-                            <span class="tech-chip">Security</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/onlinevotingsystem" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🏥</div>
-                            <span class="project-status-pill">● TELEMETRY</span>
-                        </div>
-                        <h3>Aegis Health Monitor</h3>
-                        <p>Real-time healthcare telemetry streaming platform for automated patient monitoring, algorithmic anomaly detection, and urgent clinical triage notification.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">Real-time WebSockets</span>
-                            <span class="tech-chip">Health Telemetry</span>
-                            <span class="tech-chip">Data Vis</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/Aegis-Health-Monitor" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 5 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">🏢</div>
-                            <span class="project-status-pill">● DEPLOYED</span>
-                        </div>
-                        <h3>Hostel Management Platform</h3>
-                        <p>Comprehensive residential campus administration engine automating digital biometric gatepasses, room occupancy matrix, and automated fee auditing.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">Access Gateways</span>
-                            <span class="tech-chip">Workflow Engine</span>
-                            <span class="tech-chip">Database</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/hostel-management" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 6 -->
-                <div class="bento-card-3d project-card-3d fade-in-up">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="project-card-header">
-                            <div class="project-icon-box">💊</div>
-                            <span class="project-status-pill">● B2B SYSTEM</span>
-                        </div>
-                        <h3>Medicart Dashboard</h3>
-                        <p>High-throughput enterprise B2B pharmaceutical marketplace connecting wholesale suppliers, managing automated batch tracking, and monitoring shipping logistics.</p>
-                        <div class="project-tech-stack">
-                            <span class="tech-chip">B2B Commerce</span>
-                            <span class="tech-chip">Inventory Sync</span>
-                            <span class="tech-chip">Admin UI</span>
-                        </div>
-                        <div class="project-actions">
-                            <a href="https://github.com/RootNode-Rebels/medicart-dashboard" target="_blank" class="btn btn-primary" style="padding: 10px 22px;">
-                                <span>Source Code</span>
-                                <span>↗</span>
-                            </a>
-                            <button class="btn btn-outline" disabled style="padding: 10px 20px;">Demo Soon</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Executive Engineering Collective (Team Bento) -->
-        <section id="team" class="section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> THE ARCHITECTS
-                </div>
-                <h2>Meet The <span class="gradient-text">Rebels</span></h2>
-                <p>The leadership, product engineering, and core technology collective driving our operations.</p>
-            </div>
-
-            <div class="team-grid fade-in-up">
-                <!-- Adarsh B A -->
-                <a href="https://www.linkedin.com/in/developeradhi/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">A</div>
-                        <h3>Adarsh B A</h3>
-                        <p class="role">Founder & CEO</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-
-                <!-- Akash R -->
-                <a href="https://www.linkedin.com/in/akashr24012007/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">A</div>
-                        <h3>Akash R</h3>
-                        <p class="role">Co-Founder & CTO</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-
-                <!-- Akash P -->
-                <a href="https://www.linkedin.com/in/akash-p-46b66a386/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">A</div>
-                        <h3>Akash P</h3>
-                        <p class="role">Marketing Lead & CFO</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-
-                <!-- Jeevan H S -->
-                <a href="https://www.linkedin.com/in/jeevan-h-s-30b756386/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">J</div>
-                        <h3>Jeevan H S</h3>
-                        <p class="role">Marketing Manager & COO</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-
-                <!-- Akshath C H -->
-                <a href="https://www.linkedin.com/in/akshath-ch-8a0b19384/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">A</div>
-                        <h3>Akshath C H</h3>
-                        <p class="role">Co-Founder & CKO</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-
-                <!-- Prajval R Shunty -->
-                <a href="https://www.linkedin.com/in/prajval-r-shunty-139a47385/" target="_blank" class="bento-card-3d team-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high">
-                        <div class="team-avatar-frame">P</div>
-                        <h3>Prajval R Shunty</h3>
-                        <p class="role">CIO & Lead Editor</p>
-                        <div class="linkedin-badge-3d">Connect on LinkedIn ↗</div>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Social Matrix & Transmission Conduit (Contact) -->
-        <section id="contact" class="section">
-            <div class="section-header fade-in-up">
-                <div class="section-subtitle">
-                    <span>//</span> DIRECT CONDUIT
-                </div>
-                <h2>Establish <span class="gradient-text">Connection</span></h2>
-                <p>Connect with our social mesh or transmit an encrypted inquiry directly to our engineering syndicate.</p>
-            </div>
-
-            <!-- Social Matrix Grid -->
-            <div class="social-matrix-grid fade-in-up">
-                <a href="https://github.com/RootNode-Rebels/" target="_blank" class="bento-card-3d social-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high" style="display:flex; align-items:center; gap:16px;">
-                        <div class="social-icon-box">🐙</div>
-                        <div>
-                            <h4>GitHub</h4>
-                            <p>Open Source Repos</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" class="bento-card-3d social-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high" style="display:flex; align-items:center; gap:16px;">
-                        <div class="social-icon-box">💼</div>
-                        <div>
-                            <h4>LinkedIn</h4>
-                            <p>Corporate Network</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="https://instagram.com/rootnode_rebels/" target="_blank" class="bento-card-3d social-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high" style="display:flex; align-items:center; gap:16px;">
-                        <div class="social-icon-box">📸</div>
-                        <div>
-                            <h4>Instagram</h4>
-                            <p>Events & Culture</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="https://x.com/RootNode_Rebels/" target="_blank" class="bento-card-3d social-card-3d">
-                    <div class="card-glare"></div>
-                    <div class="layer-high" style="display:flex; align-items:center; gap:16px;">
-                        <div class="social-icon-box">🐦</div>
-                        <div>
-                            <h4>X (Twitter)</h4>
-                            <p>Release Updates</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 3D Form Card -->
-            <div class="bento-card-3d form-card-3d fade-in-up">
-                <div class="card-glare"></div>
-                <div class="layer-high">
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;">
-                        <h3 style="font-size:2rem; font-weight:800;">Transmit Direct Message</h3>
-                        <span class="project-status-pill">256-BIT ENCRYPTED</span>
-                    </div>
-
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label>// FULL NAME</label>
-                            <input type="text" name="Name" class="form-control" placeholder="e.g. Satoshi Nakamoto" required>
-                        </div>
-                        <div class="form-group">
-                            <label>// CORPORATE / PERSONAL EMAIL</label>
-                            <input type="email" name="Email" class="form-control" placeholder="satoshi@domain.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>// PROJECT BRIEF / TECHNICAL TRANSMISSION</label>
-                            <textarea name="Message" class="form-control" placeholder="Describe your technical challenge, requirements, or proposed collaboration..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width:100%; padding:16px; font-size:1rem;">
-                            <span>Encrypt & Transmit Payload</span>
-                            <span>⚡</span>
+                    <div class="intro-actions">
+                        <button class="glass-btn btn-cyan" data-jump-pane="1">
+                            <span>Explore 5 Project Panes</span>
+                            <span>↘</span>
                         </button>
-                    </form>
+                        <button class="glass-btn btn-glass-outline" data-jump-pane="7">
+                            <span>Transmit Proposal</span>
+                        </button>
+                    </div>
+
+                    <div class="intro-metrics-row">
+                        <div class="intro-metric">
+                            <span class="metric-val">2025</span>
+                            <span class="metric-lbl">Syndicate Origin</span>
+                        </div>
+                        <div class="intro-metric">
+                            <span class="metric-val" style="color:var(--accent-amber);">99.99%</span>
+                            <span class="metric-lbl">Architecture SLA</span>
+                        </div>
+                        <div class="intro-metric">
+                            <span class="metric-val">Zero-Trust</span>
+                            <span class="metric-lbl">Security Standard</span>
+                        </div>
+                    </div>
+
+                    <div class="scroll-prompt-indicator">
+                        <span>Scroll or swipe down to drift through glass layers</span>
+                        <span>↓</span>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- ========================================================
+                 PANE 1: PROJECT 1 - SRI BASAVESWARA SCHOOL ERP
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-1">
+                <div class="project-pane-layout">
+                    <div class="project-details">
+                        <div class="project-pane-index">// BLUEPRINT 01 OF 05</div>
+                        <div class="pane-category">ENTERPRISE ARCHITECTURE // EDUCATION</div>
+                        <h2 class="pane-title">Sri Basaveswara <br><span class="accent-gradient">School ERP</span></h2>
+                        <p class="pane-desc">
+                            A comprehensive School Resource Planning ecosystem automating massive student data pipelines, academic grading algorithms, parent-teacher telemetry, and real-time administrative business analytics.
+                        </p>
+                        <div class="project-tech-pills">
+                            <span class="tech-pill">Full-Stack ERP</span>
+                            <span class="tech-pill">PostgreSQL</span>
+                            <span class="tech-pill">Data Pipelines</span>
+                            <span class="tech-pill">Real-Time Analytics</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/RootNode-Rebels/sribasaveswaraschool" target="_blank" class="glass-btn btn-cyan">
+                                <span>Source Code</span>
+                                <span>↗</span>
+                            </a>
+                            <button class="glass-btn btn-glass-outline" data-jump-pane="2">
+                                <span>Next Project</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Telemetry Mockup Window -->
+                    <div class="project-glass-display">
+                        <div class="display-header">
+                            <div class="display-title">
+                                <span>🎓</span> ERP CORE TELEMETRY
+                            </div>
+                            <span class="display-status">● PRODUCTION</span>
+                        </div>
+                        <div class="display-metrics-list">
+                            <div class="display-metric-row">
+                                <span class="row-label">STUDENT RECORDS</span>
+                                <span class="row-val" style="color:var(--accent-cyan);">1,420 Active</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">PIPELINE AUTOMATION</span>
+                                <span class="row-val">100% Synced</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">QUERY LATENCY</span>
+                                <span class="row-val" style="color:var(--accent-amber);">14ms Avg</span>
+                            </div>
+                        </div>
+                        <div class="display-live-graph">
+                            <div class="graph-bar-sample" style="height:45%;"></div>
+                            <div class="graph-bar-sample" style="height:70%;"></div>
+                            <div class="graph-bar-sample" style="height:60%;"></div>
+                            <div class="graph-bar-sample" style="height:90%;"></div>
+                            <div class="graph-bar-sample" style="height:100%;"></div>
+                            <div class="graph-bar-sample" style="height:80%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 2: PROJECT 2 - SMART TROLLEY APP
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-2">
+                <div class="project-pane-layout">
+                    <div class="project-details">
+                        <div class="project-pane-index" style="color:var(--accent-amber);">// BLUEPRINT 02 OF 05</div>
+                        <div class="pane-category amber">IOT & RETAIL LOGISTICS // MOBILE</div>
+                        <h2 class="pane-title">Smart Trolley <br><span class="accent-gradient">Commerce App</span></h2>
+                        <p class="pane-desc">
+                            Next-generation retail logistics platform engineered to modernize in-store shopping with automated RFID cart scanning, instant biometric checkout, and synchronized inventory telemetry.
+                        </p>
+                        <div class="project-tech-pills">
+                            <span class="tech-pill">Mobile Architecture</span>
+                            <span class="tech-pill">IoT Sync</span>
+                            <span class="tech-pill">RFID Telemetry</span>
+                            <span class="tech-pill">Smart Retail</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/RootNode-Rebels/smarttrolleyapp" target="_blank" class="glass-btn btn-amber">
+                                <span>Source Code</span>
+                                <span>↗</span>
+                            </a>
+                            <button class="glass-btn btn-glass-outline" data-jump-pane="3">
+                                <span>Next Project</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Telemetry Mockup Window -->
+                    <div class="project-glass-display">
+                        <div class="display-header">
+                            <div class="display-title">
+                                <span>🛒</span> IOT GATEWAY MATRIX
+                            </div>
+                            <span class="display-status" style="color:var(--accent-amber); border-color:var(--accent-amber);">● ACTIVE DEV</span>
+                        </div>
+                        <div class="display-metrics-list">
+                            <div class="display-metric-row">
+                                <span class="row-label">RFID SCAN VELOCITY</span>
+                                <span class="row-val" style="color:var(--accent-amber);">&lt; 0.3s</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">CART WEIGHT MATRIX</span>
+                                <span class="row-val">Calibrated</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">CHECKOUT TIME</span>
+                                <span class="row-val" style="color:var(--accent-cyan);">-85% Faster</span>
+                            </div>
+                        </div>
+                        <div class="display-live-graph">
+                            <div class="graph-bar-sample amber" style="height:60%;"></div>
+                            <div class="graph-bar-sample amber" style="height:85%;"></div>
+                            <div class="graph-bar-sample amber" style="height:70%;"></div>
+                            <div class="graph-bar-sample amber" style="height:95%;"></div>
+                            <div class="graph-bar-sample amber" style="height:55%;"></div>
+                            <div class="graph-bar-sample amber" style="height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 3: PROJECT 3 - ONLINE VOTING SYSTEM
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-3">
+                <div class="project-pane-layout">
+                    <div class="project-details">
+                        <div class="project-pane-index">// BLUEPRINT 03 OF 05</div>
+                        <div class="pane-category">CRYPTOGRAPHY & TAMPER-PROOF SYSTEMS</div>
+                        <h2 class="pane-title">Online Voting <br><span class="accent-gradient">Infrastructure</span></h2>
+                        <p class="pane-desc">
+                            Cryptographically verified, tamper-proof ballot network designed for high-concurrency democratic elections with mathematical transparency, zero-knowledge voter privacy, and auditable ledger integrity.
+                        </p>
+                        <div class="project-tech-pills">
+                            <span class="tech-pill">Cryptography</span>
+                            <span class="tech-pill">Zero-Knowledge</span>
+                            <span class="tech-pill">Tamper-Proof</span>
+                            <span class="tech-pill">Distributed Consensus</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/RootNode-Rebels/onlinevotingsystem" target="_blank" class="glass-btn btn-cyan">
+                                <span>Source Code</span>
+                                <span>↗</span>
+                            </a>
+                            <button class="glass-btn btn-glass-outline" data-jump-pane="4">
+                                <span>Next Project</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Telemetry Mockup Window -->
+                    <div class="project-glass-display">
+                        <div class="display-header">
+                            <div class="display-title">
+                                <span>🗳️</span> BALLOT VALIDATOR
+                            </div>
+                            <span class="display-status">● VERIFIED</span>
+                        </div>
+                        <div class="display-metrics-list">
+                            <div class="display-metric-row">
+                                <span class="row-label">CONSENSUS INTEGRITY</span>
+                                <span class="row-val" style="color:var(--accent-cyan);">100% Proven</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">THROUGHPUT PEAK</span>
+                                <span class="row-val">50,000 req/s</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">TAMPER RESISTANCE</span>
+                                <span class="row-val" style="color:var(--accent-amber);">SHA-256 Validated</span>
+                            </div>
+                        </div>
+                        <div class="display-live-graph">
+                            <div class="graph-bar-sample" style="height:80%;"></div>
+                            <div class="graph-bar-sample" style="height:90%;"></div>
+                            <div class="graph-bar-sample" style="height:100%;"></div>
+                            <div class="graph-bar-sample" style="height:85%;"></div>
+                            <div class="graph-bar-sample" style="height:95%;"></div>
+                            <div class="graph-bar-sample" style="height:90%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 4: PROJECT 4 - AEGIS HEALTH MONITOR
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-4">
+                <div class="project-pane-layout">
+                    <div class="project-details">
+                        <div class="project-pane-index" style="color:var(--accent-amber);">// BLUEPRINT 04 OF 05</div>
+                        <div class="pane-category amber">HEALTHCARE TELEMETRY // REAL-TIME</div>
+                        <h2 class="pane-title">Aegis Health <br><span class="accent-gradient">Telemetry Hub</span></h2>
+                        <p class="pane-desc">
+                            Real-time healthcare telemetry streaming platform engineered for automated vital sign analysis, algorithmic anomaly detection, low-latency WebSocket streams, and rapid clinical triage alert escalation.
+                        </p>
+                        <div class="project-tech-pills">
+                            <span class="tech-pill">WebSockets</span>
+                            <span class="tech-pill">Health Telemetry</span>
+                            <span class="tech-pill">Anomaly Detection</span>
+                            <span class="tech-pill">Data Streaming</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/RootNode-Rebels/Aegis-Health-Monitor" target="_blank" class="glass-btn btn-amber">
+                                <span>Source Code</span>
+                                <span>↗</span>
+                            </a>
+                            <button class="glass-btn btn-glass-outline" data-jump-pane="5">
+                                <span>Next Project</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Telemetry Mockup Window -->
+                    <div class="project-glass-display">
+                        <div class="display-header">
+                            <div class="display-title">
+                                <span>🏥</span> CLINICAL STREAM NODE
+                            </div>
+                            <span class="display-status" style="color:var(--accent-amber); border-color:var(--accent-amber);">● LIVE STREAM</span>
+                        </div>
+                        <div class="display-metrics-list">
+                            <div class="display-metric-row">
+                                <span class="row-label">TELEMETRY LATENCY</span>
+                                <span class="row-val" style="color:var(--accent-cyan);">9ms (Real-Time)</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">ANOMALY DETECTOR</span>
+                                <span class="row-val">Online / Normal</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">UPTIME COMPLIANCE</span>
+                                <span class="row-val" style="color:var(--accent-amber);">99.999% SLA</span>
+                            </div>
+                        </div>
+                        <div class="display-live-graph">
+                            <div class="graph-bar-sample amber" style="height:50%;"></div>
+                            <div class="graph-bar-sample amber" style="height:75%;"></div>
+                            <div class="graph-bar-sample amber" style="height:65%;"></div>
+                            <div class="graph-bar-sample amber" style="height:100%;"></div>
+                            <div class="graph-bar-sample amber" style="height:85%;"></div>
+                            <div class="graph-bar-sample amber" style="height:70%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 5: PROJECT 5 - MEDICART DASHBOARD
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-5">
+                <div class="project-pane-layout">
+                    <div class="project-details">
+                        <div class="project-pane-index">// BLUEPRINT 05 OF 05</div>
+                        <div class="pane-category">B2B SUPPLY CHAIN // PHARMACEUTICAL</div>
+                        <h2 class="pane-title">Medicart <br><span class="accent-gradient">B2B Dashboard</span></h2>
+                        <p class="pane-desc">
+                            High-throughput enterprise B2B pharmaceutical marketplace automating wholesale supplier ordering, automated batch tracking, barcode regulatory compliance, and multi-tier pharmacy logistics.
+                        </p>
+                        <div class="project-tech-pills">
+                            <span class="tech-pill">B2B Commerce</span>
+                            <span class="tech-pill">Inventory Automation</span>
+                            <span class="tech-pill">Batch Tracking</span>
+                            <span class="tech-pill">Enterprise UX</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/RootNode-Rebels/medicart-dashboard" target="_blank" class="glass-btn btn-cyan">
+                                <span>Source Code</span>
+                                <span>↗</span>
+                            </a>
+                            <button class="glass-btn btn-glass-outline" data-jump-pane="6">
+                                <span>About Syndicate</span>
+                                <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Telemetry Mockup Window -->
+                    <div class="project-glass-display">
+                        <div class="display-header">
+                            <div class="display-title">
+                                <span>💊</span> LOGISTICS PIPELINE
+                            </div>
+                            <span class="display-status">● DEPLOYED</span>
+                        </div>
+                        <div class="display-metrics-list">
+                            <div class="display-metric-row">
+                                <span class="row-label">WHOLESALE NETWORK</span>
+                                <span class="row-val" style="color:var(--accent-cyan);">340+ Pharmacies</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">BATCH VERIFICATION</span>
+                                <span class="row-val">100% Automated</span>
+                            </div>
+                            <div class="display-metric-row">
+                                <span class="row-label">FILL RATE RECORD</span>
+                                <span class="row-val" style="color:var(--accent-amber);">99.4% Success</span>
+                            </div>
+                        </div>
+                        <div class="display-live-graph">
+                            <div class="graph-bar-sample" style="height:70%;"></div>
+                            <div class="graph-bar-sample" style="height:90%;"></div>
+                            <div class="graph-bar-sample" style="height:80%;"></div>
+                            <div class="graph-bar-sample" style="height:100%;"></div>
+                            <div class="graph-bar-sample" style="height:85%;"></div>
+                            <div class="graph-bar-sample" style="height:95%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 6: ABOUT SECTION PANE
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-6">
+                <div class="about-pane-grid">
+                    <div>
+                        <div class="pane-category">THE REBELS COLLECTIVE</div>
+                        <h2 class="pane-title">Build. Solve. <span class="accent-gradient">Innovate.</span></h2>
+                        <p class="pane-desc" style="margin-bottom:24px;">
+                            <strong>RootNode Rebels</strong> is a technology solutions company dedicated to building scalable, secure, and uncompromising software systems. We engineer digital products from ground-up architecture to production deployment.
+                        </p>
+                    </div>
+
+                    <!-- Core Pillars Row -->
+                    <div class="about-pillars-row">
+                        <div class="pillar-glass-card">
+                            <div class="pillar-icon">⚙️</div>
+                            <h4>Clean Architecture</h4>
+                            <p>High-concurrency distributed systems with microsecond response times.</p>
+                        </div>
+                        <div class="pillar-glass-card">
+                            <div class="pillar-icon">🔐</div>
+                            <h4>Zero-Trust Security</h4>
+                            <p>Cryptographic system hardening, penetration testing, and audits.</p>
+                        </div>
+                        <div class="pillar-glass-card">
+                            <div class="pillar-icon">🌐</div>
+                            <h4>Spatial 3D Design</h4>
+                            <p>Hardware-accelerated WebGL user interfaces with stereoscopic depth.</p>
+                        </div>
+                    </div>
+
+                    <!-- Team Members Mini Grid -->
+                    <div>
+                        <h3 style="font-size:1.3rem; margin-bottom:14px; font-weight:700;">Executive Engineering Collective</h3>
+                        <div class="team-mini-grid">
+                            <a href="https://www.linkedin.com/in/developeradhi/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">A</div>
+                                <div class="member-info">
+                                    <h5>Adarsh B A</h5>
+                                    <p>Founder & CEO ↗</p>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/akashr24012007/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">A</div>
+                                <div class="member-info">
+                                    <h5>Akash R</h5>
+                                    <p>Co-Founder & CTO ↗</p>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/akash-p-46b66a386/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">A</div>
+                                <div class="member-info">
+                                    <h5>Akash P</h5>
+                                    <p>Marketing Lead & CFO ↗</p>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/jeevan-h-s-30b756386/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">J</div>
+                                <div class="member-info">
+                                    <h5>Jeevan H S</h5>
+                                    <p>Marketing Manager & COO ↗</p>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/akshath-ch-8a0b19384/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">A</div>
+                                <div class="member-info">
+                                    <h5>Akshath C H</h5>
+                                    <p>Co-Founder & CKO ↗</p>
+                                </div>
+                            </a>
+                            <a href="https://www.linkedin.com/in/prajval-r-shunty-139a47385/" target="_blank" class="team-glass-member">
+                                <div class="member-avatar">P</div>
+                                <div class="member-info">
+                                    <h5>Prajval R Shunty</h5>
+                                    <p>CIO & Lead Editor ↗</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================
+                 PANE 7: CONTACT SECTION PANE
+                 ======================================================== -->
+            <section class="glass-pane" id="pane-7">
+                <div class="contact-pane-layout">
+                    <div class="contact-info-col">
+                        <div class="pane-category amber">COMMUNICATIONS CONDUIT</div>
+                        <h2 class="pane-title">Establish <br><span class="accent-gradient">Connection</span></h2>
+                        <p class="pane-desc">
+                            Initiate a project proposal, request architectural consulting, or connect with our engineering collective directly.
+                        </p>
+
+                        <!-- Social Mesh List -->
+                        <div class="social-glass-list">
+                            <a href="https://github.com/RootNode-Rebels/" target="_blank" class="social-glass-item">
+                                <span style="font-size:1.3rem;">🐙</span>
+                                <div>
+                                    <h5 style="font-size:0.95rem;">GitHub Organization</h5>
+                                    <p style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Explore open source repositories</p>
+                                </div>
+                            </a>
+                            <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" class="social-glass-item">
+                                <span style="font-size:1.3rem;">💼</span>
+                                <div>
+                                    <h5 style="font-size:0.95rem;">LinkedIn Syndicate</h5>
+                                    <p style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Corporate & executive network</p>
+                                </div>
+                            </a>
+                            <a href="https://x.com/RootNode_Rebels/" target="_blank" class="social-glass-item">
+                                <span style="font-size:1.3rem;">🐦</span>
+                                <div>
+                                    <h5 style="font-size:0.95rem;">X (Twitter) Feed</h5>
+                                    <p style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Real-time announcements</p>
+                                </div>
+                            </a>
+                            <a href="https://instagram.com/rootnode_rebels/" target="_blank" class="social-glass-item">
+                                <span style="font-size:1.3rem;">📸</span>
+                                <div>
+                                    <h5 style="font-size:0.95rem;">Instagram Channel</h5>
+                                    <p style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">Culture, hackathons & updates</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Direct Message Glass Form -->
+                    <div style="background: rgba(8, 12, 18, 0.65); padding: 32px; border-radius: var(--radius-card); border: 1px solid var(--border-glass);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                            <h3 style="font-size:1.4rem; font-weight:700;">Transmit Message</h3>
+                            <span class="display-status">256-BIT ENCRYPTED</span>
+                        </div>
+
+                        <form id="contactForm" class="contact-form-glass">
+                            <div class="form-group">
+                                <label>// FULL NAME</label>
+                                <input type="text" name="Name" class="glass-input" placeholder="e.g. Satoshi Nakamoto" required>
+                            </div>
+                            <div class="form-group">
+                                <label>// CONTACT EMAIL</label>
+                                <input type="email" name="Email" class="glass-input" placeholder="satoshi@domain.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>// TECHNICAL REQUIREMENTS / MESSAGE</label>
+                                <textarea name="Message" class="glass-input" placeholder="Detail your project scope, timeline, or engineering inquiry..." required></textarea>
+                            </div>
+                            <button type="submit" class="glass-btn btn-cyan" style="width:100%; padding:15px;">
+                                <span>Encrypt & Transmit Payload</span>
+                                <span>⚡</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </main>
 
-    <!-- Futuristic Cyber Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3 class="gradient-text">RootNode Rebels</h3>
-                <p>
-                    Engineering the future of enterprise digital infrastructure, root by node. We design, build, and deploy software systems that endure.
-                </p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>NAVIGATION</h4>
-                <a href="#about">About Syndicate</a>
-                <a href="#services">Capabilities</a>
-                <a href="#terminal">Terminal CLI</a>
-                <a href="#projects">Blueprints</a>
-                <a href="#team">Collective</a>
-            </div>
-
-            <div class="footer-links">
-                <h4>SOCIAL MESH</h4>
-                <a href="https://github.com/RootNode-Rebels" target="_blank">GitHub Org</a>
-                <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank">LinkedIn Syndicate</a>
-                <a href="https://x.com/RootNode_Rebels/" target="_blank">X (Twitter) Feed</a>
-                <a href="https://instagram.com/rootnode_rebels/" target="_blank">Instagram Channel</a>
-            </div>
+    <!-- Bottom Stepper Dimension Indicator -->
+    <div class="bottom-stepper">
+        <button id="stepperPrev" class="stepper-btn" title="Previous Dimension Pane">←</button>
+        <div class="stepper-label">
+            <span id="stepperCurrent">01</span> / 08 • <span id="stepperTitle" style="color:var(--text-secondary); font-weight:normal;">Intro Dimension</span>
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2026 RootNode Rebels. All systems operational.</p>
-            <p>
-                Engineered with 3D WebGL • Secured by <span style="color:var(--accent-emerald);">RootNode Intelligence</span>
-            </p>
-        </div>
-    </footer>
+        <button id="stepperNext" class="stepper-btn" title="Next Dimension Pane">→</button>
+    </div>
 
-    <!-- Core Scripts -->
-    <script src="script.js?v=3.1"></script>
+    <!-- Core Script -->
+    <script src="script.js?v=4.0"></script>
 </body>
 </html>

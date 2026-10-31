@@ -10,65 +10,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css?v=3.1">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=4.0">
 </head>
 <body>
 
-    <!-- 3D Perspective Cyber Grid Floor -->
-    <div class="cyber-grid-floor"></div>
+    <!-- Ambient Cyan & Amber Refractive Accent Lights -->
+    <div class="ambient-lights">
+        <div class="ambient-light-cyan"></div>
+        <div class="ambient-light-amber"></div>
+    </div>
     <div class="noise-overlay"></div>
 
-    <!-- Ambient Glowing Orbs -->
-    <div class="ambient-glows">
-        <div class="ambient-orb ambient-orb-1"></div>
-        <div class="ambient-orb ambient-orb-2"></div>
-    </div>
-
-    <!-- Navigation Bar -->
+    <!-- Top Navigation Bar -->
     <header class="nav-container">
         <nav class="navbar" style="max-width: 600px;">
             <a href="/" class="logo">
-                <div class="logo-cube"></div>
+                <div class="logo-prism"></div>
                 <div class="logo-text">RootNode <span>Rebels</span></div>
             </a>
             <div class="nav-links">
-                <a href="/">Return to Root Node</a>
+                <a href="/" class="nav-item">Return to Root Node</a>
             </div>
         </nav>
     </header>
 
-    <!-- 404 Hero Section -->
-    <main class="hero" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;">
-        <div class="bento-card-3d fade-in-up" style="max-width: 580px; padding: 60px 40px; margin: 0 auto;">
-            <div class="card-glare"></div>
-            <div class="layer-high">
-                <div class="badge-pill" style="margin-bottom: 20px;">
-                    <span class="pulse-beacon" style="background: #ef4444;"></span>
-                    <span style="color: #ef4444;">404 // NETWORK EXCEPTION</span>
-                </div>
-                <h1 class="gradient-text" style="font-size: clamp(5rem, 12vw, 8rem); font-weight: 800; line-height: 1; margin-bottom: 10px;">
-                    404
-                </h1>
-                <h2 style="font-size: 1.8rem; margin-bottom: 16px; color: var(--text-primary);">Node Not Found</h2>
-                <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 36px; line-height: 1.6;">
-                    The digital pathway you requested does not exist on our server cluster or has been rerouted to an encrypted node.
-                </p>
-                <a href="/" class="btn btn-primary" style="padding: 14px 32px;">
-                    <span>Return to Root Node</span>
-                    <span>↗</span>
-                </a>
+    <!-- 404 Frosted Glass Stage -->
+    <main class="glass-viewport">
+        <div class="glass-pane is-active" style="max-width: 620px; text-align: center; padding: 60px 40px;">
+            <div class="pane-category amber" style="margin-bottom: 20px;">
+                <span>⚠️</span> 404 // NETWORK EXCEPTION
             </div>
+            <h1 class="accent-gradient" style="font-size: clamp(5rem, 12vw, 8rem); font-weight: 800; line-height: 1; margin-bottom: 12px;">
+                404
+            </h1>
+            <h2 style="font-size: 1.8rem; margin-bottom: 16px; color: var(--text-primary);">Node Dimension Disconnected</h2>
+            <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 36px; line-height: 1.6;">
+                The spatial coordinates you requested do not exist on our server cluster or have been rerouted to an encrypted node.
+            </p>
+            <a href="/" class="glass-btn btn-cyan" style="padding: 14px 34px;">
+                <span>Return to Root Node</span>
+                <span>↗</span>
+            </a>
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fadeElements = document.querySelectorAll('.fade-in-up');
-            fadeElements.forEach(el => {
-                setTimeout(() => el.classList.add('visible'), 100);
-            });
-        });
-    </script>
 </body>
 </html>
