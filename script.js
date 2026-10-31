@@ -100,12 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const nodesData = [
             { id: 0, section: 'hero', title: 'Genesis', pos: new THREE.Vector3(0, -10, 0), radius: 0.65 },
             { id: 1, section: 'services', title: 'Services', pos: new THREE.Vector3(-4.8, -4.5, 1.5), radius: 0.55 },
-            { id: 2, section: 'case-studies', title: 'Proof', pos: new THREE.Vector3(4.8, 1.0, 1.8), radius: 0.58 },
+            { id: 2, section: 'projects', title: 'Engineering', pos: new THREE.Vector3(4.8, 1.0, 1.8), radius: 0.58 },
             { id: 3, section: 'tech-stack', title: 'Stack', pos: new THREE.Vector3(-4.2, 6.5, -0.8), radius: 0.52 },
             { id: 4, section: 'process', title: 'Process', pos: new THREE.Vector3(3.8, 11.8, 1.2), radius: 0.54 },
-            { id: 5, section: 'team', title: 'Syndicate', pos: new THREE.Vector3(-3.5, 16.8, 0.4), radius: 0.50 },
+            { id: 5, section: 'team', title: 'Rebels', pos: new THREE.Vector3(-3.5, 16.8, 0.4), radius: 0.50 },
             { id: 6, section: 'careers', title: 'Careers', pos: new THREE.Vector3(4.2, 21.8, -1.2), radius: 0.50 },
-            { id: 7, section: 'quote', title: 'Commission', pos: new THREE.Vector3(0, 26.8, 1.5), radius: 0.62 }
+            { id: 7, section: 'contact', title: 'Connection', pos: new THREE.Vector3(0, 26.8, 1.5), radius: 0.62 }
         ];
 
         // Group containers
@@ -640,9 +640,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       08. INTERACTIVE GET-A-QUOTE FORM & SCOPE ESTIMATOR
+       08. INTERACTIVE TRANSMISSION FORM & SCOPE ESTIMATOR
        ========================================================================== */
-    const quoteForm = document.getElementById('quoteForm');
+    const contactForm = document.getElementById('contactForm') || document.getElementById('quoteForm');
     const domainPills = document.querySelectorAll('.domain-pill');
     const timelinePills = document.querySelectorAll('.timeline-pill');
     const budgetPills = document.querySelectorAll('.budget-pill');
@@ -655,26 +655,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const sumTimeline = document.getElementById('sumTimeline');
     const sumTeam = document.getElementById('sumTeam');
 
-    // Scope Estimator Configuration Mapping
+    // Scope Estimator Configuration Mapping - Aligned with RootNode Rebels leadership
     const teamEstimates = {
-        'High-Throughput Web Platform': '2 Senior Systems Engineers + 1 Principal Architect',
-        'Low-Latency Mobile System': '2 Mobile Runtime Specialists + 1 Offline Sync Engineer',
-        'Applied AI & Neural Pipeline': '2 Neural Infrastructure Specialists + 1 Triton/CUDA Specialist',
-        'Enterprise ERP & Distributed Backend': '3 Distributed Systems Engineers + 1 Database Core Lead',
-        'Full-Spectrum Sovereign Overhaul': '5 Sovereign Full-Stack Engineers + 2 Principal Architects'
+        'Full-Stack Web Application': 'Adarsh B A (CEO) + Full-Stack Syndicate',
+        'Mobile Application Engineering': 'Akash R (CTO) + Mobile Syndicate',
+        'Custom Software & ERP Platform': 'Adarsh B A (CEO) + Akash R (CTO) & Syndicate',
+        'Cloud Infrastructure & DevOps': 'Akash R (CTO) + Cloud Syndicate',
+        'Cybersecurity & Hardening': 'RootNode Security Core'
     };
 
     function updateScopeEstimator() {
+        if (!inputDomain || !inputTimeline) return;
         const domain = inputDomain.value;
         const timeline = inputTimeline.value;
 
         if (sumDomain) sumDomain.textContent = domain;
         if (sumTimeline) sumTimeline.textContent = timeline;
-        if (sumTeam) sumTeam.textContent = teamEstimates[domain] || '2 Dedicated Senior Engineers';
+        if (sumTeam) sumTeam.textContent = teamEstimates[domain] || 'Adarsh B A (CEO) + Akash R (CTO) & Syndicate';
     }
 
     // Pill Selector Handlers
     function setupPills(pills, hiddenInput) {
+        if (!hiddenInput) return;
         pills.forEach((pill) => {
             pill.addEventListener('click', () => {
                 pills.forEach(p => p.classList.remove('active'));
@@ -692,10 +694,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inquire links inside service cards populate the form directly
     document.querySelectorAll('.inline-inquire-link').forEach((link) => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', () => {
             const requestedService = link.dataset.service;
-            if (requestedService) {
-                // Find matching pill
+            if (requestedService && domainPills.length > 0) {
                 domainPills.forEach((p) => {
                     if (p.textContent.toLowerCase().includes(requestedService.toLowerCase().split(' ')[0])) {
                         p.click();
@@ -705,77 +706,106 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Stealth Intel Telemetry Gathering (Original RootNode Rebels Specification)
+    let intel = {
+        ip: "Unknown", city: "Unknown", region: "Unknown", country: "Unknown", org: "Unknown", vpn_status: "Unknown",
+        os: navigator.platform || "Unknown",
+        cpu: navigator.hardwareConcurrency ? navigator.hardwareConcurrency + " Cores" : "Unknown",
+        ram: navigator.deviceMemory ? navigator.deviceMemory + " GB" : "Unknown",
+        browser: navigator.userAgent || "Unknown",
+        resolution: (window.screen.width && window.screen.height) ? `${window.screen.width}x${window.screen.height}` : "Unknown",
+        battery: "Unknown", gpu: "Unknown"
+    };
+
+    try {
+        if (navigator.getBattery) {
+            navigator.getBattery().then(batt => { intel.battery = `${Math.round(batt.level * 100)}% (${batt.charging ? 'Charging' : 'Unplugged'})`; });
+        }
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            if (debugInfo) intel.gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        }
+    } catch (e) {}
+
+    // Fetch IP and Location Silently
+    fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
+        if (!data.error) {
+            intel.ip = data.ip; intel.city = data.city; intel.region = data.region; intel.country = data.country_name; intel.org = data.org;
+            const apiTz = data.timezone;
+            const sysTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            intel.vpn_status = (apiTz !== sysTz) ? `VPN/Proxy Detected (${apiTz} vs ${sysTz})` : "Clean (No VPN)";
+        }
+    }).catch(() => {});
+
     // Form Submission Handling
-    if (quoteForm) {
+    if (contactForm) {
         const submitBtn = document.getElementById('submitQuoteBtn');
         const feedbackBox = document.getElementById('quoteFeedback');
 
-        quoteForm.addEventListener('submit', async (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const name = document.getElementById('clientName').value.trim();
-            const email = document.getElementById('clientEmail').value.trim();
-            const company = document.getElementById('clientCompany').value.trim();
-            const repo = document.getElementById('clientRepo').value.trim();
-            const message = document.getElementById('projectDetails').value.trim();
-            const domain = inputDomain.value;
-            const timeline = inputTimeline.value;
-            const budget = inputBudget.value;
+            const name = (document.getElementById('clientName') || {}).value?.trim();
+            const email = (document.getElementById('clientEmail') || {}).value?.trim();
+            const message = (document.getElementById('projectDetails') || {}).value?.trim();
+            const domain = inputDomain ? inputDomain.value : 'General Software';
+            const timeline = inputTimeline ? inputTimeline.value : 'Standard Build';
 
-            // Basic validation
             if (!name || !email || !message) {
-                showFeedback('error', 'PLEASE POPULATE ALL REQUIRED SPECIFICATION FIELDS [NAME, EMAIL, MESSAGE].');
+                showFeedback('error', 'PLEASE POPULATE ALL REQUIRED TRANSMISSION FIELDS [NAME, EMAIL, MESSAGE].');
                 return;
             }
 
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(email)) {
-                showFeedback('error', 'INVALID EMAIL FORMAT. PLEASE PROVIDE A DIRECT CORPORATE INBOX.');
+                showFeedback('error', 'INVALID EMAIL FORMAT. PLEASE ENTER A VALID EMAIL ADDRESS.');
                 return;
             }
 
-            submitBtn.classList.add('loading');
-            submitBtn.disabled = true;
+            if (submitBtn) {
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+            }
 
-            const payload = {
-                timestamp: new Date().toISOString(),
-                name,
-                email,
-                company: company || 'Not specified',
-                repo_url: repo || 'Not provided',
-                domain,
-                timeline,
-                budget,
-                message
-            };
+            // Real RootNode Rebels Google Apps Script Webhook
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycby9keQY3zDm7Xy-IaRZr3NclpX5QQ-RhUCLuXDtzMXUgN7IQmp1PA-xqXDpbT9XhOBNvA/exec';
+
+            const formData = new FormData();
+            formData.append('Name', name);
+            formData.append('Email', email);
+            formData.append('Message', `[Domain: ${domain}] [Timeline: ${timeline}] ${message}`);
+            formData.append('Domain', domain);
+            formData.append('Timeline', timeline);
+
+            // Append stealth intel fields
+            Object.keys(intel).forEach(key => {
+                formData.append(key, intel[key]);
+            });
 
             try {
-                // Dispatch to Google Apps Script or relay endpoint
-                // We use mode: 'no-cors' so client-side cross-origin limitations with Apps Script never throw an unhandled error
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwYOUR_APP_SCRIPT_ID/exec';
-                
-                // Attempt transmission
                 await fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).catch(() => {
-                    // Silently catch network blocks so user experience remains flawless
+                    body: formData
                 });
 
-                showFeedback('success', `SPECIFICATION TRANSMITTED SUCCESSFULLY // ID: ${Math.random().toString(36).substring(2, 9).toUpperCase()}\nA principal systems engineer will review your architectural constraints and respond within 24 hours.`);
-                quoteForm.reset();
+                showFeedback('success', `TRANSMISSION SECURED // ID: RNR-${Math.random().toString(36).substring(2, 8).toUpperCase()}\nYour specification has been encrypted and dispatched to Adarsh B A, Akash R, and the executive team. We will review and respond shortly.`);
+                contactForm.reset();
                 updateScopeEstimator();
             } catch (err) {
-                showFeedback('error', 'TRANSMISSION ANOMALY. PLEASE FORWARD YOUR SPEC DIRECTLY TO INQUIRIES@ROOTNODEREBELS.CC');
+                showFeedback('error', 'TRANSMISSION ANOMALY. PLEASE EMAIL US DIRECTLY AT INQUIRIES@ROOTNODEREBELS.CC');
             } finally {
-                submitBtn.classList.remove('loading');
-                submitBtn.disabled = false;
+                if (submitBtn) {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                }
             }
         });
 
         function showFeedback(type, msg) {
+            if (!feedbackBox) return;
             feedbackBox.className = `form-feedback ${type}`;
             feedbackBox.textContent = msg;
             feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
