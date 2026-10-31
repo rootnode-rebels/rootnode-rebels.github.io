@@ -3,450 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RootNode Rebels | Low-Poly 3D Floating Island City</title>
+    <title>RootNode Rebels | Neighborhood Bakery & Café Diorama</title>
     
     <!-- Meta & SEO Optimization -->
-    <meta name="description" content="RootNode Rebels is an elite software engineering collective presented as a tiny low-poly isometric 3D city on a floating island during a warm sunset.">
-    <meta name="keywords" content="RootNode Rebels, 3D Low-Poly City, Three.js, Isometric Floating Island, Software Engineering, Adarsh B A, Portfolio, ERP Systems">
+    <meta name="description" content="A warm 3D tilt-shift neighborhood bakery and café. Watch bread delivery bikes, pedestrians, and cozy evening lights turn on as you explore today's fresh bake menu and catering.">
+    <meta name="keywords" content="RootNode Rebels, Bakery, Cafe, 3D Tilt Shift, Sourdough, Artisanal Bread, Coffee, Three.js, Neighborhood Street">
     <meta name="author" content="RootNode Rebels">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rootnode-rebels.github.io/">
-    <meta name="theme-color" content="#f97316">
+    <meta name="theme-color" content="#991b1b">
 
-    <!-- Open Graph / Social Cards -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rootnode-rebels.github.io/">
-    <meta property="og:title" content="RootNode Rebels | Low-Poly 3D Floating Island City">
-    <meta property="og:description" content="Explore our tiny isometric 3D city on a floating island during a golden sunset. Each building reveals our portfolio, blog, store, and contact HQ.">
-    <meta property="og:image" content="https://rootnode-rebels.github.io/og-image.png">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Cache-Control Meta Tags to prevent stale browser caches -->
+    <!-- Cache-Control Meta Tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
+    <!-- Hand-Painted Sign & Friendly Rounded Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&family=Shrikhand&display=swap" rel="stylesheet">
+
     <!-- Stylesheet with Cache Buster -->
-    <link rel="stylesheet" href="style.css?v=5.1">
+    <link rel="stylesheet" href="style.css?v=6.0">
 
     <!-- Three.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <!-- WebGL Three.js Canvas -->
+    <!-- WebGL Three.js Tilt-Shift Street Canvas -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- Warm Sunset Horizon & Atmosphere Overlays -->
-    <div class="sunset-glow-overlay"></div>
-    <div class="noise-overlay"></div>
+    <!-- Tilt-Shift Macro Lens Optical Blurs (Top & Bottom) -->
+    <div class="tilt-shift-blur-top"></div>
+    <div class="tilt-shift-blur-bottom"></div>
 
-    <!-- Top Minimal Glass Navigation Bar -->
-    <header class="nav-container">
-        <nav class="navbar">
-            <a href="/" class="logo">
-                <div class="logo-icon-island"></div>
-                <div class="logo-title">RootNode <span>Rebels</span></div>
+    <!-- Evening Dusk Vignette (Deepens as user scrolls) -->
+    <div class="evening-vignette" id="eveningVignette"></div>
+
+    <!-- Top Artisan Hand-Painted Signboard Bar -->
+    <header class="top-bar-container">
+        <nav class="signboard-navbar">
+            <a href="/" class="brand-sign">
+                <div class="croissant-badge">🥐</div>
+                <div class="brand-text">
+                    <h1>RootNode Rebels</h1>
+                    <p>Neighborhood Bakery & Hearth Kitchen</p>
+                </div>
             </a>
 
-            <!-- Quick District Navigation Pills -->
-            <div class="district-nav-pills">
-                <button class="district-pill" data-building="workshop">
-                    <span>⚒️</span> Workshop (Portfolio)
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <button class="sign-btn btn-open-door trigger-open-menu" title="Click café door to view menu">
+                    <span>🚪</span> Push Café Door
                 </button>
-                <button class="district-pill" data-building="library">
-                    <span>📚</span> Library (Blog)
+                <button class="sign-btn trigger-open-menu" data-target-tab="catering">
+                    <span>🥖</span> Catering Box
                 </button>
-                <button class="district-pill" data-building="shop">
-                    <span>🏪</span> Shop (Store)
-                </button>
-                <button class="district-pill" data-building="tower">
-                    <span>🗼</span> Tower (Contact)
+                <button id="soundToggle" class="audio-toggle-btn" title="Toggle Shop Doorbell Sound">
+                    <span>🔔</span> Bell: ON
                 </button>
             </div>
-
-            <!-- Audio FX Toggle -->
-            <button id="soundToggle" class="audio-toggle-btn" title="Toggle Synthesized Audio FX">
-                <span>🔇</span> Sound: OFF
-            </button>
         </nav>
     </header>
 
-    <!-- Building 3D Hover Badge Tooltip -->
-    <div class="building-hover-badge" id="hoverBadge">
-        <div class="hover-badge-card">
-            <span class="hover-badge-icon" id="badgeIcon">⚒️</span>
-            <div>
-                <div class="hover-badge-name" id="badgeName">The Workshop</div>
-                <div class="hover-badge-category" id="badgeCategory">Portfolio Blueprints</div>
-            </div>
+    <!-- Hover Tooltip pinned to Café Door in 3D -->
+    <div class="door-hover-tooltip" id="doorTooltip">
+        <div class="tooltip-chalkboard">
+            <span>🚪 Push Door to Step Inside & View Menu ☕</span>
         </div>
-        <div class="hover-badge-arrow"></div>
     </div>
 
-    <!-- Bottom City Controls Guide -->
-    <footer class="bottom-guide">
-        <div class="guide-pill-item">
-            <span class="guide-key">Drag</span>
-            <span>Orbit Island</span>
-        </div>
+    <!-- Floating Sidewalk Chalkboard Prompt -->
+    <aside class="street-click-prompt">
+        <span>🥖 <em>"Ovens fired at 4:30 AM"</em></span>
         <span>•</span>
-        <div class="guide-pill-item">
-            <span class="guide-key">Click Building</span>
-            <span>Zoom In</span>
-        </div>
+        <span class="chalk-highlight trigger-open-menu" style="cursor:pointer; text-decoration:underline;">Click Café Door to Open Menu</span>
         <span>•</span>
-        <div class="guide-pill-item">
-            <span class="guide-key">ESC</span>
-            <span>Return</span>
-        </div>
-        <button id="guideResetBtn" class="guide-reset-btn">Reset View</button>
-    </footer>
-
-    <!-- Slide-in Frosted Content Drawer -->
-    <div class="content-drawer-backdrop" id="drawerBackdrop"></div>
-    <aside class="content-drawer" id="contentDrawer" aria-label="Building Content Details">
-        
-        <!-- Drawer Header -->
-        <div class="drawer-header">
-            <div class="drawer-tag" id="drawerTag">
-                <span>⚡</span> WORKSHOP // PORTFOLIO
-            </div>
-            <button class="drawer-close-btn" id="drawerCloseBtn" title="Return to Floating Island">✕</button>
-        </div>
-
-        <!-- Drawer Body -->
-        <div class="drawer-body">
-            <h2 class="drawer-title" id="drawerTitle">Engineering Blueprints</h2>
-            <p class="drawer-subtitle" id="drawerSubtitle">
-                Explore our flagship enterprise architectures, source code repositories, and production systems.
-            </p>
-
-            <!-- ==========================================================
-                 DRAWER SECTION 1: WORKSHOP (PORTFOLIO PROJECTS)
-                 ========================================================== -->
-            <div class="drawer-content-section" data-section="workshop">
-                <div class="projects-stack-list">
-                    <!-- Project 1 -->
-                    <div class="project-item-card">
-                        <div class="project-card-top">
-                            <h3 class="project-name">🎓 Sri Basaveswara School ERP</h3>
-                            <span class="project-status-pill">● PRODUCTION</span>
-                        </div>
-                        <p class="project-desc">
-                            A comprehensive School Resource Planning ecosystem automating massive student data pipelines, academic reporting, and real-time administrative analytics.
-                        </p>
-                        <div class="project-tech-tags">
-                            <span class="project-tech-tag">Full-Stack ERP</span>
-                            <span class="project-tech-tag">PostgreSQL</span>
-                            <span class="project-tech-tag">Data Pipelines</span>
-                            <span class="project-tech-tag">Analytics</span>
-                        </div>
-                        <a href="https://github.com/RootNode-Rebels/sribasaveswaraschool" target="_blank" class="btn-project-link">
-                            <span>Source Code</span>
-                            <span>↗</span>
-                        </a>
-                    </div>
-
-                    <!-- Project 2 -->
-                    <div class="project-item-card">
-                        <div class="project-card-top">
-                            <h3 class="project-name">🛒 Smart Trolley Commerce App</h3>
-                            <span class="project-status-pill">● ACTIVE DEV</span>
-                        </div>
-                        <p class="project-desc">
-                            Next-generation retail logistics platform designed to modernize in-store shopping with automated RFID cart scanning, instant checkout, and real-time inventory telemetry.
-                        </p>
-                        <div class="project-tech-tags">
-                            <span class="project-tech-tag">Mobile Architecture</span>
-                            <span class="project-tech-tag">IoT Sync</span>
-                            <span class="project-tech-tag">RFID Telemetry</span>
-                            <span class="project-tech-tag">Smart Retail</span>
-                        </div>
-                        <a href="https://github.com/RootNode-Rebels/smarttrolleyapp" target="_blank" class="btn-project-link">
-                            <span>Source Code</span>
-                            <span>↗</span>
-                        </a>
-                    </div>
-
-                    <!-- Project 3 -->
-                    <div class="project-item-card">
-                        <div class="project-card-top">
-                            <h3 class="project-name">🗳️ Online Voting Infrastructure</h3>
-                            <span class="project-status-pill">● VERIFIED</span>
-                        </div>
-                        <p class="project-desc">
-                            Cryptographically verified, tamper-proof ballot network designed for high-concurrency democratic elections with mathematical transparency and zero-knowledge voter privacy.
-                        </p>
-                        <div class="project-tech-tags">
-                            <span class="project-tech-tag">Cryptography</span>
-                            <span class="project-tech-tag">Zero-Knowledge</span>
-                            <span class="project-tech-tag">Tamper-Proof</span>
-                            <span class="project-tech-tag">Consensus</span>
-                        </div>
-                        <a href="https://github.com/RootNode-Rebels/onlinevotingsystem" target="_blank" class="btn-project-link">
-                            <span>Source Code</span>
-                            <span>↗</span>
-                        </a>
-                    </div>
-
-                    <!-- Project 4 -->
-                    <div class="project-item-card">
-                        <div class="project-card-top">
-                            <h3 class="project-name">🏥 Aegis Health Telemetry Hub</h3>
-                            <span class="project-status-pill">● LIVE STREAM</span>
-                        </div>
-                        <p class="project-desc">
-                            Real-time healthcare telemetry streaming platform engineered for automated vital sign analysis, algorithmic anomaly detection, low-latency WebSocket streams, and urgent triage notifications.
-                        </p>
-                        <div class="project-tech-tags">
-                            <span class="project-tech-tag">WebSockets</span>
-                            <span class="project-tech-tag">Health Telemetry</span>
-                            <span class="project-tech-tag">Signal Processing</span>
-                            <span class="project-tech-tag">Data Streaming</span>
-                        </div>
-                        <a href="https://github.com/RootNode-Rebels/Aegis-Health-Monitor" target="_blank" class="btn-project-link">
-                            <span>Source Code</span>
-                            <span>↗</span>
-                        </a>
-                    </div>
-
-                    <!-- Project 5 -->
-                    <div class="project-item-card">
-                        <div class="project-card-top">
-                            <h3 class="project-name">💊 Medicart B2B Dashboard</h3>
-                            <span class="project-status-pill">● DEPLOYED</span>
-                        </div>
-                        <p class="project-desc">
-                            High-throughput enterprise B2B pharmaceutical marketplace automating wholesale supplier ordering, warehouse inventory tracking, barcode compliance, and pharmacy logistics.
-                        </p>
-                        <div class="project-tech-tags">
-                            <span class="project-tech-tag">B2B Commerce</span>
-                            <span class="project-tech-tag">Inventory Automation</span>
-                            <span class="project-tech-tag">Batch Tracking</span>
-                            <span class="project-tech-tag">Admin UI</span>
-                        </div>
-                        <a href="https://github.com/RootNode-Rebels/medicart-dashboard" target="_blank" class="btn-project-link">
-                            <span>Source Code</span>
-                            <span>↗</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ==========================================================
-                 DRAWER SECTION 2: LIBRARY (BLOG & KNOWLEDGE BASE)
-                 ========================================================== -->
-            <div class="drawer-content-section" data-section="library" style="display:none;">
-                <div class="blog-articles-list">
-                    <article class="blog-card">
-                        <div class="blog-meta">
-                            <span>ARCHITECTURE NOTE #01</span>
-                            <span>•</span>
-                            <span>5 MIN READ</span>
-                        </div>
-                        <h3 class="blog-title">Engineering Scalable Microservices from Ground Zero</h3>
-                        <p class="blog-excerpt">
-                            How we architect high-concurrency systems to withstand unpredictable traffic spikes. Deconstructing service boundaries, event-driven message brokers, and horizontal auto-scaling patterns.
-                        </p>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-meta">
-                            <span>SECURITY BLUEPRINT #02</span>
-                            <span>•</span>
-                            <span>7 MIN READ</span>
-                        </div>
-                        <h3 class="blog-title">Zero-Trust Paradigms: Hardening Modern Production Environments</h3>
-                        <p class="blog-excerpt">
-                            Moving beyond perimeter-based defenses. Implementing mutual TLS, cryptographically signed JWT service claims, and proactive automated vulnerability audits across distributed networks.
-                        </p>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-meta">
-                            <span>WEBGL & GRAPHICS #03</span>
-                            <span>•</span>
-                            <span>6 MIN READ</span>
-                        </div>
-                        <h3 class="blog-title">Interactive 3D on the Web: Real-Time Performance & Shaders</h3>
-                        <p class="blog-excerpt">
-                            Balancing procedural low-poly geometry, draw call batches, and dynamic lighting pipelines in Three.js for silky 60fps experiences across desktop and mobile devices.
-                        </p>
-                    </article>
-
-                    <article class="blog-card">
-                        <div class="blog-meta">
-                            <span>DEVOPS & CLOUD #04</span>
-                            <span>•</span>
-                            <span>4 MIN READ</span>
-                        </div>
-                        <h3 class="blog-title">Autonomous GitOps Pipelines: Continuous Delivery with Zero Downtime</h3>
-                        <p class="blog-excerpt">
-                            Declarative infrastructure management using Kubernetes, Docker container registries, and automated canary deployments for seamless enterprise releases.
-                        </p>
-                    </article>
-                </div>
-            </div>
-
-            <!-- ==========================================================
-                 DRAWER SECTION 3: SHOP (STORE & CAPABILITIES)
-                 ========================================================== -->
-            <div class="drawer-content-section" data-section="shop" style="display:none;">
-                <div class="store-services-grid">
-                    <div class="store-item-card">
-                        <div class="store-icon-box">⚙️</div>
-                        <div class="store-info">
-                            <h4>Bespoke Software Architecture</h4>
-                            <p>Tailored backend systems and high-throughput microservices engineered for extreme resilience and zero latency.</p>
-                            <span class="store-badge">Enterprise Contract</span>
-                        </div>
-                    </div>
-
-                    <div class="store-item-card">
-                        <div class="store-icon-box">🌐</div>
-                        <div class="store-info">
-                            <h4>Full-Stack Web & Mobile Apps</h4>
-                            <p>Modern applications designed with reactive frameworks, cross-platform mobile runtimes, and real-time syncing.</p>
-                            <span class="store-badge">Production Ready</span>
-                        </div>
-                    </div>
-
-                    <div class="store-item-card">
-                        <div class="store-icon-box">☁️</div>
-                        <div class="store-info">
-                            <h4>Cloud Infrastructure & DevOps</h4>
-                            <p>Automated CI/CD pipelines, Kubernetes cluster orchestration, and zero-downtime cloud migration strategies.</p>
-                            <span class="store-badge">Cloud Architecture</span>
-                        </div>
-                    </div>
-
-                    <div class="store-item-card">
-                        <div class="store-icon-box">🎨</div>
-                        <div class="store-info">
-                            <h4>UI/UX & Interactive 3D WebGL</h4>
-                            <p>Award-winning digital experiences, bespoke 3D WebGL shaders, and high-conversion tactile user interfaces.</p>
-                            <span class="store-badge">Spatial Design</span>
-                        </div>
-                    </div>
-
-                    <div class="store-item-card">
-                        <div class="store-icon-box">🔐</div>
-                        <div class="store-info">
-                            <h4>Cybersecurity Audits & Penetration Testing</h4>
-                            <p>Rigorous vulnerability assessments, cryptographic validation, and zero-trust security architecture certification.</p>
-                            <span class="store-badge">Security Audit</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ==========================================================
-                 DRAWER SECTION 4: TOWER (CONTACT HQ & TEAM)
-                 ========================================================== -->
-            <div class="drawer-content-section" data-section="tower" style="display:none;">
-                <div class="tower-content-layout">
-                    <!-- Executive Team Grid -->
-                    <div>
-                        <h3 style="font-size:1.2rem; margin-bottom:14px; font-weight:700;">Executive Engineering Collective</h3>
-                        <div class="tower-team-grid">
-                            <a href="https://www.linkedin.com/in/developeradhi/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">A</div>
-                                <div class="team-meta">
-                                    <h5>Adarsh B A</h5>
-                                    <p>Founder & CEO ↗</p>
-                                </div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/akashr24012007/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">A</div>
-                                <div class="team-meta">
-                                    <h5>Akash R</h5>
-                                    <p>Co-Founder & CTO ↗</p>
-                                </div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/akash-p-46b66a386/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">A</div>
-                                <div class="team-meta">
-                                    <h5>Akash P</h5>
-                                    <p>Marketing Lead & CFO ↗</p>
-                                </div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/jeevan-h-s-30b756386/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">J</div>
-                                <div class="team-meta">
-                                    <h5>Jeevan H S</h5>
-                                    <p>Marketing Manager & COO ↗</p>
-                                </div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/akshath-ch-8a0b19384/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">A</div>
-                                <div class="team-meta">
-                                    <h5>Akshath C H</h5>
-                                    <p>Co-Founder & CKO ↗</p>
-                                </div>
-                            </a>
-                            <a href="https://www.linkedin.com/in/prajval-r-shunty-139a47385/" target="_blank" class="team-pill-card">
-                                <div class="team-avatar-cube">P</div>
-                                <div class="team-meta">
-                                    <h5>Prajval R Shunty</h5>
-                                    <p>CIO & Lead Editor ↗</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Direct Transmission Form -->
-                    <div class="tower-form-box">
-                        <h3 style="font-size:1.3rem; margin-bottom:16px; font-weight:700;">Transmit Direct Inquiry</h3>
-                        <form id="contactForm">
-                            <div class="form-group">
-                                <label>// FULL NAME</label>
-                                <input type="text" name="Name" class="form-input" placeholder="e.g. Satoshi Nakamoto" required>
-                            </div>
-                            <div class="form-group">
-                                <label>// CONTACT EMAIL</label>
-                                <input type="email" name="Email" class="form-input" placeholder="satoshi@domain.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label>// PROJECT BRIEF / TECHNICAL MESSAGE</label>
-                                <textarea name="Message" class="form-input" placeholder="Tell us about your project, timeline, or engineering goals..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn-submit-transmission">
-                                <span>Transmit Message to Citadel</span>
-                                <span>⚡</span>
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Social Mesh Links -->
-                    <div>
-                        <h4 style="font-size:0.9rem; margin-bottom:10px; color:var(--text-dim); font-family:var(--font-mono);">SOCIAL MATRIX</h4>
-                        <div class="social-links-row">
-                            <a href="https://github.com/RootNode-Rebels/" target="_blank" class="social-pill-link">
-                                <span>🐙</span> GitHub
-                            </a>
-                            <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" class="social-pill-link">
-                                <span>💼</span> LinkedIn
-                            </a>
-                            <a href="https://x.com/RootNode_Rebels/" target="_blank" class="social-pill-link">
-                                <span>🐦</span> X (Twitter)
-                            </a>
-                            <a href="https://instagram.com/rootnode_rebels/" target="_blank" class="social-pill-link">
-                                <span>📸</span> Instagram
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <span>🚲 Bread Bike En Route</span>
     </aside>
 
+    <!-- Time-of-Day Scroll / Slider Control Widget -->
+    <div class="time-slider-widget">
+        <div id="timeLabel" style="font-weight:700;">☀️ 2:30 PM (Sunlit Afternoon)</div>
+        <input type="range" id="timeSlider" min="0" max="1" step="0.01" value="0" title="Scroll or slide to shift street into cozy evening">
+        <span style="font-size:0.75rem; color:var(--warm-brown);">Scroll page to turn on lights</span>
+    </div>
+
+    <!-- ==========================================================================
+         Slide-in / Pop-up Café Board (Menu, Opening Hours, Catering)
+         ========================================================================== -->
+    <div class="cafe-modal-backdrop" id="cafeModalBackdrop"></div>
+
+    <main class="cafe-modal-board" id="cafeModalBoard" aria-label="Café Menu and Information Board">
+        <!-- Wooden Chalkboard Header with Tabs -->
+        <div class="board-header">
+            <div class="board-tabs">
+                <button class="board-tab-btn active" data-tab="menu">☕ Today's Hearth Menu</button>
+                <button class="board-tab-btn" data-tab="hours">🕒 Opening Hours & Visit</button>
+                <button class="board-tab-btn" data-tab="catering">🥖 Catering & Gatherings</button>
+            </div>
+            <button class="board-close-btn" id="boardCloseBtn" title="Step Back to Neighborhood Street">✕</button>
+        </div>
+
+        <!-- Scrollable Chalkboard Body -->
+        <div class="board-scroll-content">
+            
+            <!-- Friendly Owner Greeting -->
+            <h2 class="chalk-sign-title">Welcome inside, neighbor!</h2>
+            <p class="chalk-greeting-text">
+                "Grab a wooden stool by the front window. The afternoon sun hits the cobblestones just right, the espresso grinder is buzzing, and the sourdough loaves just came out of the back oven—careful, they’re still singing with steam."
+            </p>
+
+            <!-- Window Sticker: Opening Hours (Taped on the glass) -->
+            <div class="window-sticker-card">
+                <div class="sticker-tape"></div>
+                <h3 class="sticker-header">★ ROOTNODE HEARTH BAKERY — HOURS ★</h3>
+                <div class="sticker-hours-grid">
+                    <div class="hours-row">
+                        <span>Tuesday – Friday</span>
+                        <span>7:00 AM – 6:00 PM</span>
+                    </div>
+                    <div class="hours-row weekend">
+                        <span>Saturday & Sunday</span>
+                        <span>8:00 AM – 7:00 PM</span>
+                    </div>
+                    <div class="hours-row">
+                        <span>Morning Bake Drop</span>
+                        <span>7:30 AM Fresh Crust</span>
+                    </div>
+                    <div class="hours-row weekend">
+                        <span>Monday</span>
+                        <span>Rest & Dough Proofing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================
+                 TAB 1: TODAY'S ARTISAN MENU
+                 ====================================================== -->
+            <section class="tab-panel" id="tab-menu">
+                <!-- Hearth Breads -->
+                <div class="menu-category-block">
+                    <h4 class="category-chalk-heading">🥖 Crusty Sourdough & Hearth Breads</h4>
+                    <div class="menu-items-grid">
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Country Wild Yeast Loaf</span>
+                                <span class="menu-item-price">$9.50</span>
+                            </div>
+                            <p class="menu-item-desc">36-hour cold fermented stone-milled wheat, deeply blistered caramelized crust, open airy crumb with a mild buttery tang.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Rosemary & Kalamata Focaccia</span>
+                                <span class="menu-item-price">$8.00</span>
+                            </div>
+                            <p class="menu-item-desc">Extra virgin olive oil dough dimpled with garden rosemary, flaky sea salt, and cured Greek olives. Golden and pillowy.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Golden Sesame Brioche</span>
+                                <span class="menu-item-price">$10.00</span>
+                            </div>
+                            <p class="menu-item-desc">Enriched with grass-fed local butter and farm egg yolks, braided by hand and crowned with toasted golden sesame seeds.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Traditional Parisienne Baguette</span>
+                                <span class="menu-item-price">$4.75</span>
+                            </div>
+                            <p class="menu-item-desc">Baked hot on the stone deck twice daily. Crisp paper-thin crust that crackles when torn, soft custard-like interior.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Morning Pastries & Buns -->
+                <div class="menu-category-block">
+                    <h4 class="category-chalk-heading">🥐 Morning Pastries & Oven Buns</h4>
+                    <div class="menu-items-grid">
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Cardamom Morning Knot</span>
+                                <span class="menu-item-price">$5.25</span>
+                            </div>
+                            <p class="menu-item-desc">Swedish-style twisted enriched bun rolled with freshly crushed green cardamom, brown sugar, and pearl sugar crystals.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Double Dark Pain au Chocolat</span>
+                                <span class="menu-item-price">$5.75</span>
+                            </div>
+                            <p class="menu-item-desc">72% Valrhona single-origin chocolate batons folded inside twenty-seven paper-thin layers of European butter pastry.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Roasted Almond Frangipane</span>
+                                <span class="menu-item-price">$6.00</span>
+                            </div>
+                            <p class="menu-item-desc">Twice-baked croissant soaked in vanilla bean syrup, stuffed with rich almond cream and toasted slivers.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Brown Butter Cinnamon Swirl</span>
+                                <span class="menu-item-price">$5.00</span>
+                            </div>
+                            <p class="menu-item-desc">Nutty browned butter, Vietnamese Saigon cinnamon, and raw demerara sugar swirled into flaky morning pastry.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Espresso & Brews -->
+                <div class="menu-category-block">
+                    <h4 class="category-chalk-heading">☕ Espresso Bar & Warm Brews</h4>
+                    <div class="menu-items-grid">
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Velvet Cortado</span>
+                                <span class="menu-item-price">$4.75</span>
+                            </div>
+                            <p class="menu-item-desc">Equal parts rich double espresso and velvety steamed whole milk, served in a heavy Gibraltar glass.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Honey Lavender Oat Flat White</span>
+                                <span class="menu-item-price">$5.50</span>
+                            </div>
+                            <p class="menu-item-desc">Locally foraged wildflower honey, gentle culinary lavender infusion, micro-foamed organic oat milk, espresso.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Slow Drip Single-Origin</span>
+                                <span class="menu-item-price">$4.25</span>
+                            </div>
+                            <p class="menu-item-desc">Rotating washed heirloom beans from Ethiopia & Colombia. Notes of stone fruit, bergamot, and sweet milk chocolate.</p>
+                        </div>
+                        <div class="menu-item-box">
+                            <div class="menu-item-top">
+                                <span class="menu-item-name">Spiced Whole-Milk Chai</span>
+                                <span class="menu-item-price">$5.00</span>
+                            </div>
+                            <p class="menu-item-desc">Simmered in-house with cracked star anise, cinnamon bark, fresh ginger root, and Assam black tea leaves.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================
+                 TAB 2: OPENING HOURS & VISIT
+                 ====================================================== -->
+            <section class="tab-panel" id="tab-hours" style="display:none;">
+                <div style="max-width: 680px; margin: 0 auto; text-align:center;">
+                    <div style="font-size: 3rem; margin-bottom: 12px;">📍 ☕ 🚲</div>
+                    <h3 class="chalk-sign-title" style="font-size:2rem; margin-bottom:12px;">At the Corner of Root & Node</h3>
+                    <p class="chalk-greeting-text" style="font-size:1.15rem; margin-bottom: 24px;">
+                        "You’ll smell the cardamom and roasted espresso beans from two blocks down the cobblestones. There's plenty of outdoor wooden tables, a bicycle rack out front, and always a bowl of fresh water for neighborhood pups."
+                    </p>
+                    
+                    <div style="background: rgba(255,255,255,0.05); border: 2px solid var(--butter-yellow); border-radius: 18px; padding: 24px; text-align: left; margin-bottom: 24px;">
+                        <h4 style="font-family:var(--font-sign); color:var(--butter-yellow); font-size:1.3rem; margin-bottom:12px;">★ Neighborhood Delivery Routine</h4>
+                        <p style="font-size:1rem; line-height:1.6; color:#e2e8f0; margin-bottom:14px;">
+                            🚲 <strong>The Bread Bike:</strong> Our delivery rider pedals freshly baked baguettes and country sourdough boxes directly to our neighboring street doors twice daily: at <strong>8:00 AM</strong> for morning breakfast and <strong>4:30 PM</strong> for dinner hearth tables.
+                        </p>
+                        <p style="font-size:1rem; line-height:1.6; color:#e2e8f0;">
+                            🥐 <strong>Walk-in Bread Table:</strong> Loaves come off the stone hearth every morning at 7:30 AM. When the chalkboard says "SOLD OUT," that means we’re already proofing tomorrow's wild yeast dough!
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================
+                 TAB 3: CATERING & CUSTOM BAKING
+                 ====================================================== -->
+            <section class="tab-panel" id="tab-catering" style="display:none;">
+                <div class="catering-form-container">
+                    <div class="catering-intro-note">
+                        🥖 <strong>Chat with the bakers:</strong> "Planning a breakfast gathering, office celebration, or Sunday family brunch? Tell us a couple days ahead and we'll pack a big warm wooden crate with fresh sourdough, warm cardamom knots, and jugs of slow-drip coffee."
+                    </div>
+
+                    <form id="cateringForm">
+                        <div class="catering-grid">
+                            <div class="form-group-chalk">
+                                <label>Your Name (or what to write on the crate)</label>
+                                <input type="text" name="Name" class="input-chalk" placeholder="e.g. Adarsh or Sarah" required>
+                            </div>
+                            <div class="form-group-chalk">
+                                <label>Email or Phone Number</label>
+                                <input type="text" name="Contact" class="input-chalk" placeholder="e.g. sarah@neighborhood.com" required>
+                            </div>
+                        </div>
+
+                        <div class="catering-grid">
+                            <div class="form-group-chalk">
+                                <label>Event Date & Pickup Time</label>
+                                <input type="text" name="Date" class="input-chalk" placeholder="e.g. This Saturday, 9:00 AM" required>
+                            </div>
+                            <div class="form-group-chalk">
+                                <label>Estimated Number of Guests</label>
+                                <input type="text" name="Guests" class="input-chalk" placeholder="e.g. 12 neighbors" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group-chalk" style="margin-bottom: 20px;">
+                            <label>What can we bake up for you?</label>
+                            <textarea name="OrderDetails" class="input-chalk" placeholder="e.g. 2 Country Sourdoughs, 12 Cardamom Knots, 6 Pain au Chocolat, and a box of Cortados..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit-catering">
+                            <span>Bake This For Us, Neighbors! 🥖</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Invisible Scroll Distance Spacer to enable Page Scrolling into Evening -->
+    <div style="height: 180vh; pointer-events: none;"></div>
+
     <!-- Core Interactive Script -->
-    <script src="script.js?v=5.1"></script>
+    <script src="script.js?v=6.0"></script>
 </body>
 </html>

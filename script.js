@@ -1,22 +1,22 @@
-// script.js - RootNode Rebels Low-Poly Floating Island 3D City (Sunset Edition)
+// script.js - RootNode Rebels 3D Tilt-Shift Neighborhood Bakery & Café
 
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ==========================================================================
-       1. Audio Synthesizer (Zero-Asset Web Audio API)
+       1. Audio Synthesizer (Friendly Café Doorbell & Bicycle Ting)
        ========================================================================== */
     let audioCtx = null;
-    let soundEnabled = localStorage.getItem('rnr_city_sound') === 'true';
+    let soundEnabled = localStorage.getItem('rnr_cafe_sound') === 'true';
 
     const soundToggle = document.getElementById('soundToggle');
     const updateSoundUI = () => {
         if (!soundToggle) return;
         if (soundEnabled) {
             soundToggle.classList.add('active');
-            soundToggle.innerHTML = `<span>🔊</span> Sound: ON`;
+            soundToggle.innerHTML = `<span>🔔</span> Bell: ON`;
         } else {
             soundToggle.classList.remove('active');
-            soundToggle.innerHTML = `<span>🔇</span> Sound: OFF`;
+            soundToggle.innerHTML = `<span>🔕</span> Bell: OFF`;
         }
     };
     updateSoundUI();
@@ -28,41 +28,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function playSound(type = 'click') {
+    function playSound(type = 'doorbell') {
         if (!soundEnabled) return;
         initAudio();
         if (!audioCtx) return;
 
         try {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
             const now = audioCtx.currentTime;
 
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'hover') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(520, now);
-                osc.frequency.exponentialRampToValueAtTime(780, now + 0.05);
-                gain.gain.setValueAtTime(0.02, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } else if (type === 'zoom') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(340, now);
-                osc.frequency.exponentialRampToValueAtTime(680, now + 0.12);
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-                osc.start(now);
-                osc.stop(now + 0.12);
+            if (type === 'doorbell') {
+                // Friendly shopkeeper brass bell two-tone chime (E5 -> G#5)
+                [659.25, 830.61].forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                    gain.gain.setValueAtTime(0.06, now + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.12 + 0.6);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.12);
+                    osc.stop(now + idx * 0.12 + 0.6);
+                });
+            } else if (type === 'bike') {
+                // Bicycle bell ting-ting
+                [1760, 2093].forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.04, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.15);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.15);
+                });
             } else if (type === 'click') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(600, now);
-                osc.frequency.exponentialRampToValueAtTime(1000, now + 0.04);
-                gain.gain.setValueAtTime(0.04, now);
+                osc.frequency.setValueAtTime(500, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.04);
+                gain.gain.setValueAtTime(0.03, now);
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
                 osc.start(now);
                 osc.stop(now + 0.04);
             }
@@ -72,31 +83,40 @@ document.addEventListener('DOMContentLoaded', () => {
     if (soundToggle) {
         soundToggle.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
-            localStorage.setItem('rnr_city_sound', soundEnabled);
+            localStorage.setItem('rnr_cafe_sound', soundEnabled);
             updateSoundUI();
-            if (soundEnabled) playSound('click');
+            if (soundEnabled) playSound('doorbell');
         });
     }
 
     /* ==========================================================================
-       2. Three.js Scene: Low-Poly Floating Island City in Sunset
+       2. Three.js Tilt-Shift Street Model
        ========================================================================== */
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xf97316, 0.008);
-
-    const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.5, 1000);
     
-    // Overview Camera Position & Target
-    const OVERVIEW_CAM = new THREE.Vector3(38, 30, 38);
-    const OVERVIEW_TARGET = new THREE.Vector3(0, 2, 0);
+    // Sky color initially warm afternoon butter-cream
+    const daySkyColor = new THREE.Color(0xfef9c3);
+    const duskSkyColor = new THREE.Color(0xfb923c);
+    const eveningSkyColor = new THREE.Color(0x1e1b4b);
+    scene.background = daySkyColor.clone();
+    scene.fog = new THREE.FogExp2(0xfef9c3, 0.012);
 
-    const currentCamPos = OVERVIEW_CAM.clone();
-    const targetCamPos = OVERVIEW_CAM.clone();
-    const currentCamLook = OVERVIEW_TARGET.clone();
-    const targetCamLook = OVERVIEW_TARGET.clone();
+    // Tilt-shift camera: narrow FOV looking down from a high-angle diagonal
+    const camera = new THREE.PerspectiveCamera(26, window.innerWidth / window.innerHeight, 0.5, 500);
+    
+    const DEFAULT_CAM_POS = new THREE.Vector3(34, 25, 42);
+    const DEFAULT_CAM_LOOK = new THREE.Vector3(0, 3.5, 0);
+
+    const DOOR_CAM_POS = new THREE.Vector3(6, 4.5, 12);
+    const DOOR_CAM_LOOK = new THREE.Vector3(0, 3.2, 0);
+
+    const currentCamPos = DEFAULT_CAM_POS.clone();
+    const targetCamPos = DEFAULT_CAM_POS.clone();
+    const currentCamLook = DEFAULT_CAM_LOOK.clone();
+    const targetCamLook = DEFAULT_CAM_LOOK.clone();
 
     camera.position.copy(currentCamPos);
     camera.lookAt(currentCamLook);
@@ -107,662 +127,479 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Sunset Lighting
-    const ambientLight = new THREE.HemisphereLight(0xffedd5, 0x831843, 0.9);
+    // Palette Materials
+    const matCobble = new THREE.MeshLambertMaterial({ color: 0xd6d3d1, flatShading: true });
+    const matCurb = new THREE.MeshLambertMaterial({ color: 0xa8a29e, flatShading: true });
+    const matGrass = new THREE.MeshLambertMaterial({ color: 0x65a30d, flatShading: true });
+    const matBrickRed = new THREE.MeshLambertMaterial({ color: 0x991b1b, flatShading: true });
+    const matButterYellow = new THREE.MeshLambertMaterial({ color: 0xfef08a, flatShading: true });
+    const matSoftGreen = new THREE.MeshLambertMaterial({ color: 0x4d7c0f, flatShading: true });
+    const matWarmBrown = new THREE.MeshLambertMaterial({ color: 0x78350f, flatShading: true });
+    const matDarkWood = new THREE.MeshLambertMaterial({ color: 0x451a03, flatShading: true });
+    const matChalkboard = new THREE.MeshLambertMaterial({ color: 0x1e2420, flatShading: true });
+    const matGlassWarm = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+
+    // Window Light Material (Turns on into evening)
+    const matLitWindow = new THREE.MeshBasicMaterial({ color: 0xfde047 });
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffedd5, 0.9);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffedd5, 1.4);
-    sunLight.position.set(40, 50, 25);
+    const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.4);
+    sunLight.position.set(25, 40, 20);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
-    sunLight.shadow.camera.near = 10;
-    sunLight.shadow.camera.far = 150;
-    sunLight.shadow.camera.left = -35;
-    sunLight.shadow.camera.right = 35;
-    sunLight.shadow.camera.top = 35;
-    sunLight.shadow.camera.bottom = -35;
+    sunLight.shadow.camera.near = 5;
+    sunLight.shadow.camera.far = 120;
+    sunLight.shadow.camera.left = -25;
+    sunLight.shadow.camera.right = 25;
+    sunLight.shadow.camera.top = 25;
+    sunLight.shadow.camera.bottom = -25;
     scene.add(sunLight);
 
-    // Warm Sunset Rim Light
-    const rimLight = new THREE.DirectionalLight(0xf43f5e, 0.8);
-    rimLight.position.set(-30, 20, -30);
-    scene.add(rimLight);
+    // Warm street and café evening incandescent lights
+    const eveningWarmLights = [];
 
-    // Materials Palette (Authentic Flat Shading Low-Poly)
-    const matGrass = new THREE.MeshLambertMaterial({ color: 0x65a30d, flatShading: true });
-    const matRock = new THREE.MeshLambertMaterial({ color: 0x57534e, flatShading: true });
-    const matRoad = new THREE.MeshLambertMaterial({ color: 0x78716c, flatShading: true });
-    const matWater = new THREE.MeshLambertMaterial({ color: 0x06b6d4, flatShading: true, transparent: true, opacity: 0.8 });
-    
-    const matWallLight = new THREE.MeshLambertMaterial({ color: 0xf1f5f9, flatShading: true });
-    const matWallBrick = new THREE.MeshLambertMaterial({ color: 0xc2410c, flatShading: true });
-    const matWallCream = new THREE.MeshLambertMaterial({ color: 0xfef3c7, flatShading: true });
-    const matWallTower = new THREE.MeshLambertMaterial({ color: 0x475569, flatShading: true });
+    // Street Scene Root
+    const streetGroup = new THREE.Group();
+    scene.add(streetGroup);
 
-    const matRoofOrange = new THREE.MeshLambertMaterial({ color: 0xea580c, flatShading: true });
-    const matRoofBlue = new THREE.MeshLambertMaterial({ color: 0x0284c7, flatShading: true });
-    const matRoofPink = new THREE.MeshLambertMaterial({ color: 0xf43f5e, flatShading: true });
-    const matWood = new THREE.MeshLambertMaterial({ color: 0x854d0e, flatShading: true });
-    const matWindowGold = new THREE.MeshBasicMaterial({ color: 0xfef08a });
-
-    // Entire Island Root Group
-    const islandGroup = new THREE.Group();
-    scene.add(islandGroup);
-
-    // 1. Floating Island Base (Grass Plateau + Faceted Rock Underside)
-    const plateauGeo = new THREE.CylinderGeometry(25, 23, 4, 9);
-    const plateauMesh = new THREE.Mesh(plateauGeo, matGrass);
-    plateauMesh.position.y = 0;
-    plateauMesh.receiveShadow = true;
-    islandGroup.add(plateauMesh);
-
-    // Rocky cone bottom tapering into the sunset
-    const rockGeo = new THREE.ConeGeometry(23, 20, 9);
-    const rockMesh = new THREE.Mesh(rockGeo, matRock);
-    rockMesh.rotation.x = Math.PI;
-    rockMesh.position.y = -12;
-    rockMesh.receiveShadow = true;
-    islandGroup.add(rockMesh);
-
-    // Circular Town Road
-    const roadGeo = new THREE.RingGeometry(12, 17, 16);
-    const roadMesh = new THREE.Mesh(roadGeo, matRoad);
-    roadMesh.rotation.x = -Math.PI / 2;
-    roadMesh.position.y = 2.05;
+    // 1. Cobblestone Street & Sidewalk Base
+    const roadMesh = new THREE.Mesh(new THREE.BoxGeometry(40, 1, 14), matCobble);
+    roadMesh.position.set(0, -0.5, 6);
     roadMesh.receiveShadow = true;
-    islandGroup.add(roadMesh);
+    streetGroup.add(roadMesh);
 
-    // Central Town Plaza Fountain / Reflective Pond
-    const pondGeo = new THREE.CylinderGeometry(4.2, 4.2, 0.4, 8);
-    const pondMesh = new THREE.Mesh(pondGeo, matWater);
-    pondMesh.position.set(0, 2.1, 0);
-    islandGroup.add(pondMesh);
+    const sidewalkMesh = new THREE.Mesh(new THREE.BoxGeometry(40, 1.2, 8), matCurb);
+    sidewalkMesh.position.set(0, -0.3, -2);
+    sidewalkMesh.receiveShadow = true;
+    streetGroup.add(sidewalkMesh);
 
-    const fountainPillar = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1, 1.8, 6), matWallLight);
-    fountainPillar.position.set(0, 3, 0);
-    islandGroup.add(fountainPillar);
+    // Planter grass strips
+    const grassStrip = new THREE.Mesh(new THREE.BoxGeometry(38, 1.25, 1.2), matGrass);
+    grassStrip.position.set(0, -0.25, 1.2);
+    streetGroup.add(grassStrip);
 
     /* ==========================================================================
-       3. The 4 Interactive Buildings (Menu Items)
+       3. Centerpiece: The Neighborhood Café & Bakery Building
        ========================================================================== */
-    const interactiveBuildings = [];
+    const cafeGroup = new THREE.Group();
+    cafeGroup.position.set(0, 0, -4);
+    streetGroup.add(cafeGroup);
 
-    // Helper: Create Glowing Window Box
-    function createWindow(w = 0.8, h = 1.2, d = 0.1) {
-        const win = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), matWindowGold);
-        return win;
-    }
+    // Brick Red Main Building with slight charming artisan lean
+    const cafeBody = new THREE.Mesh(new THREE.BoxGeometry(11, 7.5, 7), matBrickRed);
+    cafeBody.position.y = 4.0;
+    cafeBody.rotation.z = -0.012; // slightly crooked charm
+    cafeBody.castShadow = true;
+    cafeBody.receiveShadow = true;
+    cafeGroup.add(cafeBody);
 
-    // -------------------------------------------------------------
-    // Building 1: WORKSHOP (Portfolio) - Position: (+10, 0, +10)
-    // -------------------------------------------------------------
-    const workshopGroup = new THREE.Group();
-    workshopGroup.position.set(10, 2.0, 10);
-    workshopGroup.userData = {
-        id: 'workshop',
-        name: 'The Workshop',
-        category: 'Portfolio Blueprints',
-        icon: '⚒️',
-        desc: 'Explore flagship systems, ERPs & repositories',
-        targetCam: new THREE.Vector3(18, 11, 18),
-        targetLook: new THREE.Vector3(10, 5, 10)
-    };
+    // Butter-Yellow Shopfront Fascia
+    const cafeFascia = new THREE.Mesh(new THREE.BoxGeometry(10.5, 1.2, 0.4), matButterYellow);
+    cafeFascia.position.set(0, 4.4, 3.6);
+    cafeGroup.add(cafeFascia);
 
-    // Main workshop structure
-    const wsBody = new THREE.Mesh(new THREE.BoxGeometry(6.5, 4.5, 6), matWallBrick);
-    wsBody.position.y = 2.25;
-    wsBody.castShadow = true;
-    wsBody.receiveShadow = true;
-    workshopGroup.add(wsBody);
-
-    // Pitched Gable Roof
-    const wsRoof = new THREE.Mesh(new THREE.ConeGeometry(5.2, 3, 4), matRoofOrange);
-    wsRoof.position.y = 5.8;
-    wsRoof.rotation.y = Math.PI / 4;
-    wsRoof.castShadow = true;
-    workshopGroup.add(wsRoof);
-
-    // Chimney
-    const wsChimney = new THREE.Mesh(new THREE.BoxGeometry(1.2, 4, 1.2), matRock);
-    wsChimney.position.set(2.2, 6, -1.5);
-    wsChimney.castShadow = true;
-    workshopGroup.add(wsChimney);
-
-    // Chimney Smoke Particles
-    const smokePuffs = [];
-    for (let i = 0; i < 4; i++) {
-        const puff = new THREE.Mesh(
-            new THREE.DodecahedronGeometry(0.4 + i * 0.15, 0),
-            new THREE.MeshLambertMaterial({ color: 0xffedd5, transparent: true, opacity: 0.6, flatShading: true })
+    // Striped Awning (Butter Yellow & Brick Red alternating ribs)
+    const awningGroup = new THREE.Group();
+    awningGroup.position.set(0, 4.2, 4.5);
+    awningGroup.rotation.x = 0.22;
+    for (let rib = -4.8; rib <= 4.8; rib += 1.2) {
+        const isYellow = Math.round(rib * 10) % 2 === 0;
+        const ribMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(1.15, 0.2, 2.2),
+            isYellow ? matButterYellow : matBrickRed
         );
-        puff.position.set(2.2, 8 + i * 1.2, -1.5);
-        puff.userData = { baseY: 8 + i * 1.2, speed: 0.02 + i * 0.005 };
-        workshopGroup.add(puff);
+        ribMesh.position.x = rib;
+        ribMesh.castShadow = true;
+        awningGroup.add(ribMesh);
+    }
+    cafeGroup.add(awningGroup);
+
+    // Crooked Pitched Roof with warm brown terracotta tiles
+    const cafeRoof = new THREE.Mesh(new THREE.ConeGeometry(8.5, 3.5, 4), matWarmBrown);
+    cafeRoof.position.y = 9.2;
+    cafeRoof.rotation.y = Math.PI / 4;
+    cafeRoof.rotation.z = 0.015; // slightly crooked artisan tilt
+    cafeRoof.castShadow = true;
+    cafeGroup.add(cafeRoof);
+
+    // Brick Chimney with gentle smoke
+    const cafeChimney = new THREE.Mesh(new THREE.BoxGeometry(1.2, 3.2, 1.2), matBrickRed);
+    cafeChimney.position.set(3.8, 9.8, -1.5);
+    cafeChimney.castShadow = true;
+    cafeGroup.add(cafeChimney);
+
+    const smokePuffs = [];
+    for (let s = 0; s < 4; s++) {
+        const puff = new THREE.Mesh(
+            new THREE.DodecahedronGeometry(0.35 + s * 0.12, 0),
+            new THREE.MeshLambertMaterial({ color: 0xfffbeb, transparent: true, opacity: 0.55 })
+        );
+        puff.position.set(3.8, 11.5 + s * 1.0, -1.5);
+        puff.userData = { baseY: 11.5 + s * 1.0, speed: 0.02 + s * 0.005 };
+        cafeGroup.add(puff);
         smokePuffs.push(puff);
     }
 
-    // Doorway & Windows
-    const wsDoor = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.2, 0.2), matWood);
-    wsDoor.position.set(-0.8, 1.1, 3.05);
-    workshopGroup.add(wsDoor);
+    // Large Bay Display Window (Right of door)
+    const bayWindowFrame = new THREE.Mesh(new THREE.BoxGeometry(4.2, 2.6, 0.3), matButterYellow);
+    bayWindowFrame.position.set(2.4, 2.1, 3.55);
+    cafeGroup.add(bayWindowFrame);
 
-    const wsWin1 = createWindow(1.2, 1.2);
-    wsWin1.position.set(1.5, 2.5, 3.05);
-    workshopGroup.add(wsWin1);
+    const bayWindowGlass = new THREE.Mesh(new THREE.BoxGeometry(3.8, 2.2, 0.1), matLitWindow);
+    bayWindowGlass.position.set(2.4, 2.1, 3.65);
+    cafeGroup.add(bayWindowGlass);
 
-    const wsWin2 = createWindow(1.2, 1.2);
-    wsWin2.position.set(1.5, 2.5, -3.05);
-    workshopGroup.add(wsWin2);
-
-    islandGroup.add(workshopGroup);
-    interactiveBuildings.push(workshopGroup);
+    // Warm Interior Window Glow Light
+    const windowGlowLight = new THREE.PointLight(0xfef08a, 0.4, 18);
+    windowGlowLight.position.set(2.4, 2.5, 4.2);
+    cafeGroup.add(windowGlowLight);
+    eveningWarmLights.push({ light: windowGlowLight, baseIntensity: 2.2 });
 
     // -------------------------------------------------------------
-    // Building 2: LIBRARY (Blog) - Position: (-10, 0, +10)
+    // THE INTERACTIVE CAFÉ DOOR (Click to open menu!)
     // -------------------------------------------------------------
-    const libraryGroup = new THREE.Group();
-    libraryGroup.position.set(-10, 2.0, 10);
-    libraryGroup.userData = {
-        id: 'library',
-        name: 'The Grand Library',
-        category: 'Engineering Blog',
-        icon: '📚',
-        desc: 'Architecture insights, scalability & system design',
-        targetCam: new THREE.Vector3(-18, 11, 18),
-        targetLook: new THREE.Vector3(-10, 5, 10)
+    const doorPivot = new THREE.Group();
+    doorPivot.position.set(-2.8, 0.3, 3.5); // hinge on left side
+
+    const cafeDoor = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.2, 0.2), matDarkWood);
+    cafeDoor.position.set(0.9, 1.6, 0); // offset so pivot is at hinge edge
+    cafeDoor.castShadow = true;
+    doorPivot.add(cafeDoor);
+
+    // Glass panel in door
+    const doorGlass = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.05), matLitWindow);
+    doorGlass.position.set(0.9, 2.0, 0.1);
+    doorPivot.add(doorGlass);
+
+    // Brass Handle
+    const doorHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.4), matButterYellow);
+    doorHandle.position.set(1.65, 1.4, 0.15);
+    doorPivot.add(doorHandle);
+
+    // "OPEN" wooden sign hanging on door
+    const doorOpenSign = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.4, 0.05), matButterYellow);
+    doorOpenSign.position.set(0.9, 1.8, 0.15);
+    doorPivot.add(doorOpenSign);
+
+    doorPivot.userData = {
+        isDoor: true,
+        isOpen: false,
+        name: 'Café Front Door'
     };
 
-    // Library Main Temple Body
-    const libBody = new THREE.Mesh(new THREE.BoxGeometry(7, 5, 6), matWallLight);
-    libBody.position.y = 2.5;
-    libBody.castShadow = true;
-    libBody.receiveShadow = true;
-    libraryGroup.add(libBody);
+    cafeGroup.add(doorPivot);
 
-    // Columns
-    for (let c = -2.4; c <= 2.4; c += 1.6) {
-        const column = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 4.8, 6), matWallLight);
-        column.position.set(c, 2.4, 3.2);
-        column.castShadow = true;
-        libraryGroup.add(column);
+    // Chalkboard A-frame Sidewalk Sign
+    const chalkSignGroup = new THREE.Group();
+    chalkSignGroup.position.set(-3.2, 0.3, 5.2);
+    chalkSignGroup.rotation.y = 0.25;
+
+    const boardFront = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 0.1), matChalkboard);
+    boardFront.position.y = 0.9;
+    boardFront.castShadow = true;
+    chalkSignGroup.add(boardFront);
+
+    const boardFrame = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.0, 0.08), matWarmBrown);
+    boardFrame.position.y = 0.9;
+    boardFrame.position.z = -0.02;
+    chalkSignGroup.add(boardFrame);
+
+    cafeGroup.add(chalkSignGroup);
+
+    // Outdoor Bistro Tables & Chairs
+    function addBistroTable(x, z) {
+        const table = new THREE.Group();
+        table.position.set(x, 0.3, z);
+
+        const top = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 0.1, 10), matButterYellow);
+        top.position.y = 1.1;
+        top.castShadow = true;
+        table.add(top);
+
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.1), matDarkWood);
+        leg.position.y = 0.55;
+        table.add(leg);
+
+        // Espresso Cup
+        const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.09, 0.15, 8), matBrickRed);
+        cup.position.set(0.2, 1.22, 0.1);
+        table.add(cup);
+
+        // Little stool
+        const stool = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.6, 8), matDarkWood);
+        stool.position.set(0.8, 0.3, 0);
+        table.add(stool);
+
+        cafeGroup.add(table);
+    }
+    addBistroTable(1.2, 5.2);
+    addBistroTable(3.8, 5.2);
+
+    /* ==========================================================================
+       4. Adjacent Neighboring Street Buildings
+       ========================================================================== */
+
+    // Left Building: Florist & Books with Soft Green Walls
+    const leftHouse = new THREE.Group();
+    leftHouse.position.set(-11, 0, -4);
+    
+    const leftBody = new THREE.Mesh(new THREE.BoxGeometry(8.5, 7, 6.5), matSoftGreen);
+    leftBody.position.y = 3.5;
+    leftBody.rotation.z = 0.015; // slightly crooked
+    leftBody.castShadow = true;
+    leftBody.receiveShadow = true;
+    leftHouse.add(leftBody);
+
+    const leftRoof = new THREE.Mesh(new THREE.ConeGeometry(6.5, 3, 4), matBrickRed);
+    leftRoof.position.y = 8.2;
+    leftRoof.rotation.y = Math.PI / 4;
+    leftHouse.add(leftRoof);
+
+    // Flower boxes on windows
+    const flowerBox = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.4, 0.6), matWarmBrown);
+    flowerBox.position.set(0, 4.5, 3.4);
+    leftHouse.add(flowerBox);
+
+    const flowersMesh = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.3, 0.5), matButterYellow);
+    flowersMesh.position.set(0, 4.8, 3.4);
+    leftHouse.add(flowersMesh);
+
+    streetGroup.add(leftHouse);
+
+    // Right Building: Old Townhouse with Butter-Yellow Plaster
+    const rightHouse = new THREE.Group();
+    rightHouse.position.set(11, 0, -4);
+
+    const rightBody = new THREE.Mesh(new THREE.BoxGeometry(8.5, 8, 6.5), matButterYellow);
+    rightBody.position.y = 4.0;
+    rightBody.rotation.z = -0.018; // slightly crooked
+    rightBody.castShadow = true;
+    rightBody.receiveShadow = true;
+    rightHouse.add(rightBody);
+
+    const rightRoof = new THREE.Mesh(new THREE.ConeGeometry(6.8, 3.8, 4), matWarmBrown);
+    rightRoof.position.y = 9.5;
+    rightRoof.rotation.y = Math.PI / 4;
+    rightHouse.add(rightRoof);
+
+    streetGroup.add(rightHouse);
+
+    /* ==========================================================================
+       5. Animated Street Characters & Bread Delivery Bike
+       ========================================================================== */
+
+    // A. The Bread Delivery Bicycle with baguette basket
+    const bikeGroup = new THREE.Group();
+    bikeGroup.position.set(-18, 0.3, 7.5);
+
+    // Wheels
+    const wheelGeo = new THREE.TorusGeometry(0.5, 0.08, 6, 12);
+    const matBikeFrame = new THREE.MeshLambertMaterial({ color: 0x991b1b, flatShading: true });
+    
+    const wheelF = new THREE.Mesh(wheelGeo, matDarkWood);
+    wheelF.position.set(1.2, 0.5, 0);
+    bikeGroup.add(wheelF);
+
+    const wheelR = new THREE.Mesh(wheelGeo, matDarkWood);
+    wheelR.position.set(-1.2, 0.5, 0);
+    bikeGroup.add(wheelR);
+
+    // Frame
+    const bikeFrame = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.1, 0.1), matBikeFrame);
+    bikeFrame.position.set(0, 0.7, 0);
+    bikeGroup.add(bikeFrame);
+
+    const handlebars = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.8, 0.8), matDarkWood);
+    handlebars.position.set(1.0, 1.1, 0);
+    bikeGroup.add(handlebars);
+
+    // Bread Delivery Basket overflowing with golden baguettes
+    const basket = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.6, 0.8), matWarmBrown);
+    basket.position.set(1.3, 1.2, 0);
+    basket.castShadow = true;
+    bikeGroup.add(basket);
+
+    // French Baguettes in basket
+    for (let b = -0.2; b <= 0.2; b += 0.2) {
+        const baguette = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 1.1, 6), matButterYellow);
+        baguette.rotation.z = -0.4;
+        baguette.rotation.x = b;
+        baguette.position.set(1.3, 1.5, b * 0.8);
+        bikeGroup.add(baguette);
     }
 
-    // Pediment Triangular Roof
-    const libRoof = new THREE.Mesh(new THREE.ConeGeometry(5.4, 2.6, 4), matRoofBlue);
-    libRoof.position.y = 6.2;
-    libRoof.rotation.y = Math.PI / 4;
-    libRoof.castShadow = true;
-    libraryGroup.add(libRoof);
+    streetGroup.add(bikeGroup);
 
-    // Entrance & Lit Windows
-    const libDoor = new THREE.Mesh(new THREE.BoxGeometry(1.6, 2.6, 0.2), matWindowGold);
-    libDoor.position.set(0, 1.3, 3.05);
-    libraryGroup.add(libDoor);
+    // B. Tiny People Walking Past (Pedestrians)
+    const pedestrians = [];
+    const pedColors = [0x991b1b, 0x4d7c0f, 0x78350f, 0xb91c1c];
 
-    const libWinL = createWindow(1, 1.5);
-    libWinL.position.set(-3.55, 2.8, 0);
-    libWinL.rotation.y = Math.PI / 2;
-    libraryGroup.add(libWinL);
+    function createPedestrian(startX, z, direction, colorIdx) {
+        const ped = new THREE.Group();
+        ped.position.set(startX, 0.3, z);
 
-    const libWinR = createWindow(1, 1.5);
-    libWinR.position.set(3.55, 2.8, 0);
-    libWinR.rotation.y = Math.PI / 2;
-    libraryGroup.add(libWinR);
-
-    islandGroup.add(libraryGroup);
-    interactiveBuildings.push(libraryGroup);
-
-    // -------------------------------------------------------------
-    // Building 3: SHOP (Store & Offerings) - Position: (+10, 0, -10)
-    // -------------------------------------------------------------
-    const shopGroup = new THREE.Group();
-    shopGroup.position.set(10, 2.0, -10);
-    shopGroup.userData = {
-        id: 'shop',
-        name: 'The Market Shop',
-        category: 'Services & Store',
-        icon: '🏪',
-        desc: 'Custom software, cloud solutions & enterprise plans',
-        targetCam: new THREE.Vector3(18, 11, -18),
-        targetLook: new THREE.Vector3(10, 5, -10)
-    };
-
-    // Shop Pastel Walls
-    const shopBody = new THREE.Mesh(new THREE.BoxGeometry(6, 4, 5.5), matWallCream);
-    shopBody.position.y = 2.0;
-    shopBody.castShadow = true;
-    shopBody.receiveShadow = true;
-    shopGroup.add(shopBody);
-
-    // Striped Awning
-    const awningGeo = new THREE.BoxGeometry(4.5, 0.3, 1.6);
-    const awning = new THREE.Mesh(awningGeo, matRoofPink);
-    awning.position.set(0, 2.8, 3.2);
-    awning.rotation.x = 0.25;
-    shopGroup.add(awning);
-
-    // Shop Display Windows
-    const shopWin = createWindow(2.4, 1.4);
-    shopWin.position.set(1.2, 1.8, 2.8);
-    shopGroup.add(shopWin);
-
-    const shopDoor = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.2, 0.2), matWood);
-    shopDoor.position.set(-1.6, 1.1, 2.8);
-    shopGroup.add(shopDoor);
-
-    // Shop Mansard Roof
-    const shopRoof = new THREE.Mesh(new THREE.ConeGeometry(4.8, 2.4, 4), matRoofPink);
-    shopRoof.position.y = 5.2;
-    shopRoof.rotation.y = Math.PI / 4;
-    shopRoof.castShadow = true;
-    shopGroup.add(shopRoof);
-
-    // Market Crates outside
-    const crate1 = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), matWood);
-    crate1.position.set(-2.4, 0.4, 3.6);
-    shopGroup.add(crate1);
-
-    const crate2 = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), matWood);
-    crate2.position.set(2.4, 0.35, 3.4);
-    shopGroup.add(crate2);
-
-    islandGroup.add(shopGroup);
-    interactiveBuildings.push(shopGroup);
-
-    // -------------------------------------------------------------
-    // Building 4: TOWER (Contact & HQ) - Position: (-10, 0, -10)
-    // -------------------------------------------------------------
-    const towerGroup = new THREE.Group();
-    towerGroup.position.set(-10, 2.0, -10);
-    towerGroup.userData = {
-        id: 'tower',
-        name: 'Citadel Tower',
-        category: 'Contact HQ & Team',
-        icon: '🗼',
-        desc: 'Encrypted message transmit, team syndicate & socials',
-        targetCam: new THREE.Vector3(-18, 16, -18),
-        targetLook: new THREE.Vector3(-10, 8, -10)
-    };
-
-    // Lower Tower
-    const twrLower = new THREE.Mesh(new THREE.BoxGeometry(4.5, 6, 4.5), matWallTower);
-    twrLower.position.y = 3;
-    twrLower.castShadow = true;
-    twrLower.receiveShadow = true;
-    towerGroup.add(twrLower);
-
-    // Mid Tower
-    const twrMid = new THREE.Mesh(new THREE.BoxGeometry(3.5, 5, 3.5), matWallLight);
-    twrMid.position.y = 8;
-    twrMid.castShadow = true;
-    towerGroup.add(twrMid);
-
-    // Clock faces (All 4 sides)
-    const clockGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.1, 8);
-    for (let rot = 0; rot < 4; rot++) {
-        const clockMesh = new THREE.Mesh(clockGeo, matWindowGold);
-        clockMesh.rotation.x = Math.PI / 2;
-        clockMesh.rotation.z = (rot * Math.PI) / 2;
+        const bodyMat = new THREE.MeshLambertMaterial({ color: pedColors[colorIdx % pedColors.length], flatShading: true });
         
-        if (rot === 0) clockMesh.position.set(0, 9.2, 1.8);
-        if (rot === 1) clockMesh.position.set(1.8, 9.2, 0);
-        if (rot === 2) clockMesh.position.set(0, 9.2, -1.8);
-        if (rot === 3) clockMesh.position.set(-1.8, 9.2, 0);
+        // Torso
+        const torso = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.9, 0.4), bodyMat);
+        torso.position.y = 1.0;
+        torso.castShadow = true;
+        ped.add(torso);
 
-        towerGroup.add(clockMesh);
-    }
+        // Head
+        const head = new THREE.Mesh(new THREE.DodecahedronGeometry(0.3, 0), matButterYellow);
+        head.position.y = 1.7;
+        ped.add(head);
 
-    // Spire Roof
-    const twrSpire = new THREE.Mesh(new THREE.ConeGeometry(2.4, 4.5, 4), matRoofOrange);
-    twrSpire.position.y = 12.5;
-    twrSpire.rotation.y = Math.PI / 4;
-    twrSpire.castShadow = true;
-    towerGroup.add(twrSpire);
+        // Legs
+        const legL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.65, 0.2), matDarkWood);
+        legL.position.set(-0.15, 0.35, 0);
+        ped.add(legL);
 
-    // Rotating Radar Dish at pinnacle
-    const radarDish = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.2, 0.4, 6), matWindowGold);
-    radarDish.position.set(0, 15.2, 0);
-    radarDish.rotation.z = 0.4;
-    towerGroup.add(radarDish);
-    towerGroup.userData.radar = radarDish;
+        const legR = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.65, 0.2), matDarkWood);
+        legR.position.set(0.15, 0.35, 0);
+        ped.add(legR);
 
-    islandGroup.add(towerGroup);
-    interactiveBuildings.push(towerGroup);
-
-    /* ==========================================================================
-       4. Tiny Animated Details (Moving Cars, Drifting Clouds, Windmill, Trees)
-       ========================================================================== */
-
-    // A. Little Moving Cars Driving along the Ring Road
-    const cars = [];
-    const carColors = [0xfef08a, 0xf43f5e, 0x06b6d4];
-
-    for (let c = 0; c < 3; c++) {
-        const carGroup = new THREE.Group();
-        const carMat = new THREE.MeshLambertMaterial({ color: carColors[c], flatShading: true });
-
-        // Body
-        const carBody = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.7, 0.9), carMat);
-        carBody.position.y = 0.5;
-        carBody.castShadow = true;
-        carGroup.add(carBody);
-
-        // Cabin
-        const carCabin = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.5, 0.75), matWallLight);
-        carCabin.position.set(-0.1, 0.9, 0);
-        carGroup.add(carCabin);
-
-        // Headlights
-        const headL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.15, 0.2), matWindowGold);
-        headL.position.set(0.82, 0.5, 0.25);
-        const headR = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.15, 0.2), matWindowGold);
-        headR.position.set(0.82, 0.5, -0.25);
-        carGroup.add(headL);
-        carGroup.add(headR);
-
-        carGroup.position.y = 2.1;
-        carGroup.userData = {
-            angle: (c * (Math.PI * 2)) / 3,
-            radius: 14.5,
-            speed: 0.007 + c * 0.002
+        ped.userData = {
+            direction: direction,
+            speed: 0.035 + Math.random() * 0.02,
+            legL: legL,
+            legR: legR,
+            walkCycle: Math.random() * Math.PI
         };
 
-        islandGroup.add(carGroup);
-        cars.push(carGroup);
+        streetGroup.add(ped);
+        pedestrians.push(ped);
     }
 
-    // B. Drifting Low-Poly Clouds in the Sunset Sky
-    const clouds = [];
-    const cloudMat = new THREE.MeshLambertMaterial({
-        color: 0xffedd5,
-        flatShading: true,
-        transparent: true,
-        opacity: 0.88
-    });
+    createPedestrian(-15, 1.8, 1, 0);
+    createPedestrian(12, 1.5, -1, 1);
+    createPedestrian(-8, 2.2, 1, 2);
 
-    for (let i = 0; i < 7; i++) {
-        const cloudGroup = new THREE.Group();
-        const baseSize = 2.5 + Math.random() * 2;
+    // C. Vintage Streetlamp with Evening Glow
+    function addStreetlamp(x, z) {
+        const lamp = new THREE.Group();
+        lamp.position.set(x, 0.3, z);
 
-        // Combine 3-5 spheres for fluffy cloud
-        for (let j = 0; j < 4; j++) {
-            const sphere = new THREE.Mesh(
-                new THREE.DodecahedronGeometry(baseSize * (0.5 + Math.random() * 0.5), 1),
-                cloudMat
-            );
-            sphere.position.set(
-                (j - 1.5) * baseSize * 0.6,
-                (Math.random() - 0.5) * 0.8,
-                (Math.random() - 0.5) * 1.2
-            );
-            cloudGroup.add(sphere);
-        }
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 5.5, 6), matDarkWood);
+        pole.position.y = 2.75;
+        pole.castShadow = true;
+        lamp.add(pole);
 
-        cloudGroup.position.set(
-            (Math.random() - 0.5) * 140,
-            24 + Math.random() * 18,
-            (Math.random() - 0.5) * 120
-        );
+        const lantern = new THREE.Mesh(new THREE.DodecahedronGeometry(0.45, 0), matLitWindow);
+        lantern.position.set(0, 5.4, 0);
+        lamp.add(lantern);
 
-        cloudGroup.userData = {
-            speed: 0.04 + Math.random() * 0.04
-        };
+        const lampLight = new THREE.PointLight(0xfef08a, 0.2, 14);
+        lampLight.position.set(0, 5.2, 0);
+        lamp.add(lampLight);
+        eveningWarmLights.push({ light: lampLight, baseIntensity: 1.8 });
 
-        scene.add(cloudGroup);
-        clouds.push(cloudGroup);
+        streetGroup.add(lamp);
     }
 
-    // C. Little Windmill on a Hillock
-    const windmillGroup = new THREE.Group();
-    windmillGroup.position.set(0, 2.0, -17);
-
-    const wmBase = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.8, 5, 6), matWallLight);
-    wmBase.position.y = 2.5;
-    wmBase.castShadow = true;
-    windmillGroup.add(wmBase);
-
-    const wmCap = new THREE.Mesh(new THREE.ConeGeometry(1.6, 1.8, 6), matRoofOrange);
-    wmCap.position.y = 5.8;
-    windmillGroup.add(wmCap);
-
-    // Windmill 4 Blades
-    const wmBladesGroup = new THREE.Group();
-    wmBladesGroup.position.set(0, 5, 1.2);
-
-    for (let b = 0; b < 4; b++) {
-        const blade = new THREE.Mesh(new THREE.BoxGeometry(0.3, 3, 0.05), matWood);
-        blade.position.y = 1.5;
-        blade.rotation.z = (b * Math.PI) / 2;
-        blade.position.set(
-            Math.sin((b * Math.PI) / 2) * 1.5,
-            Math.cos((b * Math.PI) / 2) * 1.5,
-            0
-        );
-        wmBladesGroup.add(blade);
-    }
-    windmillGroup.add(wmBladesGroup);
-    islandGroup.add(windmillGroup);
-
-    // D. Trees & Streetlamps
-    const treeTrunkMat = new THREE.MeshLambertMaterial({ color: 0x78350f, flatShading: true });
-    const treeFoliagePineMat = new THREE.MeshLambertMaterial({ color: 0x15803d, flatShading: true });
-    const treeFoliageRoundMat = new THREE.MeshLambertMaterial({ color: 0x84cc16, flatShading: true });
-
-    function addTree(x, z, type = 'pine') {
-        const tree = new THREE.Group();
-        tree.position.set(x, 2.0, z);
-
-        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 1.2, 5), treeTrunkMat);
-        trunk.position.y = 0.6;
-        trunk.castShadow = true;
-        tree.add(trunk);
-
-        if (type === 'pine') {
-            for (let t = 0; t < 3; t++) {
-                const cone = new THREE.Mesh(new THREE.ConeGeometry(1.2 - t * 0.25, 1.2, 5), treeFoliagePineMat);
-                cone.position.y = 1.4 + t * 0.7;
-                cone.castShadow = true;
-                tree.add(cone);
-            }
-        } else {
-            const ball = new THREE.Mesh(new THREE.DodecahedronGeometry(1.1, 1), treeFoliageRoundMat);
-            ball.position.y = 1.8;
-            ball.castShadow = true;
-            tree.add(ball);
-        }
-
-        islandGroup.add(tree);
-    }
-
-    // Plant trees around corners and plazas
-    addTree(16, 5, 'pine');
-    addTree(18, -4, 'round');
-    addTree(-16, 6, 'round');
-    addTree(-18, -4, 'pine');
-    addTree(5, 18, 'pine');
-    addTree(-6, 17, 'round');
-    addTree(0, -12, 'pine');
-    addTree(14, 16, 'round');
-    addTree(-14, 16, 'pine');
+    addStreetlamp(-7, 2.0);
+    addStreetlamp(7, 2.0);
 
     /* ==========================================================================
-       5. Raycasting, Hover Lift & Glow, Camera Zoom Transitions
+       6. Scroll into Evening Transition & Raycasting Door Click
        ========================================================================== */
+    let eveningProgress = 0; // 0 = Afternoon, 1 = Evening
+    let targetEveningProgress = 0;
+
+    const eveningVignette = document.getElementById('eveningVignette');
+    const timeSlider = document.getElementById('timeSlider');
+    const timeLabel = document.getElementById('timeLabel');
+
+    function setTimeOfDay(prog) {
+        targetEveningProgress = Math.max(0, Math.min(1, prog));
+    }
+
+    // Scroll listener shifts into cozy evening
+    window.addEventListener('scroll', () => {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        if (maxScroll > 0) {
+            setTimeOfDay(window.scrollY / maxScroll);
+        }
+    }, { passive: true });
+
+    if (timeSlider) {
+        timeSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            setTimeOfDay(val);
+        });
+    }
+
+    // Door Hover & Click Raycasting
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2(-999, -999);
-    let hoveredBuilding = null;
-    let activeBuildingId = null;
+    let isHoveringDoor = false;
 
-    const hoverBadge = document.getElementById('hoverBadge');
-    const badgeIcon = document.getElementById('badgeIcon');
-    const badgeName = document.getElementById('badgeName');
-    const badgeCategory = document.getElementById('badgeCategory');
+    const doorTooltip = document.getElementById('doorTooltip');
+    const cafeModalBoard = document.getElementById('cafeModalBoard');
+    const cafeModalBackdrop = document.getElementById('cafeModalBackdrop');
+    const boardCloseBtn = document.getElementById('boardCloseBtn');
 
-    // Drawer Elements
-    const drawerBackdrop = document.getElementById('drawerBackdrop');
-    const contentDrawer = document.getElementById('contentDrawer');
-    const drawerTag = document.getElementById('drawerTag');
-    const drawerTitle = document.getElementById('drawerTitle');
-    const drawerSubtitle = document.getElementById('drawerSubtitle');
-    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
-    const drawerSections = document.querySelectorAll('.drawer-content-section');
+    function openCafeMenu() {
+        playSound('doorbell');
+        doorPivot.rotation.y = -1.2; // swing door open!
 
-    function updateHoverBadge(building, screenX, screenY) {
-        if (!hoverBadge) return;
-        if (building && !activeBuildingId) {
-            badgeIcon.textContent = building.userData.icon;
-            badgeName.textContent = building.userData.name;
-            badgeCategory.textContent = building.userData.category;
+        targetCamPos.copy(DOOR_CAM_POS);
+        targetCamLook.copy(DOOR_CAM_LOOK);
 
-            hoverBadge.style.left = `${screenX}px`;
-            hoverBadge.style.top = `${screenY}px`;
-            hoverBadge.classList.add('visible');
-            canvas.style.cursor = 'pointer';
-        } else {
-            hoverBadge.classList.remove('visible');
-            canvas.style.cursor = 'grab';
-        }
-    }
+        if (doorTooltip) doorTooltip.classList.remove('visible');
 
-    // Zoom Camera into a Building
-    function zoomToBuilding(building) {
-        if (!building) return;
-        activeBuildingId = building.userData.id;
-
-        // Sound FX
-        playSound('zoom');
-
-        // Smoothly animate camera to close-up viewpoint
-        targetCamPos.copy(building.userData.targetCam);
-        targetCamLook.copy(building.userData.targetLook);
-
-        // Hide hover badge
-        if (hoverBadge) hoverBadge.classList.remove('visible');
-
-        // Open Content Drawer after slight cinematic drift
         setTimeout(() => {
-            openDrawer(building.userData.id);
-        }, 350);
-
-        // Highlight Nav Pill
-        document.querySelectorAll('.district-pill').forEach(pill => {
-            if (pill.getAttribute('data-building') === building.userData.id) {
-                pill.classList.add('active');
-            } else {
-                pill.classList.remove('active');
-            }
-        });
+            if (cafeModalBoard) cafeModalBoard.classList.add('active');
+            if (cafeModalBackdrop) cafeModalBackdrop.classList.add('active');
+        }, 300);
     }
 
-    // Reset Camera to Full Island Overview
-    function resetToOverview() {
-        activeBuildingId = null;
+    function closeCafeMenu() {
         playSound('click');
+        doorPivot.rotation.y = 0; // close door
 
-        targetCamPos.copy(OVERVIEW_CAM);
-        targetCamLook.copy(OVERVIEW_TARGET);
+        targetCamPos.copy(DEFAULT_CAM_POS);
+        targetCamLook.copy(DEFAULT_CAM_LOOK);
 
-        closeDrawer();
-
-        document.querySelectorAll('.district-pill').forEach(p => p.classList.remove('active'));
+        if (cafeModalBoard) cafeModalBoard.classList.remove('active');
+        if (cafeModalBackdrop) cafeModalBackdrop.classList.remove('active');
     }
 
-    function openDrawer(buildingId) {
-        if (!contentDrawer) return;
+    if (boardCloseBtn) boardCloseBtn.addEventListener('click', closeCafeMenu);
+    if (cafeModalBackdrop) cafeModalBackdrop.addEventListener('click', closeCafeMenu);
 
-        // Show matching drawer section
-        drawerSections.forEach(sec => {
-            if (sec.getAttribute('data-section') === buildingId) {
-                sec.style.display = 'block';
-            } else {
-                sec.style.display = 'none';
-            }
-        });
-
-        const info = {
-            'workshop': { tag: '⚒️ WORKSHOP // PORTFOLIO', title: 'Engineering Blueprints', subtitle: 'Explore our flagship enterprise architectures, source code repositories, and production systems.' },
-            'library': { tag: '📚 GRAND LIBRARY // INSIGHTS', title: 'Knowledge Base', subtitle: 'Architectural blueprints, scalability research papers, zero-trust paradigms, and engineering blogs.' },
-            'shop': { tag: '🏪 MARKET SHOP // SOLUTIONS', title: 'Capabilities & Store', subtitle: 'Commercial technology capabilities, custom engineering contracts, and cloud infrastructure consulting.' },
-            'tower': { tag: '🗼 CITADEL TOWER // TRANSMISSION', title: 'Communications HQ', subtitle: 'Connect directly with the executive engineering collective or transmit an encrypted message.' }
-        }[buildingId] || { tag: 'CITY DISTRICT', title: 'RootNode Rebels', subtitle: 'Engineering scalable systems.' };
-
-        if (drawerTag) drawerTag.innerHTML = `<span>⚡</span> ${info.tag}`;
-        if (drawerTitle) drawerTitle.textContent = info.title;
-        if (drawerSubtitle) drawerSubtitle.textContent = info.subtitle;
-
-        if (drawerBackdrop) drawerBackdrop.classList.add('active');
-        contentDrawer.classList.add('active');
-    }
-
-    function closeDrawer() {
-        if (drawerBackdrop) drawerBackdrop.classList.remove('active');
-        if (contentDrawer) contentDrawer.classList.remove('active');
-    }
-
-    if (drawerCloseBtn) {
-        drawerCloseBtn.addEventListener('click', resetToOverview);
-    }
-    if (drawerBackdrop) {
-        drawerBackdrop.addEventListener('click', resetToOverview);
-    }
-
-    const resetBtn = document.getElementById('guideResetBtn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetToOverview);
-    }
-
-    // Keyboard ESC returns to city
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') resetToOverview();
-    });
-
-    // Top Navigation Pills
-    document.querySelectorAll('.district-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            const bId = pill.getAttribute('data-building');
-            const found = interactiveBuildings.find(b => b.userData.id === bId);
-            if (found) zoomToBuilding(found);
+    // Open Door from navbar button or street prompt
+    document.querySelectorAll('.trigger-open-menu').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCafeMenu();
         });
     });
 
-    // Pointer Move for Raycasting
-    let rawMouseX = 0, rawMouseY = 0;
+    // Raycast on mouse move
     window.addEventListener('mousemove', (e) => {
-        rawMouseX = e.clientX;
-        rawMouseY = e.clientY;
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    });
 
-    // Mouse Drag to Orbit Floating Island Gently
-    let isDragging = false;
-    let prevMouseX = 0;
-
-    window.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.navbar, .content-drawer, .bottom-guide')) return;
-        isDragging = true;
-        prevMouseX = e.clientX;
-    });
-
-    window.addEventListener('mouseup', () => { isDragging = false; });
-
-    window.addEventListener('mousemove', (e) => {
-        if (isDragging && !activeBuildingId) {
-            const deltaX = e.clientX - prevMouseX;
-            islandGroup.rotation.y += deltaX * 0.005;
-            prevMouseX = e.clientX;
+        if (doorTooltip) {
+            doorTooltip.style.left = `${e.clientX}px`;
+            doorTooltip.style.top = `${e.clientY}px`;
         }
     });
 
-    // Click Building to Zoom In
-    canvas.addEventListener('click', (e) => {
-        if (hoveredBuilding && !activeBuildingId) {
-            zoomToBuilding(hoveredBuilding);
+    // Click canvas door
+    canvas.addEventListener('click', () => {
+        if (isHoveringDoor) {
+            openCafeMenu();
         }
     });
 
-    // Resize Handler
+    // Window Resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -770,7 +607,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
-       6. Main Animation Loop
+       7. Tabs in Café Board (Menu vs Catering vs Hours)
+       ========================================================================== */
+    const tabButtons = document.querySelectorAll('.board-tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            playSound('click');
+            const target = btn.getAttribute('data-tab');
+
+            tabButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            tabPanels.forEach(panel => {
+                if (panel.id === `tab-${target}`) {
+                    panel.style.display = 'block';
+                } else {
+                    panel.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    /* ==========================================================================
+       8. Main Render & Animation Loop
        ========================================================================== */
     const clock = new THREE.Clock();
 
@@ -780,144 +641,144 @@ document.addEventListener('DOMContentLoaded', () => {
         const delta = clock.getDelta();
         const elapsed = clock.getElapsedTime();
 
-        // 1. Raycast hover detection (only when in overview mode)
-        if (!activeBuildingId) {
+        // 1. Raycast Check for Café Door
+        if (targetCamPos.distanceTo(DEFAULT_CAM_POS) < 5) {
             raycaster.setFromCamera(mouse, camera);
-            
-            // Gather all meshes belonging to the 4 buildings
-            const meshesToTest = [];
-            interactiveBuildings.forEach(b => {
-                b.traverse(child => {
-                    if (child.isMesh) {
-                        child.userData.parentBuilding = b;
-                        meshesToTest.push(child);
-                    }
-                });
-            });
+            const doorMeshes = [];
+            doorPivot.traverse(child => { if (child.isMesh) doorMeshes.push(child); });
 
-            const intersects = raycaster.intersectObjects(meshesToTest, false);
-
-            if (intersects.length > 0) {
-                const hitBuilding = intersects[0].object.userData.parentBuilding;
-                if (hoveredBuilding !== hitBuilding) {
-                    hoveredBuilding = hitBuilding;
-                    playSound('hover');
+            const hits = raycaster.intersectObjects(doorMeshes, false);
+            if (hits.length > 0) {
+                if (!isHoveringDoor) {
+                    isHoveringDoor = true;
+                    canvas.style.cursor = 'pointer';
+                    if (doorTooltip) doorTooltip.classList.add('visible');
+                    doorPivot.position.y = 0.38; // gentle lift
                 }
-                updateHoverBadge(hoveredBuilding, rawMouseX, rawMouseY);
             } else {
-                hoveredBuilding = null;
-                updateHoverBadge(null, 0, 0);
+                if (isHoveringDoor) {
+                    isHoveringDoor = false;
+                    canvas.style.cursor = 'grab';
+                    if (doorTooltip) doorTooltip.classList.remove('visible');
+                    doorPivot.position.y = 0.3;
+                }
             }
-        } else {
-            hoveredBuilding = null;
-            updateHoverBadge(null, 0, 0);
         }
 
-        // 2. Animate Buildings (Hover Lift & Glow)
-        interactiveBuildings.forEach(b => {
-            const isHovered = (b === hoveredBuilding);
-            const targetY = isHovered ? 3.4 : 2.0;
-            b.position.y += (targetY - b.position.y) * 0.15;
-
-            // Subtle bounce when lifted
-            if (isHovered) {
-                b.rotation.y = Math.sin(elapsed * 4) * 0.05;
-            } else {
-                b.rotation.y += (0 - b.rotation.y) * 0.1;
-            }
-        });
-
-        // 3. Smooth Camera Gliding
+        // 2. Smooth Camera Gliding
         currentCamPos.lerp(targetCamPos, 0.06);
         currentCamLook.lerp(targetCamLook, 0.06);
         camera.position.copy(currentCamPos);
         camera.lookAt(currentCamLook);
 
-        // 4. Animate Moving Cars
-        cars.forEach(car => {
-            car.userData.angle += car.userData.speed;
-            const a = car.userData.angle;
-            const r = car.userData.radius;
-            car.position.x = Math.cos(a) * r;
-            car.position.z = Math.sin(a) * r;
-            // Align car rotation tangent to the circle path
-            car.rotation.y = -a + Math.PI / 2;
-        });
+        // 3. Time of Day Transition (Scroll into Evening)
+        eveningProgress += (targetEveningProgress - eveningProgress) * 0.05;
 
-        // 5. Animate Drifting Clouds
-        clouds.forEach(cloud => {
-            cloud.position.x += cloud.userData.speed;
-            if (cloud.position.x > 80) {
-                cloud.position.x = -80;
-                cloud.position.z = (Math.random() - 0.5) * 120;
-            }
-        });
-
-        // 6. Animate Windmill Blades & Radar
-        wmBladesGroup.rotation.z += 0.02;
-        if (towerGroup.userData.radar) {
-            towerGroup.userData.radar.rotation.y += 0.04;
+        // Interpolate Sky Color
+        if (eveningProgress < 0.5) {
+            const factor = eveningProgress / 0.5;
+            scene.background.copy(daySkyColor).lerp(duskSkyColor, factor);
+            scene.fog.color.copy(scene.background);
+        } else {
+            const factor = (eveningProgress - 0.5) / 0.5;
+            scene.background.copy(duskSkyColor).lerp(eveningSkyColor, factor);
+            scene.fog.color.copy(scene.background);
         }
 
-        // 7. Chimney Smoke Puffs
+        // Sunlight dims into evening
+        sunLight.intensity = 1.4 * (1 - eveningProgress * 0.85);
+
+        // Streetlamps and window lights TURN ON as user scrolls into evening!
+        eveningWarmLights.forEach(item => {
+            item.light.intensity = 0.2 + item.baseIntensity * eveningProgress;
+        });
+
+        if (eveningVignette) {
+            eveningVignette.style.opacity = (eveningProgress * 0.8).toFixed(2);
+        }
+
+        if (timeLabel) {
+            if (eveningProgress < 0.35) {
+                timeLabel.textContent = "☀️ 2:30 PM (Sunlit Afternoon)";
+            } else if (eveningProgress < 0.7) {
+                timeLabel.textContent = "🌅 5:45 PM (Golden Sunset)";
+            } else {
+                timeLabel.textContent = "🌙 8:15 PM (Cozy Evening)";
+            }
+        }
+
+        // 4. Animate Delivery Bike (Pedaling down cobblestones)
+        bikeGroup.position.x += 0.06;
+        wheelF.rotation.z -= 0.12;
+        wheelR.rotation.z -= 0.12;
+        bikeGroup.position.y = 0.3 + Math.sin(elapsed * 8) * 0.03; // slight bike bounce
+
+        if (bikeGroup.position.x > 22) {
+            bikeGroup.position.x = -22;
+            playSound('bike');
+        }
+
+        // 5. Animate Walking Pedestrians
+        pedestrians.forEach(ped => {
+            ped.position.x += ped.userData.direction * ped.userData.speed;
+            ped.userData.walkCycle += 0.12;
+            ped.userData.legL.rotation.z = Math.sin(ped.userData.walkCycle) * 0.45;
+            ped.userData.legR.rotation.z = -Math.sin(ped.userData.walkCycle) * 0.45;
+
+            // Turn around at street ends
+            if (ped.position.x > 18) ped.userData.direction = -1;
+            if (ped.position.x < -18) ped.userData.direction = 1;
+        });
+
+        // 6. Animate Chimney Smoke Puffs
         smokePuffs.forEach(puff => {
             puff.position.y += puff.userData.speed;
             puff.position.x += Math.sin(elapsed + puff.position.y) * 0.005;
-            puff.scale.multiplyScalar(1.002);
-            if (puff.position.y > 13) {
+            if (puff.position.y > 14.5) {
                 puff.position.y = puff.userData.baseY;
-                puff.scale.set(1, 1, 1);
             }
         });
-
-        // 8. Gentle Ambient Floating of the entire Island
-        if (!isDragging && !activeBuildingId) {
-            islandGroup.position.y = Math.sin(elapsed * 1.2) * 0.4;
-            islandGroup.rotation.y += 0.0008; // slow subtle drift
-        }
 
         renderer.render(scene, camera);
     }
     renderLoop();
 
     /* ==========================================================================
-       7. Contact Form Handler (Google Apps Script Payload Transmission)
+       9. Catering Form Submission via Google Apps Script
        ========================================================================== */
-    const contactForm = document.getElementById('contactForm');
+    const cateringForm = document.getElementById('cateringForm');
     const scriptURL = 'https://script.google.com/macros/s/AKfycby9keQY3zDm7Xy-IaRZr3NclpX5QQ-RhUCLuXDtzMXUgN7IQmp1PA-xqXDpbT9XhOBNvA/exec';
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+    if (cateringForm) {
+        cateringForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalHTML = submitBtn.innerHTML;
 
-            submitBtn.innerHTML = `<span>⚡</span> <span>Transmitting Message to Citadel...</span>`;
+            submitBtn.innerHTML = `<span>🥖</span> <span>Sending to the Kitchen...</span>`;
             submitBtn.disabled = true;
             submitBtn.style.opacity = '0.75';
 
-            const formData = new FormData(contactForm);
-            formData.append('Type', 'contact');
+            const formData = new FormData(cateringForm);
+            formData.append('Type', 'catering');
 
             fetch(scriptURL, { method: 'POST', body: formData })
                 .then(() => {
                     this.innerHTML = `
-                        <div style="text-align: center; padding: 32px 16px;">
-                            <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); border: 2px solid var(--accent-amber); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem;">
-                                🗼
-                            </div>
-                            <h3 style="color: var(--accent-amber); font-size: 1.5rem; margin-bottom: 8px;">Transmission Received!</h3>
-                            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-                                Your payload has been securely routed to RootNode Rebels Citadel. Our team will contact you promptly.
+                        <div style="text-align: center; padding: 32px 16px; background: rgba(101, 163, 13, 0.15); border: 2px dashed var(--soft-green); border-radius: 16px;">
+                            <div style="font-size: 2.5rem; margin-bottom: 8px;">🥖 ☕ 🥐</div>
+                            <h3 style="font-family: var(--font-sign); color: var(--butter-yellow); font-size: 1.8rem; margin-bottom: 8px;">We got your note, neighbor!</h3>
+                            <p style="font-family: var(--font-hand); color: #e2e8f0; font-size: 1.25rem; line-height: 1.6;">
+                                We'll check the pantry, calculate the flour, and give you a shout back today. Thanks for keeping us busy baking!
                             </p>
                         </div>
                     `;
                 })
                 .catch(err => {
-                    console.error('Transmission error:', err);
-                    submitBtn.innerText = 'Transmission Disrupted';
-                    submitBtn.style.background = '#ef4444';
+                    console.error('Error:', err);
+                    submitBtn.innerText = 'Flour in the machine! Try again';
+                    submitBtn.style.background = '#b91c1c';
                     setTimeout(() => {
                         submitBtn.innerHTML = originalHTML;
                         submitBtn.style.background = '';
@@ -928,22 +789,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* ==========================================================================
-       8. Anonymous Telemetry Tracker
-       ========================================================================== */
-    function collectTelemetry() {
+    // Telemetry tracker
+    setTimeout(() => {
         if (!scriptURL) return;
         try {
             const telemetryData = new FormData();
             telemetryData.append('Type', 'telemetry');
             telemetryData.append('Path', window.location.pathname);
-            telemetryData.append('Timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
             telemetryData.append('ScreenSize', `${window.innerWidth}x${window.innerHeight}`);
-            telemetryData.append('UserAgent', navigator.userAgent);
-            telemetryData.append('Referrer', document.referrer || 'Direct');
-
             fetch(scriptURL, { method: 'POST', body: telemetryData }).catch(() => {});
         } catch (e) {}
-    }
-    setTimeout(collectTelemetry, 2500);
+    }, 2500);
 });
