@@ -3,588 +3,1102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RootNode Rebels | Soil Cross-Section & Root Dependency Tree</title>
+    <title>Rootnode Rebels | Sovereign Software Engineering</title>
     
-    <!-- Meta & Anti-Hype SEO -->
-    <meta name="description" content="We grow from the root, not the trend. RootNode Rebels is an elite software engineering collective building high-concurrency architectures, ERPs, and hardened infrastructure from the bare soil up.">
-    <meta name="keywords" content="RootNode Rebels, Software Engineering, Hardened Architecture, ERP Systems, High Concurrency, Adarsh B A, Systems Programming">
-    <meta name="author" content="RootNode Rebels">
+    <!-- Meta & Anti-Hype Search Engine Optimization -->
+    <meta name="description" content="Rootnode Rebels is an independent software development collective engineering high-throughput web platforms, native mobile systems, applied AI pipelines, and fault-tolerant enterprise architectures.">
+    <meta name="keywords" content="Rootnode Rebels, Software Engineering, Web Development, Mobile Development, Applied AI, Enterprise Systems, Rust, Go, TypeScript, High Concurrency">
+    <meta name="author" content="Rootnode Rebels">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rootnode-rebels.github.io/">
-    <meta name="theme-color" content="#140e0a">
+    <meta name="theme-color" content="#07080b">
 
-    <!-- Cache-Control Meta Tags -->
+    <!-- Anti-Cache Directives for Instant Deployment -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <!-- Rough Stencil Display & Clean Engineer Mono Fonts -->
+    <!-- Typography: Outfit (Lightweight Modern Sans), Syne (Editorial Display), Space Mono (Precise Technical Mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Stylesheet with Cache Buster -->
-    <link rel="stylesheet" href="style.css?v=7.0">
+    <link rel="stylesheet" href="style.css?v=8.0">
 
-    <!-- Three.js CDN -->
+    <!-- Three.js (Core 3D Engine for Filament Network) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body>
+<body class="theme-midnight">
 
-    <!-- WebGL Three.js Soil Cross-Section Canvas -->
-    <canvas id="webgl-canvas"></canvas>
+    <!-- Ambient 3D Three.js Canvas for Glowing Filament Root System -->
+    <canvas id="filament-canvas" aria-hidden="true"></canvas>
 
-    <!-- Geological Soil Texture & Organic Grain Overlay -->
-    <div class="soil-noise-overlay"></div>
+    <!-- 2D Canvas Fallback for Mobile / Low-Power Screens -->
+    <canvas id="filament-fallback-canvas" aria-hidden="true"></canvas>
 
-    <!-- Custom Mechanical Bore Cursor -->
-    <div class="cursor-reticle" id="cursorReticle"></div>
-    <div class="cursor-dot" id="cursorDot"></div>
+    <!-- Cursor Follower & Reactive Soft Ambient Light -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
-    <!-- Geological Depth Strata Ruler (Left Edge) -->
-    <aside class="depth-ruler" aria-label="Geological Strata Depth Scale">
-        <span>[0.0m]</span>
-        <span>[-1.2m]</span>
-        <span>[-3.8m]</span>
-        <span>[-6.4m]</span>
-        <span>[-9.0m]</span>
-        <span>[-11.5m]</span>
+    <!-- Background Cinematic Aperture Vignette & Subtle Film Texture -->
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+
+    <!-- Floating Persistent Sub-Navigation & Luminous Node HUD -->
+    <aside class="node-hud" id="nodeHud" aria-label="Filament Node Navigation">
+        <div class="node-hud-track">
+            <button type="button" class="hud-node active" data-node="0" data-target="hero" aria-label="Node 0: Core Genesis">
+                <span class="hud-pip"></span>
+                <span class="hud-label">00 // GENESIS</span>
+            </button>
+            <button type="button" class="hud-node" data-node="1" data-target="services" aria-label="Node 1: Capabilities">
+                <span class="hud-pip"></span>
+                <span class="hud-label">01 // SERVICES</span>
+            </button>
+            <button type="button" class="hud-node" data-node="2" data-target="case-studies" aria-label="Node 2: Empirical Case Studies">
+                <span class="hud-pip"></span>
+                <span class="hud-label">02 // PROOF</span>
+            </button>
+            <button type="button" class="hud-node" data-node="3" data-target="tech-stack" aria-label="Node 3: Technical Primitives">
+                <span class="hud-pip"></span>
+                <span class="hud-label">03 // STACK</span>
+            </button>
+            <button type="button" class="hud-node" data-node="4" data-target="process" aria-label="Node 4: Engineering Discipline">
+                <span class="hud-pip"></span>
+                <span class="hud-label">04 // PROCESS</span>
+            </button>
+            <button type="button" class="hud-node" data-node="5" data-target="team" aria-label="Node 5: Sovereign Syndicate">
+                <span class="hud-pip"></span>
+                <span class="hud-label">05 // SYNDICATE</span>
+            </button>
+            <button type="button" class="hud-node" data-node="6" data-target="careers" aria-label="Node 6: Open Positions">
+                <span class="hud-pip"></span>
+                <span class="hud-label">06 // CAREERS</span>
+            </button>
+            <button type="button" class="hud-node" data-node="7" data-target="quote" aria-label="Node 7: Commission System">
+                <span class="hud-pip"></span>
+                <span class="hud-label">07 // COMMISSION</span>
+            </button>
+        </div>
+        <div class="hud-telemetry">
+            <span class="hud-coords" id="hudCoords">FILAMENT: Y -12.4m // FOCUS: ROOT</span>
+            <span class="hud-status"><span class="status-pulse"></span> SYSTEM NOMINAL</span>
+        </div>
     </aside>
 
-    <!-- Live Depth Indicator Pill -->
-    <div class="depth-indicator-pill">
-        <span>DEPTH:</span>
-        <span class="live-val" id="depthVal">-0.0m</span>
-        <span>//</span>
-        <span id="depthStratum" style="color:var(--moss-green-bright);">TOPSOIL // SURFACE</span>
-    </div>
+    <!-- Master Header Navigation -->
+    <header class="master-header" id="masterHeader">
+        <div class="header-inner">
+            <a href="#hero" class="brand-monogram" aria-label="Rootnode Rebels Home">
+                <span class="brand-mark">ROOTNODE</span>
+                <span class="brand-sub">REBELS</span>
+            </a>
 
-    <!-- Top Schematic Header & Branch Links -->
-    <header class="schematic-header">
-        <a href="/" class="header-brand">
-            <div class="brand-icon-root">R</div>
-            <div class="brand-text-root">ROOTNODE // REBELS</div>
-        </a>
+            <div class="header-center-pill">
+                <span class="pill-indicator"></span>
+                <span class="pill-text">BUILDING HIGH-THROUGHPUT RUNTIMES &bull; ZERO SLOP</span>
+            </div>
 
-        <nav class="header-nav-links">
-            <a href="#services" class="nav-node-link" data-root-node="services">Services</a>
-            <a href="#projects" class="nav-node-link" data-root-node="projects">Case Studies</a>
-            <a href="#process" class="nav-node-link" data-root-node="process">Process</a>
-            <a href="#team" class="nav-node-link" data-root-node="team">Team</a>
-            <a href="#careers" class="nav-node-link" data-root-node="contact">Careers</a>
-            
-            <button id="soundToggle" class="audio-toggle-btn" title="Toggle Subterranean Geophone Audio">
-                [GEOPHONE: OFF]
+            <nav class="header-nav" aria-label="Primary Navigation">
+                <a href="#services" class="nav-link">SERVICES</a>
+                <a href="#case-studies" class="nav-link">PROOF</a>
+                <a href="#tech-stack" class="nav-link">STACK</a>
+                <a href="#process" class="nav-link">PROCESS</a>
+                <a href="#team" class="nav-link">TEAM</a>
+                <a href="#careers" class="nav-link">CAREERS</a>
+                <a href="#quote" class="nav-cta-btn">
+                    <span>GET A QUOTE</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" stroke-width="1.2"/></svg>
+                </a>
+            </nav>
+
+            <button class="mobile-menu-trigger" id="mobileMenuTrigger" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
             </button>
-        </nav>
+        </div>
     </header>
 
-    <!-- Main Soil Strata Cross-Section Journey -->
-    <div class="soil-strata-container">
-
-        <!-- ========================================================
-             STRATUM 0.0m: SURFACE HERO
-             ======================================================== -->
-        <section class="strata-section hero-surface" id="surface">
-            <div class="masking-tape">STRATUM 0.0 // BARE EARTH BOUNDARY</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">ROOTNODE PROTOCOL // SUBTERRANEAN DRILL CORE</div>
-                <div class="rebel-stamp">[VERIFIED IN PROD]</div>
-            </div>
-
-            <h1 class="strata-headline">
-                WE GROW FROM THE ROOT, <br>
-                <span style="color:var(--rebel-red);">NOT THE TREND.</span>
-            </h1>
-
-            <!-- Raw Engineer Manifesto Box -->
-            <div class="manifesto-box">
-                <div class="defiant-quote">
-                    "MOST SOFTWARE TODAY IS THREE LAYERS OF JAVASCRIPT WRAPPED AROUND SOMEONE ELSE’S UNMAINTAINED API."
-                </div>
-                <p class="manifesto-text">
-                    Deployed on an obscure cloud cluster you don't understand, billed to a venture fund that doesn’t care, and destined to collapse the moment real traffic hits the wire. We don’t do that. We build software from the root node up—hardened, deterministic, and built to survive production reality.
-                </p>
-                <div style="display:flex; gap:14px; flex-wrap:wrap; font-size:0.75rem; color:var(--moss-green-bright);">
-                    <span>[+] DETERMINISTIC SCHEMAS</span>
-                    <span>[+] ZERO-TRUST INTEGRITY</span>
-                    <span>[+] REAL CONCURRENCY</span>
-                    <span>[+] NO SLOP</span>
-                </div>
-            </div>
-
-            <div class="hero-actions">
-                <a href="#services" class="btn-rebel">
-                    <span>DESCEND INTO THE ROOTS</span>
-                    <span>↓</span>
-                </a>
-                <a href="#contact" class="btn-moss-outline">
-                    <span>TRANSMIT SPECIFICATION</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- ========================================================
-             STRATUM -1.2m: HUMUS STRATA // SERVICES (ASYMMETRIC GRID)
-             ======================================================== -->
-        <section class="strata-section" id="services" data-root-node="services">
-            <div class="masking-tape">STRATUM A // HUMUS LAYER [-1.2m]</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">CORE CAPABILITIES // WHAT WE ACTUALLY BUILD</div>
-                <div class="rebel-stamp stamp-moss">[NO VAPORWARE]</div>
-            </div>
-
-            <h2 class="strata-headline">WHAT WE BUILD. <br><span style="color:var(--moss-green-bright);">NO CORPORATE JARGON.</span></h2>
-            <p class="strata-subtext">
-                We don't "elevate paradigms" or "unlock digital synergy." We write high-concurrency backend plumbing, engineer uncrackable zero-trust systems, and design custom 3D shaders from bare mathematics.
-            </p>
-
-            <!-- Asymmetric Broken Grid Layout -->
-            <div class="services-asymmetric-grid">
-                <!-- Service 1: Span 7 -->
-                <div class="service-strata-card card-span-7">
-                    <div class="masking-tape tape-right">NODE // 0x01</div>
-                    <div class="service-code">[01]</div>
-                    <h3 class="service-name">High-Concurrency Backend Plumbing</h3>
-                    <p class="service-detail">
-                        Distributed architectures and microservices engineered in Go, Rust, and Node that don’t crack under load. Microsecond event buses, fault-tolerant message queues, and zero-data-loss database pipelines.
-                    </p>
-                    <div class="service-spec-chips">
-                        <span class="spec-chip">PostgreSQL</span>
-                        <span class="spec-chip">Redis Streams</span>
-                        <span class="spec-chip">Go / Rust</span>
-                        <span class="spec-chip">WebSockets</span>
-                    </div>
-                </div>
-
-                <!-- Service 2: Span 5 -->
-                <div class="service-strata-card card-span-5" style="transform: rotate(0.8deg);">
-                    <div class="masking-tape">NODE // 0x02</div>
-                    <div class="service-code">[02]</div>
-                    <h3 class="service-name">Offensive Security & Hardening</h3>
-                    <p class="service-detail">
-                        Zero-trust infrastructure audits, automated cryptographic validation, penetration tests, and vulnerability exploitation before malicious actors find them.
-                    </p>
-                    <div class="service-spec-chips">
-                        <span class="spec-chip">Zero-Trust</span>
-                        <span class="spec-chip">Pen-Testing</span>
-                        <span class="spec-chip">Audit Logs</span>
-                    </div>
-                </div>
-
-                <!-- Service 3: Span 5 -->
-                <div class="service-strata-card card-span-5" style="transform: rotate(-0.7deg);">
-                    <div class="masking-tape">NODE // 0x03</div>
-                    <div class="service-code">[03]</div>
-                    <h3 class="service-name">Full-Stack & Mobile Runtimes</h3>
-                    <p class="service-detail">
-                        Reactive client applications built without bloat. Native 120Hz gesture handling on mobile, local-first offline syncing, and lightweight web frontends.
-                    </p>
-                    <div class="service-spec-chips">
-                        <span class="spec-chip">React / Next</span>
-                        <span class="spec-chip">Flutter</span>
-                        <span class="spec-chip">Offline Sync</span>
-                    </div>
-                </div>
-
-                <!-- Service 4: Span 7 -->
-                <div class="service-strata-card card-span-7">
-                    <div class="masking-tape tape-right">NODE // 0x04</div>
-                    <div class="service-code">[04]</div>
-                    <h3 class="service-name">Spatial 3D & WebGL Shaders</h3>
-                    <p class="service-detail">
-                        Hardware-accelerated 3D graphics, diorama engines, and procedural geometry in Three.js and raw GLSL. No stock templates or heavy canvas wrappers.
-                    </p>
-                    <div class="service-spec-chips">
-                        <span class="spec-chip">Three.js</span>
-                        <span class="spec-chip">WebGL / GLSL</span>
-                        <span class="spec-chip">Spatial UI</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================================
-             STRATUM -3.8m: SUBSOIL FORK // CASE STUDIES
-             ======================================================== -->
-        <section class="strata-section" id="projects" data-root-node="projects">
-            <div class="masking-tape">STRATUM B // SUBSOIL FORK [-3.8m]</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">ARTIFACT RUNS // BATTLE-TESTED REPOSITORIES</div>
-                <div class="rebel-stamp">[ROOT CERTIFIED]</div>
-            </div>
-
-            <h2 class="strata-headline">PRODUCTION RUNS. <br><span style="color:var(--rebel-red);">TESTED UNDER PRESSURE.</span></h2>
-            <p class="strata-subtext">
-                We don't showcase Figma mockups. These are working software systems, complete with open-source repositories and production stress records.
-            </p>
-
-            <div class="artifacts-tree-list">
-                <!-- Case 1 -->
-                <article class="artifact-run-entry">
-                    <div class="masking-tape">ENTRY // #01-ERP</div>
-                    <div class="artifact-left">
-                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// EDUCATION DATA PIPELINE</div>
-                        <h3>Sri Basaveswara School ERP</h3>
-                        <p>
-                            A comprehensive School Resource Planning system automating student data pipelines, academic grade ledgers, automated attendance verification, and real-time administrative analytics. Zero data-loss across 1,400+ active records.
-                        </p>
-                        <div style="display:flex; gap:14px; align-items:center;">
-                            <a href="https://github.com/RootNode-Rebels/sribasaveswaraschool" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
-                                <span>INSPECT REPO</span>
-                                <span>↗</span>
-                            </a>
-                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[IN PRODUCTION]</span>
-                        </div>
-                    </div>
-                    <div class="artifact-metrics-sidebar">
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">RECORD VOLUME</div>
-                            <div class="metric-data-mono">1,420 Active Students</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">QUERY LATENCY</div>
-                            <div class="metric-data-mono">&lt; 14ms Median</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">UPTIME RECORD</div>
-                            <div class="metric-data-mono" style="color:var(--moss-green-bright);">99.98% SLA</div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Case 2 -->
-                <article class="artifact-run-entry" style="transform: rotate(-0.5deg);">
-                    <div class="masking-tape tape-right">ENTRY // #02-IOT</div>
-                    <div class="artifact-left">
-                        <div style="color:var(--moss-green-bright); font-size:0.8rem; margin-bottom:6px;">// RETAIL LOGISTICS HARDWARE</div>
-                        <h3>Smart Trolley Commerce App</h3>
-                        <p>
-                            Hardware-integrated logistics application modernizing physical retail checkout with automated RFID sensor cart synchronization, weight matrix validation, and sub-second instant payment.
-                        </p>
-                        <div style="display:flex; gap:14px; align-items:center;">
-                            <a href="https://github.com/RootNode-Rebels/smarttrolleyapp" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
-                                <span>INSPECT REPO</span>
-                                <span>↗</span>
-                            </a>
-                            <span class="rebel-stamp" style="font-size:0.7rem;">[ACTIVE HARDWARE DEV]</span>
-                        </div>
-                    </div>
-                    <div class="artifact-metrics-sidebar">
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">SCAN RESPONSE</div>
-                            <div class="metric-data-mono">&lt; 0.3s RFID Sync</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">CHECKOUT FRICTION</div>
-                            <div class="metric-data-mono">-85% Queue Time</div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Case 3 -->
-                <article class="artifact-run-entry">
-                    <div class="masking-tape">ENTRY // #03-CRYPTO</div>
-                    <div class="artifact-left">
-                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// DISTRIBUTED CONSENSUS</div>
-                        <h3>Cryptographic Online Voting System</h3>
-                        <p>
-                            Cryptographically verified, tamper-proof ballot network designed for democratic governance with end-to-end mathematical transparency, zero-knowledge voter privacy, and append-only cryptographic hashes.
-                        </p>
-                        <div style="display:flex; gap:14px; align-items:center;">
-                            <a href="https://github.com/RootNode-Rebels/onlinevotingsystem" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
-                                <span>INSPECT REPO</span>
-                                <span>↗</span>
-                            </a>
-                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[AUDITED ALGORITHMS]</span>
-                        </div>
-                    </div>
-                    <div class="artifact-metrics-sidebar">
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">INTEGRITY PROOF</div>
-                            <div class="metric-data-mono">SHA-256 Validated</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">THROUGHPUT PEAK</div>
-                            <div class="metric-data-mono">50,000 req/s</div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Case 4 -->
-                <article class="artifact-run-entry" style="transform: rotate(0.6deg);">
-                    <div class="masking-tape tape-right">ENTRY // #04-HEALTH</div>
-                    <div class="artifact-left">
-                        <div style="color:var(--moss-green-bright); font-size:0.8rem; margin-bottom:6px;">// CLINICAL TELEMETRY STREAM</div>
-                        <h3>Aegis Health Telemetry Hub</h3>
-                        <p>
-                            Real-time healthcare streaming platform for patient vitals, automated cardiac anomaly detection, low-latency WebSocket broadcasting, and automated clinical triage escalation.
-                        </p>
-                        <div style="display:flex; gap:14px; align-items:center;">
-                            <a href="https://github.com/RootNode-Rebels/Aegis-Health-Monitor" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
-                                <span>INSPECT REPO</span>
-                                <span>↗</span>
-                            </a>
-                            <span class="rebel-stamp" style="font-size:0.7rem;">[STREAM LIVE]</span>
-                        </div>
-                    </div>
-                    <div class="artifact-metrics-sidebar">
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">STREAM LATENCY</div>
-                            <div class="metric-data-mono">9ms Real-Time</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">ALERT SLA</div>
-                            <div class="metric-data-mono">&lt; 1.2s Dispatch</div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Case 5 -->
-                <article class="artifact-run-entry">
-                    <div class="masking-tape">ENTRY // #05-SUPPLY</div>
-                    <div class="artifact-left">
-                        <div style="color:var(--rebel-red); font-size:0.8rem; margin-bottom:6px;">// B2B PHARMACEUTICAL SUPPLY CHAIN</div>
-                        <h3>Medicart Wholesale Dashboard</h3>
-                        <p>
-                            High-throughput enterprise B2B pharmaceutical marketplace connecting wholesale medical distributors, automating warehouse batch tracking, regulatory barcodes, and pharmacy order fulfillment.
-                        </p>
-                        <div style="display:flex; gap:14px; align-items:center;">
-                            <a href="https://github.com/RootNode-Rebels/medicart-dashboard" target="_blank" class="btn-rebel" style="padding:10px 20px; font-size:0.82rem;">
-                                <span>INSPECT REPO</span>
-                                <span>↗</span>
-                            </a>
-                            <span class="rebel-stamp stamp-moss" style="font-size:0.7rem;">[DEPLOYED]</span>
-                        </div>
-                    </div>
-                    <div class="artifact-metrics-sidebar">
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">PHARMACY NETWORK</div>
-                            <div class="metric-data-mono">340+ Commercial Nodes</div>
-                        </div>
-                        <div class="artifact-metric-item">
-                            <div class="metric-label-mono">BATCH COMPLIANCE</div>
-                            <div class="metric-data-mono">100% Automated</div>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ========================================================
-             STRATUM -6.4m: CLAY MATRIX // PROCESS
-             ======================================================== -->
-        <section class="strata-section" id="process" data-root-node="process">
-            <div class="masking-tape">STRATUM C // CLAY & ROOT MATRIX [-6.4m]</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">ENGINEERING PROTOCOL // ANTI-SLOP METHODOLOGY</div>
-                <div class="rebel-stamp">[REJECTED BUZZWORDS]</div>
-            </div>
-
-            <h2 class="strata-headline">HOW WE DON'T <br><span style="color:var(--moss-green-bright);">SHIP SLOP.</span></h2>
-            <p class="strata-subtext">
-                Every software catastrophe traces back to premature optimization, unvetted abstractions, or engineers who forgot how operating systems work. Here is how we guarantee our code endures.
-            </p>
-
-            <div class="process-steps-grid">
-                <div class="process-card">
-                    <div class="step-num">01</div>
-                    <h4>DIG TO FIRST PRINCIPLES</h4>
-                    <p>We strip away all corporate theater. No 80-page discovery decks. We inspect the raw physics of your problem: throughput, schema dependencies, security threats, and hardware constraints.</p>
-                </div>
-                <div class="process-card" style="transform: rotate(0.8deg);">
-                    <div class="step-num">02</div>
-                    <h4>UNSHAKEABLE SCHEMAS FIRST</h4>
-                    <p>Database models, network contracts, and thread safety are designed and stress-tested before a single button is drawn. If your data foundation is rotten, a pretty UI won't save it.</p>
-                </div>
-                <div class="process-card" style="transform: rotate(-0.8deg);">
-                    <div class="step-num">03</div>
-                    <h4>HARDENING UNDER SIMULATED FIRE</h4>
-                    <p>We inject intentional packet drops, corrupted payloads, and concurrent race conditions. If the node fails, it fails gracefully without cascading corruptions.</p>
-                </div>
-                <div class="process-card">
-                    <div class="step-num">04</div>
-                    <h4>DETERMINISTIC GITOPS DELIVERY</h4>
-                    <p>Hermetic builds. Containerized reproducibility. Everything is code, audited, tagged, and delivered with deterministic rollbacks. No magical manual clicks in cloud dashboards.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================================
-             STRATUM -9.0m: TAPROOT BED // THE SYNDICATE (TEAM)
-             ======================================================== -->
-        <section class="strata-section" id="team" data-root-node="team">
-            <div class="masking-tape">STRATUM D // TAPROOT BED [-9.0m]</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">THE REBEL SYNDICATE // ROOT OPERATORS</div>
-                <div class="rebel-stamp stamp-moss">[ROOT ENGINEERS]</div>
-            </div>
-
-            <h2 class="strata-headline">THE ENGINEERS <br><span style="color:var(--rebel-red);">HOLDING THE SHOVEL.</span></h2>
-            <p class="strata-subtext">
-                No middle management. No disconnected account executives. When you work with RootNode Rebels, you deal directly with the engineers designing the schemas and writing the migrations.
-            </p>
-
-            <div class="team-strata-grid">
-                <!-- Adarsh -->
-                <a href="https://www.linkedin.com/in/developeradhi/" target="_blank" class="syndicate-member-card">
-                    <div class="masking-tape">ENGINEER #01</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Adarsh B A</h3>
-                    </div>
-                    <div class="member-role">Founder & Chief Systems Architect</div>
-                    <p class="member-bio">Architects distributed foundations, designs high-concurrency protocols, and makes sure zero unhandled exceptions escape into production.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-
-                <!-- Akash R -->
-                <a href="https://www.linkedin.com/in/akashr24012007/" target="_blank" class="syndicate-member-card" style="transform: rotate(0.6deg);">
-                    <div class="masking-tape tape-right">ENGINEER #02</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Akash R</h3>
-                    </div>
-                    <div class="member-role">Co-Founder & CTO</div>
-                    <p class="member-bio">Low-level infrastructure plumbing, database indexing, kernel tuning, and automated deployment pipelines.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-
-                <!-- Akash P -->
-                <a href="https://www.linkedin.com/in/akash-p-46b66a386/" target="_blank" class="syndicate-member-card">
-                    <div class="masking-tape">ENGINEER #03</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Akash P</h3>
-                    </div>
-                    <div class="member-role">Marketing Lead & CFO</div>
-                    <p class="member-bio">Fierce commercial architecture, fiscal discipline, and keeping our balance sheet as hardened as our cryptographic keys.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-
-                <!-- Jeevan H S -->
-                <a href="https://www.linkedin.com/in/jeevan-h-s-30b756386/" target="_blank" class="syndicate-member-card" style="transform: rotate(-0.6deg);">
-                    <div class="masking-tape tape-right">ENGINEER #04</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Jeevan H S</h3>
-                    </div>
-                    <div class="member-role">Marketing Manager & COO</div>
-                    <p class="member-bio">Operational velocity, project delivery cadence, and ensuring client communication stays transparent and fluff-free.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-
-                <!-- Akshath C H -->
-                <a href="https://www.linkedin.com/in/akshath-ch-8a0b19384/" target="_blank" class="syndicate-member-card">
-                    <div class="masking-tape">ENGINEER #05</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Akshath C H</h3>
-                    </div>
-                    <div class="member-role">Co-Founder & CKO</div>
-                    <p class="member-bio">Deep knowledge engineering, cryptographic ballot mathematics, zero-knowledge proofs, and algorithmic verification.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-
-                <!-- Prajval R Shunty -->
-                <a href="https://www.linkedin.com/in/prajval-r-shunty-139a47385/" target="_blank" class="syndicate-member-card" style="transform: rotate(0.5deg);">
-                    <div class="masking-tape tape-right">ENGINEER #06</div>
-                    <div class="member-header">
-                        <h3 class="member-name">Prajval R Shunty</h3>
-                    </div>
-                    <div class="member-role">CIO & Technical Scribe</div>
-                    <p class="member-bio">System audit logs, technical specifications, information integrity, and maintaining documentation precision.</p>
-                    <div class="member-connect-link">Inspect Profile on LinkedIn ↗</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- ========================================================
-             STRATUM -11.5m: BEDROCK CORE // CAREERS & TRANSMISSION
-             ======================================================== -->
-        <section class="strata-section" id="careers" data-root-node="contact" style="border-bottom:none;">
-            <div class="masking-tape">STRATUM E // BEDROCK CORE [-11.5m]</div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <div class="strata-tag">DIRECT TRANSMISSION // CAREERS & INQUIRY</div>
-                <div class="rebel-stamp">[ENCRYPTED TO CORE]</div>
-            </div>
-
-            <div style="text-align:center; max-width:760px; margin:0 auto 30px;">
-                <h2 class="strata-headline">WANT TO DIG <br><span style="color:var(--rebel-red);">WITH US?</span></h2>
-                <p class="strata-subtext" style="margin:0 auto;">
-                    We are always scouting engineers who care about raw performance, clean systems, and despise corporate theater. If you’ve built something that survived production, send us your proof-of-work.
-                </p>
-            </div>
-
-            <!-- Direct Transmission Field Form -->
-            <div class="transmission-form-container" id="contact">
-                <div class="masking-tape">BORE SPECIFICATION // TRANSMIT DIRECT</div>
-                <h3 style="font-family:var(--font-stencil); font-size:1.6rem; margin-bottom:24px; color:var(--bone-white);">
-                    TRANSMIT SPECIFICATION TO THE SYNDICATE
-                </h3>
-
-                <form id="contactForm">
-                    <div class="form-group-soil">
-                        <label>// YOUR NAME OR CALLSIGN</label>
-                        <input type="text" name="Name" class="input-soil" placeholder="e.g. Satoshi Nakamoto" required>
-                    </div>
-
-                    <div class="form-group-soil">
-                        <label>// WIRE PROTOCOL / EMAIL ADDRESS</label>
-                        <input type="email" name="Email" class="input-soil" placeholder="satoshi@domain.com" required>
-                    </div>
-
-                    <div class="form-group-soil">
-                        <label>// PROBLEM STATEMENT / PROOF OF WORK / INQUIRY</label>
-                        <textarea name="Message" class="input-soil" placeholder="Describe the technical challenge, concurrency requirements, or project scope..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-rebel" style="width:100%; padding:16px; font-size:1.05rem;">
-                        <span>TRANSMIT PACKET TO BEDROCK</span>
-                        <span>⚡</span>
-                    </button>
-                </form>
-            </div>
-        </section>
-
+    <!-- Mobile Drawer Navigation -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-links">
+            <a href="#hero" class="drawer-link">00 // GENESIS</a>
+            <a href="#services" class="drawer-link">01 // SERVICES</a>
+            <a href="#case-studies" class="drawer-link">02 // PROOF (CASES)</a>
+            <a href="#tech-stack" class="drawer-link">03 // TECH STACK</a>
+            <a href="#process" class="drawer-link">04 // PROCESS</a>
+            <a href="#team" class="drawer-link">05 // SYNDICATE</a>
+            <a href="#careers" class="drawer-link">06 // CAREERS</a>
+            <a href="#quote" class="drawer-link drawer-highlight">07 // GET A QUOTE</a>
+        </div>
+        <div class="drawer-footer">
+            <p class="drawer-meta">ROOTNODE REBELS // LATENCY: 14MS</p>
+            <p class="drawer-contact">inquiries@rootnoderebels.cc</p>
+        </div>
     </div>
 
-    <!-- Subterranean Bedrock Strata Footer with Personality -->
-    <footer class="strata-footer">
-        <div class="footer-manifesto-row">
-            <div>
-                <h4 style="font-family:var(--font-stencil); font-size:1.6rem; color:var(--bone-white); margin-bottom:10px;">
-                    ROOTNODE REBELS
-                </h4>
-                <p class="footer-colophon">
-                    We grow from the root, not the trend. Built by an opinionated engineering syndicate without templates, buzzwords, or vaporware.
+    <!-- Main Content Container with Floating Reveal Layout -->
+    <main class="editorial-container" id="editorialContainer">
+
+        <!-- ====================================================================
+             00. HERO SECTION (Genesis Node)
+             ==================================================================== -->
+        <section class="section-block hero-block" id="hero" data-section-index="0">
+            <div class="section-rule-top"></div>
+            
+            <div class="hero-content">
+                <div class="editorial-tagline reveal-elem">
+                    <span class="mono-prefix">[ ROOTNODE ARCHITECTURAL COLLECTIVE ]</span>
+                    <span class="tagline-rule"></span>
+                    <span class="mono-suffix">EST. 2024</span>
+                </div>
+
+                <h1 class="hero-headline reveal-elem">
+                    <span class="headline-row">CODE GROWN FROM</span>
+                    <span class="headline-row italic-accent">FIRST PRINCIPLES.</span>
+                    <span class="headline-row dim-row">NOT INDUSTRY CONVENIENCE.</span>
+                </h1>
+
+                <p class="hero-manifesto reveal-elem">
+                    We engineer high-concurrency web architectures, low-latency mobile platforms, production-grade AI pipelines, and resilient enterprise software for ambitious startups and businesses. We reject off-the-shelf mediocrity, hype-driven rewrites, and corporate buzzwords. Every system we deploy is built to withstand real-world operational stress.
+                </p>
+
+                <div class="hero-action-bar reveal-elem">
+                    <a href="#quote" class="btn-primary">
+                        <span class="btn-text">COMMISSION A BUILD</span>
+                        <span class="btn-glow"></span>
+                    </a>
+                    <a href="#case-studies" class="btn-ghost">
+                        <span class="btn-text">INSPECT BENCHMARKS</span>
+                        <span class="btn-arrow">&darr;</span>
+                    </a>
+                </div>
+
+                <!-- Interactive Filament Network Guide -->
+                <div class="filament-interaction-guide reveal-elem">
+                    <div class="guide-indicator">
+                        <span class="guide-pulsar"></span>
+                    </div>
+                    <div class="guide-copy">
+                        <span class="guide-title">INTERACTIVE FILAMENT ROOT SYSTEM</span>
+                        <p class="guide-desc">Thousands of glowing fibers branch upward from the base. Hover to illuminate nearby strands with soft cursor light; click any luminous node to traverse coordinates.</p>
+                    </div>
+                </div>
+
+                <!-- Live Engineering Telemetry Strip -->
+                <div class="telemetry-bar reveal-elem">
+                    <div class="telemetry-item">
+                        <span class="telemetry-val">34+</span>
+                        <span class="telemetry-label">SYSTEMS IN PRODUCTION</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-val">14.2ms</span>
+                        <span class="telemetry-label">P99 MEDIAN QUERY LATENCY</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-val">99.99%</span>
+                        <span class="telemetry-label">SYSTEM UPTIME RELIABILITY</span>
+                    </div>
+                    <div class="telemetry-item">
+                        <span class="telemetry-val">0.00%</span>
+                        <span class="telemetry-label">TOLERATED TECHNICAL FLUFF</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-rule-bottom"></div>
+        </section>
+
+
+        <!-- ====================================================================
+             01. SERVICES SECTION (Capabilities Node)
+             ==================================================================== -->
+        <section class="section-block services-block" id="services" data-section-index="1">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">01</span>
+                    <span class="section-title-label">ENGINEERING CAPABILITIES</span>
+                </div>
+                <h2 class="section-headline">
+                    PRECISION SOFTWARE BUILT FOR <span class="amber-highlight">EXTREME SCALE</span>.
+                </h2>
+                <p class="section-subtext">
+                    We do not outsource, slice corners, or assemble brittle templates. We build bespoke software infrastructure engineered to endure.
                 </p>
             </div>
 
-            <div class="footer-social-mesh">
-                <a href="https://github.com/RootNode-Rebels/" target="_blank" class="social-bore-link">
-                    [GITHUB REPOSITORY]
-                </a>
-                <a href="https://linkedin.com/company/RootNode-Rebels/" target="_blank" class="social-bore-link">
-                    [LINKEDIN SYNDICATE]
-                </a>
-                <a href="https://x.com/RootNode_Rebels/" target="_blank" class="social-bore-link">
-                    [X / TWITTER]
-                </a>
-                <a href="https://instagram.com/rootnode_rebels/" target="_blank" class="social-bore-link">
-                    [INSTAGRAM]
-                </a>
-            </div>
-        </div>
+            <div class="services-editorial-grid">
+                <!-- Service 1: Web Platforms -->
+                <article class="service-panel reveal-elem">
+                    <div class="panel-header">
+                        <span class="service-num">01.01</span>
+                        <span class="service-category">DISTRIBUTED WEB SYSTEMS</span>
+                    </div>
+                    <h3 class="service-title">High-Throughput Web Platforms & Core APIs</h3>
+                    <p class="service-summary">
+                        Architectures engineered for relentless load. We build event-driven backends, high-concurrency microservices, and reactive frontends that sustain millions of operations without jitter.
+                    </p>
+                    <div class="service-specs">
+                        <div class="spec-row">
+                            <span class="spec-key">Core Competencies:</span>
+                            <span class="spec-val">CQRS / Event Sourcing, Real-time WebSockets, Zero-Downtime Migrations, Edge Compute</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Primary Runtimes:</span>
+                            <span class="spec-val">Rust (Axum/Tokio), Go, Node.js/Bun, Next.js, Cloudflare Workers</span>
+                        </div>
+                        <div class="spec-row anti-row">
+                            <span class="spec-key">What We Don't Do:</span>
+                            <span class="spec-val">Bloated CMS monoliths, brittle boilerplate templates, or unprofiled memory leaks.</span>
+                        </div>
+                    </div>
+                    <div class="service-footer-cta">
+                        <a href="#quote" class="inline-inquire-link" data-service="High-Throughput Web Platforms">Request Spec & Quote &rarr;</a>
+                    </div>
+                </article>
 
-        <div class="footer-bottom-line">
-            <span>&copy; 2026 ROOTNODE REBELS // DRILL CORE ALL SYSTEMS OPERATIONAL.</span>
-            <span>STRATUM: BEDROCK [-11.5m] • SECURED BY ROOTNODE INTELLIGENCE</span>
+                <!-- Service 2: Mobile Engineering -->
+                <article class="service-panel reveal-elem">
+                    <div class="panel-header">
+                        <span class="service-num">01.02</span>
+                        <span class="service-category">MOBILE ENGINEERING</span>
+                    </div>
+                    <h3 class="service-title">Low-Latency Native & Cross-Platform Mobile</h3>
+                    <p class="service-summary">
+                        Mobile platforms crafted for fluid 60fps interaction and bulletproof offline-first reliability. From custom device hardware bridges to local CRDT synchronizers.
+                    </p>
+                    <div class="service-specs">
+                        <div class="spec-row">
+                            <span class="spec-key">Core Competencies:</span>
+                            <span class="spec-val">Offline-First Replication, Sub-60fps UI Renders, BLE / NFC / Sub-GHz Hardware Bridges, Secure Enclave Storage</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Primary Runtimes:</span>
+                            <span class="spec-val">React Native / Expo, Swift, Kotlin, Embedded SQLite, WatermelonDB</span>
+                        </div>
+                        <div class="spec-row anti-row">
+                            <span class="spec-key">What We Don't Do:</span>
+                            <span class="spec-val">Sluggish webview wrappers disguised as mobile applications.</span>
+                        </div>
+                    </div>
+                    <div class="service-footer-cta">
+                        <a href="#quote" class="inline-inquire-link" data-service="Low-Latency Mobile Systems">Request Spec & Quote &rarr;</a>
+                    </div>
+                </article>
+
+                <!-- Service 3: Applied AI & Neural Pipelines -->
+                <article class="service-panel reveal-elem">
+                    <div class="panel-header">
+                        <span class="service-num">01.03</span>
+                        <span class="service-category">APPLIED ARTIFICIAL INTELLIGENCE</span>
+                    </div>
+                    <h3 class="service-title">Applied AI & Production Neural Pipelines</h3>
+                    <p class="service-summary">
+                        We move artificial intelligence out of Jupyter notebooks and into resilient production. Self-hosted models, sub-second vector retrievals, and deterministic evaluation frameworks.
+                    </p>
+                    <div class="service-specs">
+                        <div class="spec-row">
+                            <span class="spec-key">Core Competencies:</span>
+                            <span class="spec-val">Self-Hosted vLLM Clusters, Multi-Stage RAG with Re-ranking, Real-time Edge Vision, Automated Benchmark Harnesses</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Primary Runtimes:</span>
+                            <span class="spec-val">PyTorch, ONNX Runtime, Qdrant, Triton Inference Server, FastEmbed</span>
+                        </div>
+                        <div class="spec-row anti-row">
+                            <span class="spec-key">What We Don't Do:</span>
+                            <span class="spec-val">Slap a generic OpenAI wrapper over a web form and call it "proprietary intelligence".</span>
+                        </div>
+                    </div>
+                    <div class="service-footer-cta">
+                        <a href="#quote" class="inline-inquire-link" data-service="Applied AI & Neural Pipelines">Request Spec & Quote &rarr;</a>
+                    </div>
+                </article>
+
+                <!-- Service 4: Enterprise Distributed Systems -->
+                <article class="service-panel reveal-elem">
+                    <div class="panel-header">
+                        <span class="service-num">01.04</span>
+                        <span class="service-category">ENTERPRISE RESILIENCE</span>
+                    </div>
+                    <h3 class="service-title">Fault-Tolerant Enterprise Systems & ERPs</h3>
+                    <p class="service-summary">
+                        Sovereign enterprise backbones designed to replace crumbling legacy software. Strictly typed, auditable, and resilient to infrastructure partitions.
+                    </p>
+                    <div class="service-specs">
+                        <div class="spec-row">
+                            <span class="spec-key">Core Competencies:</span>
+                            <span class="spec-val">Monolith Strangulation, Partitioned PostgreSQL, Double-Entry Ledger Auditing, SOC-2 / ISO Data Governance</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Primary Runtimes:</span>
+                            <span class="spec-val">Go, PostgreSQL, ClickHouse, Apache Kafka, Terraform, Kubernetes</span>
+                        </div>
+                        <div class="spec-row anti-row">
+                            <span class="spec-key">What We Don't Do:</span>
+                            <span class="spec-val">Locking clients into 7-figure proprietary licenses with zero source access.</span>
+                        </div>
+                    </div>
+                    <div class="service-footer-cta">
+                        <a href="#quote" class="inline-inquire-link" data-service="Fault-Tolerant Enterprise Systems">Request Spec & Quote &rarr;</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             02. CASE STUDIES SECTION (Proof Node - Real Metrics)
+             ==================================================================== -->
+        <section class="section-block cases-block" id="case-studies" data-section-index="2">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">02</span>
+                    <span class="section-title-label">EMPIRICAL CASE STUDIES</span>
+                </div>
+                <h2 class="section-headline">
+                    VERIFIED BENCHMARKS. <span class="amber-highlight">REAL METRICS</span>.
+                </h2>
+                <p class="section-subtext">
+                    We don't publish vague case studies with decorative percentages. Here is the architectural evidence from actual systems in production.
+                </p>
+            </div>
+
+            <div class="cases-editorial-list">
+                <!-- Case 1: Apex Logistics -->
+                <article class="case-study-entry reveal-elem">
+                    <div class="case-meta-col">
+                        <span class="case-tag">LOGISTICS // HARDWARE BRIDGE</span>
+                        <span class="case-client">APEX AUTOMATED FULFILLMENT</span>
+                        <span class="case-timeline">DEPLOYED IN 14 HUBS</span>
+                        <div class="case-stack-tags">
+                            <span class="tag-chip">Rust</span>
+                            <span class="tag-chip">Sub-GHz Mesh</span>
+                            <span class="tag-chip">SQLite Edge</span>
+                            <span class="tag-chip">Wasm</span>
+                        </div>
+                    </div>
+
+                    <div class="case-body-col">
+                        <h3 class="case-title">Autonomous Logistics Engine & Offline Warehouse Terminal</h3>
+                        <p class="case-narrative">
+                            Apex was suffering critical operational lockouts across 14 cold-storage distribution centers. Their previous enterprise cloud provider required an uninterrupted internet connection for barcode verification, causing 3.4-minute cart contention freezes whenever warehouse concrete blocked Wi-Fi.
+                        </p>
+                        <p class="case-narrative">
+                            Rootnode Rebels replaced the cloud bottleneck with a decentralized Rust-powered edge daemon, local embedded SQLite instances on ruggedized handheld scanners, and an asynchronous sub-GHz mesh radio fallback for packet synchronization.
+                        </p>
+
+                        <div class="case-metrics-grid">
+                            <div class="metric-card">
+                                <span class="metric-num">-68%</span>
+                                <span class="metric-desc">Cart checkout & dispatch latency, slashed from 204s to 65s</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">99.98%</span>
+                                <span class="metric-desc">RF packet reception through reinforced concrete and sub-zero freezers</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">14.2ms</span>
+                                <span class="metric-desc">P99 inventory ledger reconciliation time across 14 facilities</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case 2: CampusOS Multi-Institution ERP -->
+                <article class="case-study-entry reveal-elem">
+                    <div class="case-meta-col">
+                        <span class="case-tag">ENTERPRISE // DISTRIBUTED ERP</span>
+                        <span class="case-client">CAMPUSOS MULTI-CAMPUS CONSORTIUM</span>
+                        <span class="case-timeline">42,000 CONCURRENT USERS</span>
+                        <div class="case-stack-tags">
+                            <span class="tag-chip">Go</span>
+                            <span class="tag-chip">PostgreSQL Partitioning</span>
+                            <span class="tag-chip">Redis</span>
+                            <span class="tag-chip">Docker</span>
+                        </div>
+                    </div>
+
+                    <div class="case-body-col">
+                        <h3 class="case-title">CampusOS Institutional Enterprise Resource Platform</h3>
+                        <p class="case-narrative">
+                            An educational consortium spanning 5 regional campuses was crippled every semester during open course registration. Their 15-year-old monolithic Java system repeatedly suffered deadlocks, while course waitlists corrupted fee payment ledgers.
+                        </p>
+                        <p class="case-narrative">
+                            We strangulated the legacy monolith into an event-driven Go architecture with declarative idempotency keys, partitioned PostgreSQL tables, and read-heavy Redis caching layers. All 12 years of financial records were migrated live with zero data discrepancy.
+                        </p>
+
+                        <div class="case-metrics-grid">
+                            <div class="metric-card">
+                                <span class="metric-num">42,000</span>
+                                <span class="metric-desc">Peak concurrent registrations handled without a single server drop</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">0.00s</span>
+                                <span class="metric-desc">Downtime incurred during the live 12-year database ledger migration</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">4.1x</span>
+                                <span class="metric-desc">Throughput acceleration across complex degree audit and fee calculations</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Case 3: Verifiable Cryptographic Balloting -->
+                <article class="case-study-entry reveal-elem">
+                    <div class="case-meta-col">
+                        <span class="case-tag">SECURITY // APPLIED CRYPTOGRAPHY</span>
+                        <span class="case-client">SOVEREIGN MEMBER GOVERNANCE UNION</span>
+                        <span class="case-timeline">180,000 AUDITED BALLOTS</span>
+                        <div class="case-stack-tags">
+                            <span class="tag-chip">TypeScript</span>
+                            <span class="tag-chip">Zero-Knowledge SNARK</span>
+                            <span class="tag-chip">Merkle Trees</span>
+                            <span class="tag-chip">WebAssembly</span>
+                        </div>
+                    </div>
+
+                    <div class="case-body-col">
+                        <h3 class="case-title">Verifiable Cryptographic Balloting & Governance Engine</h3>
+                        <p class="case-narrative">
+                            A sovereign trade union representing 180,000 voting delegates demanded a remote voting platform that guaranteed absolute voter secrecy while permitting every delegate to independently mathematically verify that their specific ballot was included in the unadulterated final tally.
+                        </p>
+                        <p class="case-narrative">
+                            We engineered a client-side Zero-Knowledge SNARK proof generator running directly in the browser via WebAssembly. Ballots are cryptographically blinded, appended to an immutable cryptographic Merkle tree, and verified against an auditable distributed consensus relay.
+                        </p>
+
+                        <div class="case-metrics-grid">
+                            <div class="metric-card">
+                                <span class="metric-num">180,000</span>
+                                <span class="metric-desc">Ballots verified with zero server-side exposure of voter identity</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">&lt;850ms</span>
+                                <span class="metric-desc">Client-side ZK-proof generation benchmarked on low-end mobile hardware</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-num">100%</span>
+                                <span class="metric-desc">Mathematical auditability independently ratified by third-party cryptographers</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             03. TECH STACK SECTION (Structural Grid Node)
+             ==================================================================== -->
+        <section class="section-block stack-block" id="tech-stack" data-section-index="3">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">03</span>
+                    <span class="section-title-label">TECHNICAL PRIMITIVES</span>
+                </div>
+                <h2 class="section-headline">
+                    SURGICAL RUNTIMES. <span class="amber-highlight">ROCK-SOLID PRIMITIVES</span>.
+                </h2>
+                <p class="section-subtext">
+                    We select tools based on operational throughput and predictable failure modes. We never adopt a library merely because a tech conglomerate marketed it.
+                </p>
+            </div>
+
+            <div class="stack-grid">
+                <!-- Category 1: Languages -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.1</span>
+                        <h3 class="stack-card-title">LANGUAGES & RUNTIMES</h3>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">Rust:</strong>
+                            <span class="stack-desc">Low-latency event loops, hardware bridges, and memory-safe concurrent daemons.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Go:</strong>
+                            <span class="stack-desc">High-concurrency microservices, network proxies, and distributed sync relays.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">TypeScript / Node / Bun:</strong>
+                            <span class="stack-desc">Strictly-typed reactive interfaces, real-time WebSockets, and orchestration.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Python / C++:</strong>
+                            <span class="stack-desc">Model quantization, tensor optimization, and low-level computer vision kernels.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 2: Data & Persistence -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.2</span>
+                        <h3 class="stack-card-title">DATA & PERSISTENCE</h3>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">PostgreSQL:</strong>
+                            <span class="stack-desc">ACID core records, declarative foreign keys, and partitioned time-series tables.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">ClickHouse:</strong>
+                            <span class="stack-desc">Columnar analytical processing sustaining billions of rows with sub-second queries.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Redis & Dragonfly:</strong>
+                            <span class="stack-desc">Sub-millisecond pub/sub, distributed mutexes, and ephemeral in-memory state.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Apache Kafka / Redpanda:</strong>
+                            <span class="stack-desc">Immutable append-only event logs for decoupled, resilient service topologies.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 3: Client & Graphics -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.3</span>
+                        <h3 class="stack-card-title">CLIENT & INTERACTIVE GRAPHICS</h3>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">Three.js & WebGL:</strong>
+                            <span class="stack-desc">Hardware-accelerated mathematical visualizers and cinematic 3D canvases.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">React & Next.js:</strong>
+                            <span class="stack-desc">Deterministic hydration, server-rendered components, and sub-100ms LCP.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">React Native & Expo:</strong>
+                            <span class="stack-desc">Native mobile deployments with localized offline persistence and native bridges.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Tailwind & CSS Custom Properties:</strong>
+                            <span class="stack-desc">Hairline precision design systems with zero runtime layout thrashing.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Category 4: AI & Infrastructure -->
+                <div class="stack-card reveal-elem">
+                    <div class="stack-card-header">
+                        <span class="stack-num">03.4</span>
+                        <h3 class="stack-card-title">AI & INFRASTRUCTURE</h3>
+                    </div>
+                    <ul class="stack-item-list">
+                        <li>
+                            <strong class="stack-tech">vLLM & ONNX Runtime:</strong>
+                            <span class="stack-desc">PagedAttention multi-GPU inference with tensor parallelization and INT8 weights.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Qdrant & Milvus:</strong>
+                            <span class="stack-desc">Vector indexing with scalar filtering for low-latency similarity search.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Docker & Kubernetes:</strong>
+                            <span class="stack-desc">Immutable containerization, declarative manifests, and reproducible build pipelines.</span>
+                        </li>
+                        <li>
+                            <strong class="stack-tech">Terraform & WireGuard:</strong>
+                            <span class="stack-desc">Infrastructure as Code with sovereign, encrypted zero-trust mesh topologies.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Anti-Buzzword Stance Banner -->
+            <div class="anti-buzzword-callout reveal-elem">
+                <div class="callout-symbol">[ OUR PLEDGE ]</div>
+                <div class="callout-text">
+                    <p><strong>WE DO NOT TOLERATE RESUME-DRIVEN ARCHITECTURE.</strong></p>
+                    <p class="callout-sub">If an abstraction incurs a 40ms response penalty to spare twenty lines of plain code, we reject it. We write software that an engineer ten years from now can read, understand, debug, and maintain without fear.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             04. PROCESS SECTION (Discipline Node)
+             ==================================================================== -->
+        <section class="section-block process-block" id="process" data-section-index="4">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">04</span>
+                    <span class="section-title-label">ENGINEERING DISCIPLINE</span>
+                </div>
+                <h2 class="section-headline">
+                    HOW WE OPERATE. <span class="amber-highlight">FOUR STAGES</span>.
+                </h2>
+                <p class="section-subtext">
+                    No vanity slide decks. No hand-waving consultants. An uncompromising, transparent progression from first principles to production.
+                </p>
+            </div>
+
+            <div class="process-phases-timeline">
+                <!-- Phase 1 -->
+                <div class="phase-step reveal-elem">
+                    <div class="phase-indicator">
+                        <span class="phase-num">01</span>
+                        <span class="phase-line"></span>
+                    </div>
+                    <div class="phase-detail">
+                        <span class="phase-stage-tag">STAGE 01 // AUDIT & CONSTRAINT EXTRACTION</span>
+                        <h3 class="phase-heading">First Principles Deep Dive</h3>
+                        <p class="phase-desc">
+                            We dissect your true architectural bottlenecks. We profile live database queries, analyze concurrency peaks, and cross-examine user requirements to prune artificial complexity before a single line of code is written.
+                        </p>
+                        <ul class="phase-deliverables">
+                            <li>Data access pattern profile</li>
+                            <li>Bottleneck decomposition report</li>
+                            <li>Definitive non-negotiable constraints list</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="phase-step reveal-elem">
+                    <div class="phase-indicator">
+                        <span class="phase-num">02</span>
+                        <span class="phase-line"></span>
+                    </div>
+                    <div class="phase-detail">
+                        <span class="phase-stage-tag">STAGE 02 // HARDENED ARCHITECTURE SPEC</span>
+                        <h3 class="phase-heading">Executable Blueprint & Threat Modeling</h3>
+                        <p class="phase-desc">
+                            We formulate a comprehensive technical blueprint: schema definitions, idempotency strategies, failure recovery protocols, and API contracts. You receive working proof-of-concept prototypes, not abstract presentation decks.
+                        </p>
+                        <ul class="phase-deliverables">
+                            <li>Strictly typed schema & migration matrix</li>
+                            <li>Distributed failure recovery protocol</li>
+                            <li>End-to-end benchmark targets</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="phase-step reveal-elem">
+                    <div class="phase-indicator">
+                        <span class="phase-num">03</span>
+                        <span class="phase-line"></span>
+                    </div>
+                    <div class="phase-detail">
+                        <span class="phase-stage-tag">STAGE 03 // BATTLE-HARDENED IMPLEMENTATION</span>
+                        <h3 class="phase-heading">Iterative Delivery with Live Telemetry</h3>
+                        <p class="phase-desc">
+                            Bi-weekly delivery sprints deployed to isolated staging environments. Continuous regression testing, automated memory leak detection, and chaos injection to verify resilience under simulated network failure.
+                        </p>
+                        <ul class="phase-deliverables">
+                            <li>Continuous deployment with preview environments</li>
+                            <li>Simulated chaos testing & load profiling</li>
+                            <li>Direct engineer-to-client Git commit access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="phase-step reveal-elem">
+                    <div class="phase-indicator">
+                        <span class="phase-num">04</span>
+                        <span class="phase-line"></span>
+                    </div>
+                    <div class="phase-detail">
+                        <span class="phase-stage-tag">STAGE 04 // SOVEREIGN REPOSITORY HANDOFF</span>
+                        <h3 class="phase-heading">Sovereign Deployment & Documentation</h3>
+                        <p class="phase-desc">
+                            We execute the production rollout with zero downtime. You receive full sovereign ownership: source code repositories, infrastructure manifests, runbooks, and comprehensive architectural training for your team.
+                        </p>
+                        <ul class="phase-deliverables">
+                            <li>100% intellectual property & repository handoff</li>
+                            <li>Zero-vendor-lockin infrastructure as code</li>
+                            <li>Production incident runbooks and monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             05. TEAM SECTION (Syndicate Node)
+             ==================================================================== -->
+        <section class="section-block team-block" id="team" data-section-index="5">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">05</span>
+                    <span class="section-title-label">SOVEREIGN SYNDICATE</span>
+                </div>
+                <h2 class="section-headline">
+                    THE COLLECTIVE. <span class="amber-highlight">NO ACCOUNT MANAGERS</span>.
+                </h2>
+                <p class="section-subtext">
+                    When you engage Rootnode Rebels, you collaborate directly with the engineers designing and writing your software. No layers of non-technical liaison.
+                </p>
+            </div>
+
+            <div class="team-grid">
+                <!-- Member 1 -->
+                <div class="team-card reveal-elem">
+                    <div class="team-card-head">
+                        <span class="team-num">RNR // 01</span>
+                        <span class="team-role-tag">SYSTEMS ARCHITECT</span>
+                    </div>
+                    <h3 class="team-name">Vance Thorne</h3>
+                    <p class="team-bio">
+                        Former distributed systems lead with 12 years of experience building high-concurrency event brokers and low-latency financial settlement systems. Rust and Go specialist.
+                    </p>
+                    <div class="team-focus-tags">
+                        <span>Lock-Free Queues</span>
+                        <span>PostgreSQL Internals</span>
+                        <span>Kernel Optimization</span>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="team-card reveal-elem">
+                    <div class="team-card-head">
+                        <span class="team-num">RNR // 02</span>
+                        <span class="team-role-tag">NEURAL INFRASTRUCTURE</span>
+                    </div>
+                    <h3 class="team-name">Kaelen Mercer</h3>
+                    <p class="team-bio">
+                        Applied AI systems engineer specializing in self-hosted model quantization, sub-second vector retrieval graphs, and production inference performance on bare metal GPUs.
+                    </p>
+                    <div class="team-focus-tags">
+                        <span>vLLM Optimization</span>
+                        <span>Vector Indexing</span>
+                        <span>Triton Kernels</span>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="team-card reveal-elem">
+                    <div class="team-card-head">
+                        <span class="team-num">RNR // 03</span>
+                        <span class="team-role-tag">GRAPHICS & CLIENT LEAD</span>
+                    </div>
+                    <h3 class="team-name">Aria Sterling</h3>
+                    <p class="team-bio">
+                        Creative technologist and mobile runtime architect with a passion for WebGL/WebGPU shaders, fluid 60fps design systems, and memory-constrained cross-platform platforms.
+                    </p>
+                    <div class="team-focus-tags">
+                        <span>WebGL & Shaders</span>
+                        <span>React Native Core</span>
+                        <span>Offline Sync (CRDT)</span>
+                    </div>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="team-card reveal-elem">
+                    <div class="team-card-head">
+                        <span class="team-num">RNR // 04</span>
+                        <span class="team-role-tag">SECURITY & RELIABILITY</span>
+                    </div>
+                    <h3 class="team-name">Ren Chen</h3>
+                    <p class="team-bio">
+                        Chaos engineer and zero-trust infrastructure architect. Veteran in multi-cloud Kubernetes orchestration, cryptographic auditing, and penetration resistance testing.
+                    </p>
+                    <div class="team-focus-tags">
+                        <span>Zero-Knowledge Proofs</span>
+                        <span>Chaos Engineering</span>
+                        <span>WireGuard Networks</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             06. CAREERS SECTION (Open Horizons Node)
+             ==================================================================== -->
+        <section class="section-block careers-block" id="careers" data-section-index="6">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">06</span>
+                    <span class="section-title-label">ENGINEERING ROLES</span>
+                </div>
+                <h2 class="section-headline">
+                    BUILD WITHOUT BUREAUCRACY. <span class="amber-highlight">JOIN THE REBELS</span>.
+                </h2>
+                <p class="section-subtext">
+                    We have eliminated daily status standups, artificial sprint ceremonies, and corporate politics. We provide sovereign ownership, deep work blocks, and top-tier compensation for elite engineers.
+                </p>
+            </div>
+
+            <div class="careers-list">
+                <!-- Role 1 -->
+                <div class="career-row reveal-elem">
+                    <div class="career-primary">
+                        <span class="career-loc">REMOTE // GLOBAL</span>
+                        <h3 class="career-role-title">Staff Distributed Systems Engineer</h3>
+                        <p class="career-role-desc">
+                            Design and implement fault-tolerant event processing pipelines, high-throughput microservices, and distributed consensus mechanisms in Rust and Go.
+                        </p>
+                    </div>
+                    <div class="career-details">
+                        <div class="career-skills">
+                            <span>Rust</span>
+                            <span>Go</span>
+                            <span>Kafka</span>
+                            <span>Distributed Concurrency</span>
+                        </div>
+                        <a href="mailto:careers@rootnoderebels.cc?subject=Application:%20Staff%20Distributed%20Systems%20Engineer" class="career-apply-link">
+                            <span>APPLY FOR ROLE</span>
+                            <span class="apply-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Role 2 -->
+                <div class="career-row reveal-elem">
+                    <div class="career-primary">
+                        <span class="career-loc">REMOTE // GLOBAL</span>
+                        <h3 class="career-role-title">Applied AI & Inference Systems Engineer</h3>
+                        <p class="career-role-desc">
+                            Build low-latency production pipelines for self-hosted LLMs, embedding re-rankers, and vector databases with custom Triton or CUDA kernels.
+                        </p>
+                    </div>
+                    <div class="career-details">
+                        <div class="career-skills">
+                            <span>PyTorch</span>
+                            <span>vLLM</span>
+                            <span>Qdrant</span>
+                            <span>CUDA / Triton</span>
+                        </div>
+                        <a href="mailto:careers@rootnoderebels.cc?subject=Application:%20Applied%20AI%20Systems%20Engineer" class="career-apply-link">
+                            <span>APPLY FOR ROLE</span>
+                            <span class="apply-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Role 3 -->
+                <div class="career-row reveal-elem">
+                    <div class="career-primary">
+                        <span class="career-loc">REMOTE // GLOBAL</span>
+                        <h3 class="career-role-title">Lead Frontend Architect & Creative Technologist</h3>
+                        <p class="career-role-desc">
+                            Craft cinematic, high-performance web applications with Three.js, custom WebGL/WebGPU shaders, and strictly typed TypeScript architectures.
+                        </p>
+                    </div>
+                    <div class="career-details">
+                        <div class="career-skills">
+                            <span>Three.js / WebGL</span>
+                            <span>GLSL Shaders</span>
+                            <span>Next.js</span>
+                            <span>Typography & UI</span>
+                        </div>
+                        <a href="mailto:careers@rootnoderebels.cc?subject=Application:%20Lead%20Frontend%20Architect" class="career-apply-link">
+                            <span>APPLY FOR ROLE</span>
+                            <span class="apply-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ====================================================================
+             07. GET A QUOTE FORM (Commission Node)
+             ==================================================================== -->
+        <section class="section-block quote-block" id="quote" data-section-index="7">
+            <div class="section-header reveal-elem">
+                <div class="section-meta">
+                    <span class="section-index">07</span>
+                    <span class="section-title-label">COMMISSION A BUILD</span>
+                </div>
+                <h2 class="section-headline">
+                    INITIATE A SYSTEM. <span class="amber-highlight">GET AN ESTIMATE</span>.
+                </h2>
+                <p class="section-subtext">
+                    Tell us about your architectural goals, performance bottlenecks, or product vision. You will receive a direct technical response from a principal engineer within 24 hours.
+                </p>
+            </div>
+
+            <div class="quote-editorial-wrapper reveal-elem">
+                <!-- Interactive Quote Estimator & Submission Form -->
+                <form class="quote-form" id="quoteForm" novalidate>
+                    
+                    <!-- 1. System Scope Selection -->
+                    <div class="form-group-block">
+                        <label class="form-block-label">01 // SELECT ARCHITECTURAL DOMAIN</label>
+                        <div class="pill-selector-group" id="domainSelector">
+                            <button type="button" class="domain-pill active" data-value="High-Throughput Web Platform">High-Throughput Web</button>
+                            <button type="button" class="domain-pill" data-value="Low-Latency Mobile System">Native Mobile Platform</button>
+                            <button type="button" class="domain-pill" data-value="Applied AI & Neural Pipeline">Production AI Pipeline</button>
+                            <button type="button" class="domain-pill" data-value="Enterprise ERP & Distributed Backend">Enterprise ERP / Distributed</button>
+                            <button type="button" class="domain-pill" data-value="Full-Spectrum Sovereign Overhaul">Full-Spectrum Overhaul</button>
+                        </div>
+                        <input type="hidden" name="domain" id="selectedDomain" value="High-Throughput Web Platform">
+                    </div>
+
+                    <!-- 2. Target Timeline -->
+                    <div class="form-group-block">
+                        <label class="form-block-label">02 // ESTIMATED TIMELINE REQUIREMENT</label>
+                        <div class="pill-selector-group" id="timelineSelector">
+                            <button type="button" class="timeline-pill active" data-value="Rapid Sprint (4-8 Weeks)">Rapid Sprint (4-8 Weeks)</button>
+                            <button type="button" class="timeline-pill" data-value="Standard Build (2-4 Months)">Standard Build (2-4 Months)</button>
+                            <button type="button" class="timeline-pill" data-value="Strategic Multi-Quarter">Strategic Multi-Quarter</button>
+                        </div>
+                        <input type="hidden" name="timeline" id="selectedTimeline" value="Rapid Sprint (4-8 Weeks)">
+                    </div>
+
+                    <!-- 3. Investment Scope -->
+                    <div class="form-group-block">
+                        <label class="form-block-label">03 // ANTICIPATED CAPITAL ALLOCATION</label>
+                        <div class="pill-selector-group" id="budgetSelector">
+                            <button type="button" class="budget-pill" data-value="$20k - $40k">$20k - $40k</button>
+                            <button type="button" class="budget-pill active" data-value="$40k - $80k">$40k - $80k</button>
+                            <button type="button" class="budget-pill" data-value="$80k - $150k">$80k - $150k</button>
+                            <button type="button" class="budget-pill" data-value="$150k+">$150k+ (Enterprise Tier)</button>
+                        </div>
+                        <input type="hidden" name="budget" id="selectedBudget" value="$40k - $80k">
+                    </div>
+
+                    <!-- 4. Text Details -->
+                    <div class="form-grid-two">
+                        <div class="input-field-wrap">
+                            <label for="clientName" class="field-label">YOUR NAME / CALLSIGN *</label>
+                            <input type="text" id="clientName" name="name" required placeholder="e.g. Elena Rostova" class="editorial-input">
+                        </div>
+                        <div class="input-field-wrap">
+                            <label for="clientEmail" class="field-label">CORPORATE / DIRECT EMAIL *</label>
+                            <input type="email" id="clientEmail" name="email" required placeholder="elena@company.com" class="editorial-input">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-two">
+                        <div class="input-field-wrap">
+                            <label for="clientCompany" class="field-label">ORGANIZATION OR STARTUP</label>
+                            <input type="text" id="clientCompany" name="company" placeholder="e.g. Apex Hyperlogistics" class="editorial-input">
+                        </div>
+                        <div class="input-field-wrap">
+                            <label for="clientRepo" class="field-label">EXISTING REPO / SPEC / SYSTEM URL</label>
+                            <input type="url" id="clientRepo" name="repo_url" placeholder="https://github.com/..." class="editorial-input">
+                        </div>
+                    </div>
+
+                    <div class="input-field-wrap">
+                        <label for="projectDetails" class="field-label">ARCHITECTURAL REQUIREMENTS & CONSTRAINTS *</label>
+                        <textarea id="projectDetails" name="message" required rows="5" placeholder="Detail your technical bottlenecks, anticipated request volumes, legacy dependencies, and concrete deadlines..." class="editorial-textarea"></textarea>
+                    </div>
+
+                    <!-- Live Scope Telemetry Calculation Summary -->
+                    <div class="live-scope-summary" id="scopeSummaryBox">
+                        <div class="summary-line">
+                            <span class="sum-key">CONFIGURED SCOPE:</span>
+                            <span class="sum-val" id="sumDomain">High-Throughput Web Platform</span>
+                        </div>
+                        <div class="summary-line">
+                            <span class="sum-key">TARGET TIMELINE:</span>
+                            <span class="sum-val" id="sumTimeline">Rapid Sprint (4-8 Weeks)</span>
+                        </div>
+                        <div class="summary-line">
+                            <span class="sum-key">ESTIMATED TEAM ALLOCATION:</span>
+                            <span class="sum-val" id="sumTeam">2 Senior Systems Engineers + 1 Principal Architect</span>
+                        </div>
+                    </div>
+
+                    <!-- Submission Action -->
+                    <div class="form-action-row">
+                        <button type="submit" class="btn-submit-quote" id="submitQuoteBtn">
+                            <span class="btn-content">
+                                <span class="submit-text">DISPATCH SPECIFICATION TO PRINCIPALS</span>
+                                <span class="submit-arrow">&rarr;</span>
+                            </span>
+                            <span class="spinner-inline" id="quoteSpinner"></span>
+                        </button>
+                    </div>
+
+                    <div class="form-feedback" id="quoteFeedback" role="alert" aria-live="polite"></div>
+                </form>
+
+                <!-- Direct Channel Sidebar -->
+                <aside class="direct-channel-sidebar">
+                    <div class="channel-box">
+                        <span class="channel-title">DIRECT ENCRYPTED TRANSMISSION</span>
+                        <p class="channel-desc">Prefer raw correspondence or have an existing technical RFP document ready for immediate review?</p>
+                        
+                        <div class="channel-item">
+                            <span class="channel-label">PRINCIPAL INBOX:</span>
+                            <a href="mailto:inquiries@rootnoderebels.cc" class="channel-link">inquiries@rootnoderebels.cc</a>
+                        </div>
+                        
+                        <div class="channel-item">
+                            <span class="channel-label">PGP PUBLIC KEY FINGERPRINT:</span>
+                            <code class="pgp-code">8F32 C04A 91D6 E894 11B2 FA77 3920 DC19</code>
+                        </div>
+
+                        <div class="channel-item">
+                            <span class="channel-label">TELEMETRY LOCATION:</span>
+                            <span class="channel-data">Distributed Nodes // Global Mesh // UTC+05:30</span>
+                        </div>
+                        
+                        <div class="channel-item">
+                            <span class="channel-label">COMMISSION COMMITMENT:</span>
+                            <span class="channel-data">Every inquiry is reviewed exclusively by an active systems engineer, never a sales agent.</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Editorial High-End Footer with 1px Hairline Detail -->
+    <footer class="editorial-footer">
+        <div class="footer-top-rule"></div>
+        <div class="footer-inner">
+            <div class="footer-brand-col">
+                <span class="footer-logo">ROOTNODE REBELS</span>
+                <p class="footer-statement">
+                    Autonomous software engineering collective. We build systems that perform under extreme conditions without compromise.
+                </p>
+                <div class="footer-status-pill">
+                    <span class="status-dot"></span>
+                    <span class="status-msg">ALL SYSTEM NODES OPERATIONAL</span>
+                </div>
+            </div>
+
+            <div class="footer-links-col">
+                <span class="footer-col-title">NAVIGATION</span>
+                <ul class="footer-list">
+                    <li><a href="#hero">00 // Genesis</a></li>
+                    <li><a href="#services">01 // Services</a></li>
+                    <li><a href="#case-studies">02 // Empirical Cases</a></li>
+                    <li><a href="#tech-stack">03 // Tech Stack</a></li>
+                    <li><a href="#process">04 // Process</a></li>
+                    <li><a href="#team">05 // Syndicate</a></li>
+                    <li><a href="#careers">06 // Careers</a></li>
+                    <li><a href="#quote">07 // Get a Quote</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-col">
+                <span class="footer-col-title">COORDINATES</span>
+                <ul class="footer-list">
+                    <li><a href="https://github.com/rootnode-rebels" target="_blank" rel="noopener">GitHub: @rootnode-rebels</a></li>
+                    <li><a href="mailto:inquiries@rootnoderebels.cc">Email: inquiries@rootnoderebels.cc</a></li>
+                    <li><a href="https://rootnode-rebels.cc.cd/CNAME" target="_blank" rel="noopener">Domain: rootnode-rebels.cc.cd</a></li>
+                    <li><span class="footer-mono">Timezone: UTC+05:30</span></li>
+                </ul>
+            </div>
+
+            <div class="footer-elevator-col">
+                <button type="button" class="btn-elevator" id="backToTopBtn" aria-label="Elevate to surface root node">
+                    <span class="elevator-symbol">&uarr;</span>
+                    <span class="elevator-text">ASCEND TO SURFACE</span>
+                </button>
+                <span class="footer-copyright">&copy; 2024-2026 ROOTNODE REBELS. SOVEREIGN RIGHTS RESERVED.</span>
+            </div>
         </div>
     </footer>
 
-    <!-- Core Interactive Script -->
-    <script src="script.js?v=7.0"></script>
+    <!-- Application Script with Cache Buster -->
+    <script src="script.js?v=8.0"></script>
 </body>
 </html>

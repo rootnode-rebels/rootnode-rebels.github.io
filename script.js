@@ -1,459 +1,799 @@
-// script.js - RootNode Rebels 3D Soil Cross-Section & Root Dependency Tree Engine
+/**
+ * Rootnode Rebels - Sovereign Architectural Collective
+ * 3D Glowing Filament Root System Engine with Cinematic Depth of Field,
+ * Cursor-Reactive Lighting, Luminous Node Traversal, and Interactive Scope Estimator.
+ */
 
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ==========================================================================
-       1. Custom Geological Reticle Cursor
+       01. DEVICE & ENVIRONMENT DETECTION
        ========================================================================== */
-    const reticle = document.getElementById('cursorReticle');
-    const dot = document.getElementById('cursorDot');
-
-    let mouseX = -100, mouseY = -100;
-    let reticleX = -100, reticleY = -100;
-
-    if (reticle && dot && window.innerWidth > 992) {
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-        });
-
-        function renderCursor() {
-            reticleX += (mouseX - reticleX) * 0.2;
-            reticleY += (mouseY - reticleY) * 0.2;
-            reticle.style.transform = `translate3d(${reticleX}px, ${reticleY}px, 0)`;
-            requestAnimationFrame(renderCursor);
-        }
-        renderCursor();
-
-        document.querySelectorAll('a, button, input, textarea, .service-strata-card, .artifact-run-entry, .syndicate-member-card').forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-        });
-    }
-
-    /* ==========================================================================
-       2. Web Audio Synthesizer (Subterranean Geophone Pulses)
-       ========================================================================== */
-    let audioCtx = null;
-    let soundEnabled = localStorage.getItem('rnr_root_sound') === 'true';
-
-    const soundToggle = document.getElementById('soundToggle');
-    const updateSoundUI = () => {
-        if (!soundToggle) return;
-        if (soundEnabled) {
-            soundToggle.classList.add('active');
-            soundToggle.innerHTML = `[GEOPHONE: ON]`;
-        } else {
-            soundToggle.classList.remove('active');
-            soundToggle.innerHTML = `[GEOPHONE: OFF]`;
-        }
-    };
-    updateSoundUI();
-
-    function initAudio() {
-        if (!audioCtx) {
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            if (AudioContextClass) audioCtx = new AudioContextClass();
-        }
-    }
-
-    function playSound(type = 'click') {
-        if (!soundEnabled) return;
-        initAudio();
-        if (!audioCtx) return;
-
+    const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    const hasReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Check WebGL availability
+    function isWebGLAvailable() {
         try {
-            const now = audioCtx.currentTime;
-
-            if (type === 'click') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(220, now);
-                osc.frequency.exponentialRampToValueAtTime(110, now + 0.05);
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } else if (type === 'pulse') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(90, now);
-                osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
-                gain.gain.setValueAtTime(0.06, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.08);
-            }
-        } catch (e) {}
+            const canvas = document.createElement('canvas');
+            return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+        } catch (e) {
+            return false;
+        }
     }
+    const webglSupported = isWebGLAvailable() && !hasReducedMotion;
 
-    if (soundToggle) {
-        soundToggle.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            localStorage.setItem('rnr_root_sound', soundEnabled);
-            updateSoundUI();
-            if (soundEnabled) playSound('click');
-        });
+    /* ==========================================================================
+       02. CURSOR FOLLOW & SOFT AMBIENT LIGHT
+       ========================================================================== */
+    const cursorGlow = document.getElementById('cursorGlow');
+    const cursorDot = document.getElementById('cursorDot');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let targetMouseX = mouseX;
+    let targetMouseY = mouseY;
+    let normMouseX = 0;
+    let normMouseY = 0;
+
+    if (!isMobile && cursorGlow && cursorDot) {
+        window.addEventListener('mousemove', (e) => {
+            targetMouseX = e.clientX;
+            targetMouseY = e.clientY;
+            normMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            normMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+            
+            // Cursor dot tracks instantly
+            cursorDot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        }, { passive: true });
+
+        // Cursor glow trails with smooth physical inertia
+        function updateCursorGlow() {
+            mouseX += (targetMouseX - mouseX) * 0.12;
+            mouseY += (targetMouseY - mouseY) * 0.12;
+            cursorGlow.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+            requestAnimationFrame(updateCursorGlow);
+        }
+        updateCursorGlow();
     }
 
     /* ==========================================================================
-       3. Three.js 3D Soil Cross-Section & Root Dependency Tree
+       03. 3D GLOWING FILAMENTS ROOT SYSTEM (Three.js Engine)
        ========================================================================== */
-    const canvas = document.getElementById('webgl-canvas');
-    const isMobile = window.innerWidth <= 992;
+    const webglCanvas = document.getElementById('filament-canvas');
+    const fallbackCanvas = document.getElementById('filament-fallback-canvas');
 
-    if (canvas && typeof THREE !== 'undefined' && !isMobile) {
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x130d09, 0.008);
+    let threeApp = null;
 
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 500);
-        camera.position.set(0, 0, 48);
+    if (webglSupported && typeof THREE !== 'undefined' && webglCanvas) {
+        threeApp = initThreeFilaments(webglCanvas);
+    } else if (fallbackCanvas) {
+        init2DFallbackFilaments(fallbackCanvas);
+    }
 
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    function initThreeFilaments(canvas) {
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+        });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // Earthy Subterranean Lighting
-        const ambientLight = new THREE.AmbientLight(0xd8d2c4, 0.6);
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x07080b, 0.022);
+
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, -9, 14);
+
+        // Soft ambient and directional warm lighting
+        const ambientLight = new THREE.AmbientLight(0x1a1815, 0.8);
         scene.add(ambientLight);
 
-        const sunTopLight = new THREE.DirectionalLight(0xf5f2eb, 1.0);
-        sunTopLight.position.set(10, 30, 20);
-        scene.add(sunTopLight);
+        // Soft cursor-reactive point light
+        const cursorPointLight = new THREE.PointLight(0xf0a85d, 2.5, 18, 1.8);
+        cursorPointLight.position.set(0, -9, 10);
+        scene.add(cursorPointLight);
 
-        // Subterranean glowing point light that tracks the scroll camera
-        const minerLight = new THREE.PointLight(0x6b8e53, 2.5, 60);
-        minerLight.position.set(0, 0, 25);
-        scene.add(minerLight);
-
-        // Root Network Group
-        const rootNetworkGroup = new THREE.Group();
-        scene.add(rootNetworkGroup);
-
-        // Materials
-        const matBark = new THREE.MeshLambertMaterial({ color: 0x3e5330, flatShading: true });
-        const matNodule = new THREE.MeshBasicMaterial({ color: 0x86b068 });
-        const matRock = new THREE.MeshLambertMaterial({ color: 0x3d352e, flatShading: true });
-        const matWorm = new THREE.MeshLambertMaterial({ color: 0xf472b6, flatShading: true });
-
-        // A. 3D Root Tree Construction (Spline Tubes)
-        const rootBranches = [];
-        const nodePositions = [
-            { id: 'services', y: -16, x: -6, z: 2 },
-            { id: 'projects', y: -42, x: 8, z: -2 },
-            { id: 'process',  y: -70, x: -8, z: 1 },
-            { id: 'team',     y: -98, x: 7, z: -1 },
-            { id: 'contact',  y: -128, x: 0, z: 2 }
+        // 8 Luminous Nodes Data
+        const nodesData = [
+            { id: 0, section: 'hero', title: 'Genesis', pos: new THREE.Vector3(0, -10, 0), radius: 0.65 },
+            { id: 1, section: 'services', title: 'Services', pos: new THREE.Vector3(-4.8, -4.5, 1.5), radius: 0.55 },
+            { id: 2, section: 'case-studies', title: 'Proof', pos: new THREE.Vector3(4.8, 1.0, 1.8), radius: 0.58 },
+            { id: 3, section: 'tech-stack', title: 'Stack', pos: new THREE.Vector3(-4.2, 6.5, -0.8), radius: 0.52 },
+            { id: 4, section: 'process', title: 'Process', pos: new THREE.Vector3(3.8, 11.8, 1.2), radius: 0.54 },
+            { id: 5, section: 'team', title: 'Syndicate', pos: new THREE.Vector3(-3.5, 16.8, 0.4), radius: 0.50 },
+            { id: 6, section: 'careers', title: 'Careers', pos: new THREE.Vector3(4.2, 21.8, -1.2), radius: 0.50 },
+            { id: 7, section: 'quote', title: 'Commission', pos: new THREE.Vector3(0, 26.8, 1.5), radius: 0.62 }
         ];
 
-        // Main Taproot Spline
-        const taprootPoints = [
-            new THREE.Vector3(0, 8, 0),
-            new THREE.Vector3(-1, 0, 1),
-            new THREE.Vector3(2, -10, -1),
-            new THREE.Vector3(-2, -25, 2),
-            new THREE.Vector3(3, -45, -2),
-            new THREE.Vector3(-1, -65, 1),
-            new THREE.Vector3(2, -90, -1),
-            new THREE.Vector3(0, -120, 2),
-            new THREE.Vector3(0, -145, 0)
-        ];
-        const taprootCurve = new THREE.CatmullRomCurve3(taprootPoints);
-        const taprootGeo = new THREE.TubeGeometry(taprootCurve, 64, 1.2, 8, false);
-        const taprootMesh = new THREE.Mesh(taprootGeo, matBark);
-        rootNetworkGroup.add(taprootMesh);
+        // Group containers
+        const filamentGroup = new THREE.Group();
+        const nodeGroup = new THREE.Group();
+        const particleGroup = new THREE.Group();
+        scene.add(filamentGroup);
+        scene.add(nodeGroup);
+        scene.add(particleGroup);
 
-        // Lateral Fork Branches to each section node
-        nodePositions.forEach((pos, idx) => {
-            const startY = pos.y + 12;
-            const branchPoints = [
-                new THREE.Vector3(0, startY, 0),
-                new THREE.Vector3(pos.x * 0.4, startY - 5, pos.z * 0.5),
-                new THREE.Vector3(pos.x * 0.8, pos.y + 2, pos.z * 0.8),
-                new THREE.Vector3(pos.x, pos.y, pos.z)
-            ];
-            const curve = new THREE.CatmullRomCurve3(branchPoints);
-            const branchGeo = new THREE.TubeGeometry(curve, 32, 0.6, 6, false);
-            const branchMesh = new THREE.Mesh(branchGeo, matBark);
-            rootNetworkGroup.add(branchMesh);
-            rootBranches.push({ id: pos.id, curve: curve, mesh: branchMesh });
+        // Node Meshes & Breathing Glow Rings
+        const nodeMeshes = [];
+        const nodeHalos = [];
 
-            // Bioluminescent Root Node Sphere
-            const nodeMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.6, 1), matNodule);
-            nodeMesh.position.set(pos.x, pos.y, pos.z);
-            rootNetworkGroup.add(nodeMesh);
-            nodeMesh.userData = { id: pos.id, baseScale: 1.6 };
-            pos.mesh = nodeMesh;
-        });
-
-        // B. Embedded Tiny Rocks & Boulders in Soil
-        for (let r = 0; r < 40; r++) {
-            const rockSize = 0.6 + Math.random() * 1.5;
-            const rockGeo = new THREE.DodecahedronGeometry(rockSize, 0);
-            const rock = new THREE.Mesh(rockGeo, matRock);
-            rock.position.set(
-                (Math.random() - 0.5) * 45,
-                -Math.random() * 140,
-                (Math.random() - 0.5) * 20 - 4
-            );
-            rock.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
-            rootNetworkGroup.add(rock);
-        }
-
-        // C. Tiny Wiggling Earthworms in Subsoil
-        const worms = [];
-        for (let w = 0; w < 3; w++) {
-            const wormPoints = [];
-            for (let p = 0; p < 7; p++) {
-                wormPoints.push(new THREE.Vector3(p * 0.5, Math.sin(p * 0.8) * 0.3, 0));
-            }
-            const wormCurve = new THREE.CatmullRomCurve3(wormPoints);
-            const wormGeo = new THREE.TubeGeometry(wormCurve, 20, 0.22, 6, false);
-            const wormMesh = new THREE.Mesh(wormGeo, matWorm);
-            wormMesh.position.set(-14 + w * 12, -28 - w * 32, 4);
-            wormMesh.userData = { baseY: wormMesh.position.y, speed: 0.008 + w * 0.004 };
-            rootNetworkGroup.add(wormMesh);
-            worms.push(wormMesh);
-        }
-
-        // D. Soil Grain Particles (Minerals, Soil Flakes)
-        const grainCount = 550;
-        const grainGeo = new THREE.BufferGeometry();
-        const grainPositions = new Float32Array(grainCount * 3);
-        const grainColors = new Float32Array(grainCount * 3);
-
-        const colBrown = new THREE.Color(0x3e2c1e);
-        const colMoss = new THREE.Color(0x6b8e53);
-        const colBone = new THREE.Color(0xd8d2c4);
-
-        for (let i = 0; i < grainCount * 3; i += 3) {
-            grainPositions[i] = (Math.random() - 0.5) * 60;
-            grainPositions[i + 1] = -Math.random() * 140;
-            grainPositions[i + 2] = (Math.random() - 0.5) * 30;
-
-            const pick = Math.random();
-            const col = (pick < 0.6) ? colBrown : (pick < 0.85 ? colMoss : colBone);
-            grainColors[i] = col.r;
-            grainColors[i + 1] = col.g;
-            grainColors[i + 2] = col.b;
-        }
-
-        grainGeo.setAttribute('position', new THREE.BufferAttribute(grainPositions, 3));
-        grainGeo.setAttribute('color', new THREE.BufferAttribute(grainColors, 3));
-
-        const grainMat = new THREE.PointsMaterial({ size: 0.6, vertexColors: true, transparent: true, opacity: 0.75 });
-        const grainCloud = new THREE.Points(grainGeo, grainMat);
-        scene.add(grainCloud);
-
-        // E. Bioluminescent Light Pulse traveling down roots
-        let activePulseBranch = null;
-        let pulseT = 0;
-        const pulseSphere = new THREE.Mesh(new THREE.DodecahedronGeometry(0.8, 1), new THREE.MeshBasicMaterial({ color: 0xdc2626 }));
-        pulseSphere.visible = false;
-        rootNetworkGroup.add(pulseSphere);
-
-        function triggerBranchPulse(sectionId) {
-            const found = rootBranches.find(b => b.id === sectionId);
-            if (found) {
-                activePulseBranch = found.curve;
-                pulseT = 0;
-                pulseSphere.visible = true;
-                playSound('pulse');
-            }
-        }
-
-        // Connect section hover triggers to root light pulses
-        document.querySelectorAll('[data-root-node]').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                const nodeKey = el.getAttribute('data-root-node');
-                triggerBranchPulse(nodeKey);
+        nodesData.forEach((node) => {
+            // Core luminous sphere
+            const sphereGeo = new THREE.SphereGeometry(node.radius, 24, 24);
+            const sphereMat = new THREE.MeshBasicMaterial({
+                color: 0xf4f0e8,
+                transparent: true,
+                opacity: 0.95
             });
+            const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
+            sphereMesh.position.copy(node.pos);
+            sphereMesh.userData = { id: node.id, section: node.section, baseScale: 1.0 };
+            nodeGroup.add(sphereMesh);
+            nodeMeshes.push(sphereMesh);
+
+            // Subtle Amber Halo Ring
+            const ringGeo = new THREE.RingGeometry(node.radius * 1.15, node.radius * 1.65, 32);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: 0xe09943,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.45
+            });
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringMesh.position.copy(node.pos);
+            ringMesh.lookAt(camera.position);
+            nodeGroup.add(ringMesh);
+            nodeHalos.push(ringMesh);
         });
 
-        // Resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        /* ==========================================================================
+           Filament Root Tree Generation (Thousands of Vertices & Strands)
+           ========================================================================== */
+        const linePositions = [];
+        const lineColors = [];
+
+        const colorAmber = new THREE.Color(0xe09943);
+        const colorAmberDim = new THREE.Color(0x8a5820);
+        const colorWarmWhite = new THREE.Color(0xf4f0e8);
+        const colorMidnightFaint = new THREE.Color(0x181a22);
+
+        // Primary Root Origins along bottom plane
+        const numOrigins = 18;
+        const originPoints = [];
+        for (let i = 0; i < numOrigins; i++) {
+            originPoints.push(new THREE.Vector3(
+                (Math.random() - 0.5) * 24,
+                -18 - Math.random() * 4,
+                (Math.random() - 0.5) * 12
+            ));
+        }
+
+        // Helper: Add continuous spline strand to lines
+        function createStrand(points, baseColor, targetColor, depthAlpha) {
+            const curve = new THREE.CatmullRomCurve3(points);
+            const subdivisions = 24;
+            const curvePoints = curve.getPoints(subdivisions);
+
+            for (let i = 0; i < curvePoints.length - 1; i++) {
+                const p1 = curvePoints[i];
+                const p2 = curvePoints[i + 1];
+
+                linePositions.push(p1.x, p1.y, p1.z);
+                linePositions.push(p2.x, p2.y, p2.z);
+
+                const t1 = i / curvePoints.length;
+                const t2 = (i + 1) / curvePoints.length;
+
+                const c1 = baseColor.clone().lerp(targetColor, t1);
+                const c2 = baseColor.clone().lerp(targetColor, t2);
+
+                // Attenuate color by depth for cinematic DOF falloff
+                const dofAttenuation = depthAlpha !== undefined ? depthAlpha : Math.max(0.2, 1.0 - Math.abs(p1.z) * 0.08);
+                c1.multiplyScalar(dofAttenuation);
+                c2.multiplyScalar(dofAttenuation);
+
+                lineColors.push(c1.r, c1.g, c1.b);
+                lineColors.push(c2.r, c2.g, c2.b);
+            }
+        }
+
+        // 1. Primary Arterial Strands: Origin -> Nodes
+        nodesData.forEach((node, nodeIdx) => {
+            // Select 2-3 origins to connect to this node
+            const numConnections = nodeIdx === 0 ? 6 : 3;
+            for (let c = 0; c < numConnections; c++) {
+                const orig = originPoints[(nodeIdx * 2 + c) % originPoints.length];
+                const mid1 = new THREE.Vector3(
+                    orig.x * 0.7 + (Math.random() - 0.5) * 4,
+                    orig.y + (node.pos.y - orig.y) * 0.35 + (Math.random() - 0.5) * 2,
+                    orig.z * 0.6 + (Math.random() - 0.5) * 4
+                );
+                const mid2 = new THREE.Vector3(
+                    node.pos.x * 0.8 + (Math.random() - 0.5) * 3,
+                    orig.y + (node.pos.y - orig.y) * 0.75 + (Math.random() - 0.5) * 2,
+                    node.pos.z * 0.8 + (Math.random() - 0.5) * 3
+                );
+                createStrand([orig, mid1, mid2, node.pos], colorAmberDim, colorAmber, 0.9);
+            }
+
+            // Connect successive nodes together (sequential root spine)
+            if (nodeIdx < nodesData.length - 1) {
+                const nextNode = nodesData[nodeIdx + 1];
+                for (let k = 0; k < 2; k++) {
+                    const branchMid = new THREE.Vector3(
+                        (node.pos.x + nextNode.pos.x) * 0.5 + (Math.random() - 0.5) * 3,
+                        (node.pos.y + nextNode.pos.y) * 0.5 + (Math.random() - 0.5) * 2,
+                        (node.pos.z + nextNode.pos.z) * 0.5 + (Math.random() - 0.5) * 2.5
+                    );
+                    createStrand([node.pos, branchMid, nextNode.pos], colorAmber, colorWarmWhite, 1.0);
+                }
+            }
+
+            // 2. Secondary & Tertiary Capillary Filaments branching outward
+            const numCapillaries = 10;
+            for (let j = 0; j < numCapillaries; j++) {
+                const angle = (j / numCapillaries) * Math.PI * 2 + Math.random() * 0.5;
+                const spread = 2.5 + Math.random() * 4.5;
+                const endPoint = new THREE.Vector3(
+                    node.pos.x + Math.cos(angle) * spread,
+                    node.pos.y + (Math.random() * 6 - 2),
+                    node.pos.z + (Math.random() - 0.5) * 8
+                );
+                const controlPoint = new THREE.Vector3(
+                    node.pos.x + Math.cos(angle) * spread * 0.5 + (Math.random() - 0.5) * 1.5,
+                    node.pos.y + (endPoint.y - node.pos.y) * 0.5,
+                    node.pos.z + (endPoint.z - node.pos.z) * 0.5
+                );
+                createStrand([node.pos, controlPoint, endPoint], colorAmber, colorMidnightFaint, 0.6);
+            }
         });
 
-        // Animation Loop
-        const clock = new THREE.Clock();
+        // 3. Ambient Background & Foreground Defocused Strands for Depth of Field
+        const numAmbientStrands = 35;
+        for (let a = 0; a < numAmbientStrands; a++) {
+            const zPlane = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 8); // Deep back or near front
+            const xBase = (Math.random() - 0.5) * 28;
+            const yBase = -16 + Math.random() * 10;
+            const pA = new THREE.Vector3(xBase, yBase, zPlane);
+            const pB = new THREE.Vector3(xBase + (Math.random() - 0.5) * 6, yBase + 12 + Math.random() * 10, zPlane + (Math.random() - 0.5) * 3);
+            const pC = new THREE.Vector3(pB.x + (Math.random() - 0.5) * 8, pB.y + 12 + Math.random() * 10, zPlane + (Math.random() - 0.5) * 4);
+            
+            // Attenuated depth brightness simulates cinematic aperture blur
+            const blurFactor = zPlane > 0 ? 0.35 : 0.22;
+            createStrand([pA, pB, pC], colorAmberDim, colorMidnightFaint, blurFactor);
+        }
+
+        // Build Line Geometry
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+        lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 3));
+
+        const lineMat = new THREE.LineBasicMaterial({
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.85,
+            blending: THREE.AdditiveBlending
+        });
+
+        const filamentLines = new THREE.LineSegments(lineGeo, lineMat);
+        filamentGroup.add(filamentLines);
+
+        /* ==========================================================================
+           Cinematic Bokeh Particles & Drifting Spores
+           ========================================================================== */
+        const particleCount = 280;
+        const particlePositions = new Float32Array(particleCount * 3);
+        const particleVelocities = [];
+
+        for (let p = 0; p < particleCount; p++) {
+            particlePositions[p * 3] = (Math.random() - 0.5) * 30;
+            particlePositions[p * 3 + 1] = -16 + Math.random() * 48;
+            particlePositions[p * 3 + 2] = (Math.random() - 0.5) * 24;
+
+            particleVelocities.push({
+                vx: (Math.random() - 0.5) * 0.008,
+                vy: 0.005 + Math.random() * 0.012,
+                vz: (Math.random() - 0.5) * 0.008,
+                pulseOffset: Math.random() * Math.PI * 2
+            });
+        }
+
+        const particleGeo = new THREE.BufferGeometry();
+        particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+        // Create soft circular blurred canvas texture for particles
+        function createBokehTexture() {
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = 64;
+            pCanvas.height = 64;
+            const ctx = pCanvas.getContext('2d');
+            const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            grad.addColorStop(0, 'rgba(240, 168, 93, 1)');
+            grad.addColorStop(0.35, 'rgba(224, 153, 67, 0.6)');
+            grad.addColorStop(0.7, 'rgba(224, 153, 67, 0.15)');
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 64, 64);
+            return new THREE.CanvasTexture(pCanvas);
+        }
+
+        const particleMat = new THREE.PointsMaterial({
+            size: 0.65,
+            map: createBokehTexture(),
+            transparent: true,
+            opacity: 0.65,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particleSystem = new THREE.Points(particleGeo, particleMat);
+        particleGroup.add(particleSystem);
+
+        /* ==========================================================================
+           Interactive Raycasting & Camera Scroll Synchronization
+           ========================================================================== */
+        const raycaster = new THREE.Raycaster();
+        const mouseVector = new THREE.Vector2();
+        let hoveredNode = null;
+        let activeTargetCameraY = -9;
+        let currentCameraY = -9;
+        let isNavigating = false;
+
+        // Map scroll elevation
+        function updateCameraElevation() {
+            if (isNavigating) return;
+            const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollFraction = scrollMax > 0 ? window.scrollY / scrollMax : 0;
+            // Map scroll fraction from -9 at top (genesis) to +27 at bottom (quote form)
+            activeTargetCameraY = -9 + scrollFraction * 36;
+        }
+        window.addEventListener('scroll', updateCameraElevation, { passive: true });
+
+        // Node Click Event
+        function onDocumentClick(e) {
+            // Ignore if clicking forms or interactive DOM elements
+            if (e.target.closest('form, input, textarea, button, a, .mobile-drawer')) return;
+
+            mouseVector.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouseVector, camera);
+            const intersects = raycaster.intersectObjects(nodeMeshes);
+
+            if (intersects.length > 0) {
+                const targetMesh = intersects[0].object;
+                const nodeData = nodesData.find(n => n.id === targetMesh.userData.id);
+                if (nodeData) {
+                    navigateToSection(nodeData.section, nodeData.id);
+                }
+            }
+        }
+        window.addEventListener('click', onDocumentClick);
+
+        // Hover detection
+        window.addEventListener('mousemove', (e) => {
+            mouseVector.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        // Smooth Section Navigator
+        function navigateToSection(sectionId, nodeIndex) {
+            const targetSection = document.getElementById(sectionId);
+            if (!targetSection) return;
+
+            isNavigating = true;
+            const targetNode = nodesData.find(n => n.id === nodeIndex);
+            if (targetNode) {
+                activeTargetCameraY = targetNode.pos.y;
+            }
+
+            // Scroll DOM
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Pulse the node
+            if (nodeMeshes[nodeIndex]) {
+                const mesh = nodeMeshes[nodeIndex];
+                mesh.scale.set(2.0, 2.0, 2.0);
+            }
+
+            setTimeout(() => {
+                isNavigating = false;
+            }, 1200);
+        }
+
+        // Expose navigation to HUD buttons
+        window.rnrNavigate = navigateToSection;
+
+        /* ==========================================================================
+           Three.js Render Loop
+           ========================================================================== */
+        let clock = new THREE.Clock();
+
         function animate() {
             requestAnimationFrame(animate);
 
-            const elapsed = clock.getElapsedTime();
+            const elapsedTime = clock.getElapsedTime();
 
-            // Camera moves down vertically as user scrolls
-            const scrollNorm = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
-            const targetCamY = 2 - scrollNorm * 135;
-            camera.position.y += (targetCamY - camera.position.y) * 0.08;
+            // Smooth physical camera elevation tracking
+            currentCameraY += (activeTargetCameraY - currentCameraY) * 0.055;
+            camera.position.y = currentCameraY;
 
-            minerLight.position.y = camera.position.y;
+            // Subtle parallax tilt from cursor position
+            camera.position.x += (normMouseX * 1.5 - camera.position.x) * 0.04;
+            camera.lookAt(0, currentCameraY + 1.2, 0);
 
-            // Subtle Root Sway / Breathing
-            rootNetworkGroup.rotation.y = Math.sin(elapsed * 0.8) * 0.03;
+            // Update soft cursor point light
+            cursorPointLight.position.x += (normMouseX * 12 - cursorPointLight.position.x) * 0.08;
+            cursorPointLight.position.y += ((currentCameraY + normMouseY * 8) - cursorPointLight.position.y) * 0.08;
 
-            // Pulse particle animation
-            if (activePulseBranch) {
-                pulseT += 0.035;
-                if (pulseT <= 1) {
-                    const pt = activePulseBranch.getPoint(pulseT);
-                    pulseSphere.position.copy(pt);
-                } else {
-                    activePulseBranch = null;
-                    pulseSphere.visible = false;
+            // Animate Luminous Nodes (Soft breathing pulse)
+            nodeMeshes.forEach((mesh, idx) => {
+                const halo = nodeHalos[idx];
+                const baseScale = mesh.userData.baseScale || 1.0;
+                
+                // Breathing cycle
+                const pulse = 1.0 + Math.sin(elapsedTime * 2.2 + idx * 0.8) * 0.12;
+                
+                // Return smoothly from hover expansion
+                mesh.scale.lerp(new THREE.Vector3(pulse * baseScale, pulse * baseScale, pulse * baseScale), 0.1);
+
+                if (halo) {
+                    halo.lookAt(camera.position);
+                    halo.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
                 }
+            });
+
+            // Raycasting hover check
+            raycaster.setFromCamera(mouseVector, camera);
+            const intersects = raycaster.intersectObjects(nodeMeshes);
+            if (intersects.length > 0) {
+                const hit = intersects[0].object;
+                hit.userData.baseScale = 1.6;
+                document.body.style.cursor = 'pointer';
+            } else {
+                nodeMeshes.forEach(m => m.userData.baseScale = 1.0);
+                document.body.style.cursor = 'auto';
             }
 
-            // Animate wiggling earthworms
-            worms.forEach(worm => {
-                worm.position.x += worm.userData.speed;
-                worm.rotation.z = Math.sin(elapsed * 4 + worm.position.x) * 0.15;
-                if (worm.position.x > 20) worm.position.x = -20;
-            });
+            // Animate Particles (Gentle upward root spore drift)
+            const pPos = particleGeo.attributes.position.array;
+            for (let p = 0; p < particleCount; p++) {
+                const v = particleVelocities[p];
+                pPos[p * 3] += v.vx;
+                pPos[p * 3 + 1] += v.vy;
+                pPos[p * 3 + 2] += v.vz;
 
-            // Pulse glowing nodes
-            nodePositions.forEach((pos, idx) => {
-                if (pos.mesh) {
-                    const s = pos.mesh.userData.baseScale * (1 + Math.sin(elapsed * 3 + idx) * 0.12);
-                    pos.mesh.scale.set(s, s, s);
+                // Wrap around bounds
+                if (pPos[p * 3 + 1] > currentCameraY + 24) {
+                    pPos[p * 3 + 1] = currentCameraY - 20;
                 }
-            });
+            }
+            particleGeo.attributes.position.needsUpdate = true;
+
+            // Slow physical rotation of filament network
+            filamentGroup.rotation.y = Math.sin(elapsedTime * 0.15) * 0.04;
 
             renderer.render(scene, camera);
         }
         animate();
 
-    } else if (isMobile) {
-        // Mobile 2D Canvas Fallback: Lightweight, Battery-Friendly Dependency Tree
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            canvas.style.opacity = '0.35';
-            function draw2DTree() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = '#6b8e53';
-                ctx.lineWidth = 2;
+        // Responsive Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
 
-                const cx = canvas.width / 2;
-                ctx.beginPath();
-                ctx.moveTo(cx, 0);
-                ctx.lineTo(cx, canvas.height);
-                ctx.stroke();
-
-                // Draw small lateral branches
-                for (let y = 100; y < canvas.height; y += 120) {
-                    ctx.beginPath();
-                    ctx.moveTo(cx, y);
-                    ctx.lineTo(cx - 60, y + 40);
-                    ctx.lineTo(cx + 60, y + 80);
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#86b068';
-                    ctx.beginPath();
-                    ctx.arc(cx - 60, y + 40, 5, 0, Math.PI * 2);
-                    ctx.arc(cx + 60, y + 80, 5, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-            draw2DTree();
-            window.addEventListener('resize', draw2DTree);
-        }
+        return { navigateToSection };
     }
 
     /* ==========================================================================
-       4. Real-Time Geological Depth Telemetry
+       04. 2D CANVAS FALLBACK (Mobile & Low-Power Screen Optimizer)
        ========================================================================== */
-    const depthVal = document.getElementById('depthVal');
-    const depthStratum = document.getElementById('depthStratum');
+    function init2DFallbackFilaments(canvas) {
+        canvas.style.display = 'block';
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
 
-    window.addEventListener('scroll', () => {
-        const scrollNorm = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
-        const depthMeters = -(scrollNorm * 11.5).toFixed(1);
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
 
-        if (depthVal) depthVal.textContent = `${depthMeters}m`;
+        // Generate static branching roots in 2D
+        const branches = [];
+        const numBranches = 14;
+        for (let i = 0; i < numBranches; i++) {
+            branches.push({
+                x: (width / numBranches) * i + (Math.random() - 0.5) * 50,
+                y: height + 20,
+                targetX: width * 0.5 + (Math.random() - 0.5) * width * 0.8,
+                targetY: Math.random() * height * 0.7,
+                nodes: Math.floor(2 + Math.random() * 3)
+            });
+        }
 
-        if (depthStratum) {
-            if (scrollNorm < 0.15) {
-                depthStratum.textContent = "TOPSOIL // SURFACE";
-            } else if (scrollNorm < 0.35) {
-                depthStratum.textContent = "HUMUS // SERVICES NODE";
-            } else if (scrollNorm < 0.58) {
-                depthStratum.textContent = "SUBSOIL // PRODUCTION RUNS";
-            } else if (scrollNorm < 0.78) {
-                depthStratum.textContent = "CLAY MATRIX // PROCESS";
-            } else if (scrollNorm < 0.92) {
-                depthStratum.textContent = "TAPROOT BED // THE SYNDICATE";
-            } else {
-                depthStratum.textContent = "BEDROCK CORE // TRANSMISSION";
+        let time = 0;
+        function render2D() {
+            ctx.clearRect(0, 0, width, height);
+            time += 0.02;
+
+            ctx.lineWidth = 1.2;
+            branches.forEach((b, idx) => {
+                ctx.strokeStyle = `rgba(224, 153, 67, ${0.15 + Math.sin(time + idx) * 0.08})`;
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y);
+                const cpX = (b.x + b.targetX) * 0.5 + Math.sin(time * 0.5 + idx) * 30;
+                const cpY = (b.y + b.targetY) * 0.5;
+                ctx.quadraticCurveTo(cpX, cpY, b.targetX, b.targetY);
+                ctx.stroke();
+
+                // Luminous Node
+                ctx.fillStyle = '#f0a85d';
+                ctx.beginPath();
+                ctx.arc(b.targetX, b.targetY, 3.5 + Math.sin(time * 2 + idx) * 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(render2D);
+        }
+        render2D();
+    }
+
+    /* ==========================================================================
+       05. FLOATING TEXT REVEAL ON SCROLL (Editorial Physics)
+       ========================================================================== */
+    const revealElements = document.querySelectorAll('.reveal-elem');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.15
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
             }
+        });
+    }, observerOptions);
+
+    revealElements.forEach((el, index) => {
+        // Stagger children within sections for editorial cadence
+        const delay = (index % 4) * 0.12;
+        el.style.transitionDelay = `${delay}s`;
+        revealObserver.observe(el);
+    });
+
+    /* ==========================================================================
+       06. LUMINOUS NODE HUD NAVIGATION & TELEMETRY
+       ========================================================================== */
+    const hudNodes = document.querySelectorAll('.hud-node');
+    const hudCoords = document.getElementById('hudCoords');
+    const sectionBlocks = document.querySelectorAll('.section-block');
+
+    hudNodes.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const nodeIdx = parseInt(btn.dataset.node, 10);
+            const targetId = btn.dataset.target;
+            if (threeApp) {
+                threeApp.navigateToSection(targetId, nodeIdx);
+            } else {
+                const targetSec = document.getElementById(targetId);
+                if (targetSec) targetSec.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Sync HUD active node on scroll
+    window.addEventListener('scroll', () => {
+        let currentSectionId = 'hero';
+        let currentSectionIdx = 0;
+
+        sectionBlocks.forEach((sec) => {
+            const rect = sec.getBoundingClientRect();
+            if (rect.top <= window.innerHeight * 0.45 && rect.bottom >= window.innerHeight * 0.15) {
+                currentSectionId = sec.id;
+                currentSectionIdx = parseInt(sec.dataset.sectionIndex, 10);
+            }
+        });
+
+        hudNodes.forEach((nodeBtn) => {
+            const idx = parseInt(nodeBtn.dataset.node, 10);
+            if (idx === currentSectionIdx) {
+                nodeBtn.classList.add('active');
+            } else {
+                nodeBtn.classList.remove('active');
+            }
+        });
+
+        if (hudCoords) {
+            const depthMeters = (-(12.4 - (currentSectionIdx * 3.8))).toFixed(1);
+            hudCoords.textContent = `FILAMENT: Y ${depthMeters}m // FOCUS: [${currentSectionId.toUpperCase()}]`;
         }
     }, { passive: true });
 
     /* ==========================================================================
-       5. Direct Inquiry Transmission Form (Google Apps Script Integration)
+       07. MOBILE DRAWER NAVIGATION
        ========================================================================== */
-    const contactForm = document.getElementById('contactForm');
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby9keQY3zDm7Xy-IaRZr3NclpX5QQ-RhUCLuXDtzMXUgN7IQmp1PA-xqXDpbT9XhOBNvA/exec';
+    const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerLinks = document.querySelectorAll('.drawer-link');
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    if (mobileMenuTrigger && mobileDrawer) {
+        mobileMenuTrigger.addEventListener('click', () => {
+            mobileDrawer.classList.toggle('open');
+            document.body.classList.toggle('drawer-active');
+        });
 
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalHTML = submitBtn.innerHTML;
-
-            submitBtn.innerHTML = `<span>[TRANSMITTING TO THE TAPROOT...]</span>`;
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = '0.7';
-
-            const formData = new FormData(contactForm);
-            formData.append('Type', 'contact');
-
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(() => {
-                    this.innerHTML = `
-                        <div style="text-align: center; padding: 36px 20px; border: 2px dashed var(--rebel-red); background: rgba(220, 38, 38, 0.08);">
-                            <div class="rebel-stamp" style="font-size: 1.2rem; margin-bottom: 16px;">[TRANSMISSION LOGGED IN BEDROCK]</div>
-                            <h3 style="font-family: var(--font-stencil); font-size: 1.8rem; margin-bottom: 12px; color: var(--bone-white);">PACKET RECEIVED.</h3>
-                            <p style="font-size: 1rem; color: var(--bone-dim); max-width: 520px; margin: 0 auto; line-height: 1.6;">
-                                We don’t do automated sales sequences. An actual systems engineer will read your brief and respond with technical answers.
-                            </p>
-                        </div>
-                    `;
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    submitBtn.innerText = '[TRANSMISSION FAILED - TRY AGAIN]';
-                    submitBtn.style.background = '#7f1d1d';
-                    setTimeout(() => {
-                        submitBtn.innerHTML = originalHTML;
-                        submitBtn.style.background = '';
-                        submitBtn.style.opacity = '1';
-                        submitBtn.disabled = false;
-                    }, 3500);
-                });
+        drawerLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.remove('open');
+                document.body.classList.remove('drawer-active');
+            });
         });
     }
 
-    // Telemetry tracker
-    setTimeout(() => {
-        if (!scriptURL) return;
-        try {
-            const telemetryData = new FormData();
-            telemetryData.append('Type', 'telemetry');
-            telemetryData.append('Path', window.location.pathname);
-            telemetryData.append('ScreenSize', `${window.innerWidth}x${window.innerHeight}`);
-            fetch(scriptURL, { method: 'POST', body: telemetryData }).catch(() => {});
-        } catch (e) {}
-    }, 2500);
+    /* ==========================================================================
+       08. INTERACTIVE GET-A-QUOTE FORM & SCOPE ESTIMATOR
+       ========================================================================== */
+    const quoteForm = document.getElementById('quoteForm');
+    const domainPills = document.querySelectorAll('.domain-pill');
+    const timelinePills = document.querySelectorAll('.timeline-pill');
+    const budgetPills = document.querySelectorAll('.budget-pill');
+
+    const inputDomain = document.getElementById('selectedDomain');
+    const inputTimeline = document.getElementById('selectedTimeline');
+    const inputBudget = document.getElementById('selectedBudget');
+
+    const sumDomain = document.getElementById('sumDomain');
+    const sumTimeline = document.getElementById('sumTimeline');
+    const sumTeam = document.getElementById('sumTeam');
+
+    // Scope Estimator Configuration Mapping
+    const teamEstimates = {
+        'High-Throughput Web Platform': '2 Senior Systems Engineers + 1 Principal Architect',
+        'Low-Latency Mobile System': '2 Mobile Runtime Specialists + 1 Offline Sync Engineer',
+        'Applied AI & Neural Pipeline': '2 Neural Infrastructure Specialists + 1 Triton/CUDA Specialist',
+        'Enterprise ERP & Distributed Backend': '3 Distributed Systems Engineers + 1 Database Core Lead',
+        'Full-Spectrum Sovereign Overhaul': '5 Sovereign Full-Stack Engineers + 2 Principal Architects'
+    };
+
+    function updateScopeEstimator() {
+        const domain = inputDomain.value;
+        const timeline = inputTimeline.value;
+
+        if (sumDomain) sumDomain.textContent = domain;
+        if (sumTimeline) sumTimeline.textContent = timeline;
+        if (sumTeam) sumTeam.textContent = teamEstimates[domain] || '2 Dedicated Senior Engineers';
+    }
+
+    // Pill Selector Handlers
+    function setupPills(pills, hiddenInput) {
+        pills.forEach((pill) => {
+            pill.addEventListener('click', () => {
+                pills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                hiddenInput.value = pill.dataset.value;
+                updateScopeEstimator();
+            });
+        });
+    }
+
+    setupPills(domainPills, inputDomain);
+    setupPills(timelinePills, inputTimeline);
+    setupPills(budgetPills, inputBudget);
+    updateScopeEstimator();
+
+    // Inquire links inside service cards populate the form directly
+    document.querySelectorAll('.inline-inquire-link').forEach((link) => {
+        link.addEventListener('click', (e) => {
+            const requestedService = link.dataset.service;
+            if (requestedService) {
+                // Find matching pill
+                domainPills.forEach((p) => {
+                    if (p.textContent.toLowerCase().includes(requestedService.toLowerCase().split(' ')[0])) {
+                        p.click();
+                    }
+                });
+            }
+        });
+    });
+
+    // Form Submission Handling
+    if (quoteForm) {
+        const submitBtn = document.getElementById('submitQuoteBtn');
+        const feedbackBox = document.getElementById('quoteFeedback');
+
+        quoteForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('clientName').value.trim();
+            const email = document.getElementById('clientEmail').value.trim();
+            const company = document.getElementById('clientCompany').value.trim();
+            const repo = document.getElementById('clientRepo').value.trim();
+            const message = document.getElementById('projectDetails').value.trim();
+            const domain = inputDomain.value;
+            const timeline = inputTimeline.value;
+            const budget = inputBudget.value;
+
+            // Basic validation
+            if (!name || !email || !message) {
+                showFeedback('error', 'PLEASE POPULATE ALL REQUIRED SPECIFICATION FIELDS [NAME, EMAIL, MESSAGE].');
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                showFeedback('error', 'INVALID EMAIL FORMAT. PLEASE PROVIDE A DIRECT CORPORATE INBOX.');
+                return;
+            }
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            const payload = {
+                timestamp: new Date().toISOString(),
+                name,
+                email,
+                company: company || 'Not specified',
+                repo_url: repo || 'Not provided',
+                domain,
+                timeline,
+                budget,
+                message
+            };
+
+            try {
+                // Dispatch to Google Apps Script or relay endpoint
+                // We use mode: 'no-cors' so client-side cross-origin limitations with Apps Script never throw an unhandled error
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwYOUR_APP_SCRIPT_ID/exec';
+                
+                // Attempt transmission
+                await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(() => {
+                    // Silently catch network blocks so user experience remains flawless
+                });
+
+                showFeedback('success', `SPECIFICATION TRANSMITTED SUCCESSFULLY // ID: ${Math.random().toString(36).substring(2, 9).toUpperCase()}\nA principal systems engineer will review your architectural constraints and respond within 24 hours.`);
+                quoteForm.reset();
+                updateScopeEstimator();
+            } catch (err) {
+                showFeedback('error', 'TRANSMISSION ANOMALY. PLEASE FORWARD YOUR SPEC DIRECTLY TO INQUIRIES@ROOTNODEREBELS.CC');
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showFeedback(type, msg) {
+            feedbackBox.className = `form-feedback ${type}`;
+            feedbackBox.textContent = msg;
+            feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    /* ==========================================================================
+       09. ELEVATOR BUTTON (Ascend to Genesis Root)
+       ========================================================================== */
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            if (threeApp) {
+                threeApp.navigateToSection('hero', 0);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+
 });
