@@ -138,24 +138,8 @@ body {
     mix-blend-mode: screen;
 }
 
-.cursor-dot {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    margin-left: -3px;
-    margin-top: -3px;
-    border-radius: 50%;
-    background-color: var(--color-amber-bright);
-    pointer-events: none;
-    z-index: 999;
-    box-shadow: 0 0 12px var(--color-amber-glow);
-    transition: transform 0.08s linear, opacity 0.3s ease;
-}
-
 @media (pointer: coarse) {
-    .cursor-glow, .cursor-dot {
+    .cursor-glow {
         display: none !important;
     }
 }

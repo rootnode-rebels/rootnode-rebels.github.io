@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
        02. CURSOR FOLLOW & SOFT AMBIENT LIGHT
        ========================================================================== */
     const cursorGlow = document.getElementById('cursorGlow');
-    const cursorDot = document.getElementById('cursorDot');
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
@@ -36,15 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let normMouseX = 0;
     let normMouseY = 0;
 
-    if (!isMobile && cursorGlow && cursorDot) {
+    if (!isMobile && cursorGlow) {
         window.addEventListener('mousemove', (e) => {
             targetMouseX = e.clientX;
             targetMouseY = e.clientY;
             normMouseX = (e.clientX / window.innerWidth) * 2 - 1;
             normMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-            
-            // Cursor dot tracks instantly
-            cursorDot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
         }, { passive: true });
 
         // Cursor glow trails with smooth physical inertia
